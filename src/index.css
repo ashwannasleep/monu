@@ -9,4 +9,74 @@ html {
     background-color: #F7F5EF; 
   }
   
+  @media (max-width: 768px) {
+    .landing-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      text-align: center;
+      box-sizing: border-box
+    }
+  
+    h1 {
+      font-size: 2.2rem;
+      color: #333;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif; /* if you want luxury serif style */
+    }
+  
+    p {
+      font-size: 1.2rem;
+      font-style: italic;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+  
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      width: 100%;
+    }
+  
+    input[type="text"] {
+      width: 65%;
+      max-width: 320px;
+      padding: 0.7rem 1rem;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #444;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+  
+    input[type="text"]:focus {
+      border-color: #aaa;
+    }
+  
+    button {
+      width: 65%;
+      max-width: 320px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background-color: #d8d1c7;
+      border: 1px solid #aaa;
+      border-radius: 30px;
+      color: #444;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+  
+    button:hover {
+      background-color: #cfc7bc;
+      color: #222;
+    }
+  }
   

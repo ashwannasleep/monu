@@ -42,84 +42,94 @@ export default function FutureVision() {
     updated[category].splice(index, 1);
     setGoals(updated);
   };
-  
+
   return (
     <div className="min-h-screen bg-[#F7F5EF] text-[#3A3A3A] px-6 py-12 flex flex-col items-center">
-  <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
-  <p className="future-subheader italic">Your 3-Year Blueprint</p>
+      <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
+      <p className="future-subheader italic">Your 3-Year Blueprint</p>
 
       <div className="blueprint-wrapper">
         <div className="column">
           <div className="section">
             <h3>
-            TO: 
-            <input
-              className="editable-title"
-              type="text"
-              value={ageTarget}
-              onChange={(e) => setAgeTarget(e.target.value)}
-              placeholder="e.g. 21 year old me"
-            /> 
-          </h3>
+              TO:
+              <input
+                className="editable-title"
+                type="text"
+                value={ageTarget}
+                onChange={(e) => setAgeTarget(e.target.value)}
+                placeholder="e.g. 21 year old me"
+              />
+            </h3>
           </div>
 
           {["health", "relationships", "growth"].map((cat) => (
-            <div key={cat} className="section">
+            <div className="section" key={cat}>
               <h3>{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
               <ul>
                 {goals[cat].map((item, i) => (
                   <li key={i}>
                     <div className="goal-item">
-  <input
-    type="text"
-    value={item}
-    onChange={(e) => handleChange(cat, i, e.target.value)}
-  />
-  <button
-    onClick={() => handleDelete(cat, i)}
-    className="delete-btn"
-    title="Delete"
-  >
-    ✕
-  </button>
-</div>
-
+                      <input
+                        type="text"
+                        value={item}
+                        onChange={(e) => handleChange(cat, i, e.target.value)}
+                      />
+                      <button
+                        onClick={() => handleDelete(cat, i)}
+                        className="delete-btn"
+                        title="Delete"
+                      >
+                        ✕
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>
-              <button onClick={() => handleAddLine(cat)}>＋</button>
+              <button
+                onClick={() => handleAddLine(cat)}
+                className="add-btn"
+                title="Add new goal"
+              >
+                ＋
+              </button>
             </div>
           ))}
         </div>
 
         <div className="column">
-        {["travel", "environment", "career", "finance"].map((cat) => (
-  <div key={cat} className="section">
-    <h3>{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
-    <ul>
-      {goals[cat].map((item, i) => (
-        <li key={i}>
-          <div className="goal-item">
-            <input
-              type="text"
-              value={item}
-              onChange={(e) => handleChange(cat, i, e.target.value)}
-            />
-            <button
-              onClick={() => handleDelete(cat, i)}
-              className="delete-btn"
-              title="Delete"
-            >
-              ✕
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
-    <button onClick={() => handleAddLine(cat)}>＋</button>
-  </div>
-))}
-
+          {["travel", "environment", "career", "finance"].map((cat) => (
+            <div className="section" key={cat}>
+              <h3>{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
+              <ul>
+                {goals[cat].map((item, i) => (
+                  <li key={i}>
+                    <div className="goal-item">
+                      <input
+                        type="text"
+                        value={item}
+                        onChange={(e) => handleChange(cat, i, e.target.value)}
+                      />
+                      <button
+                        onClick={() => handleDelete(cat, i)}
+                        className="delete-btn"
+                        title="Delete"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => handleAddLine(cat)}
+                className="add-btn"
+                title="Add new goal"
+              >
+                ＋
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -60,7 +60,7 @@ export default function ChoosePage() {
         Choose a section to begin with.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 max-w-5xl mx-auto w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto w-full">
         {modules.map((mod) => (
           <div
             key={mod.title}

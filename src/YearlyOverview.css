@@ -24,6 +24,7 @@
   gap: 0.75rem;
   max-width: 500px;
   margin: 0 auto 2.5rem;
+  align-items: center;
 }
 
 .goal-input {
@@ -33,6 +34,7 @@
   font-family: 'Georgia', serif;
   font-size: 1rem;
   background: #fff;
+  width:100%;
 }
 
 /* Responsive Calendar Grid */
@@ -43,24 +45,35 @@
   justify-items: center;
 }
 
-/* 3-column on medium screens */
 @media (max-width: 1024px) {
   .calendar-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
   }
 }
 
-/* 2-column on tablets */
+/* Tablet screens */
 @media (max-width: 768px) {
   .calendar-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+
+  .yearly-wrapper {
+    padding: 3rem 2rem;
   }
 }
 
-/* 1-column on mobile */
+/* Phone screens */
 @media (max-width: 480px) {
   .calendar-grid {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .month-card {
+    max-width: none;
+    width: 100%;
   }
 
   .title {
@@ -70,6 +83,10 @@
   .goal-input {
     font-size: 0.95rem;
     padding: 0.6rem 0.9rem;
+  }
+
+  .yearly-wrapper {
+    padding: 2rem 1.5rem;
   }
 }
 
