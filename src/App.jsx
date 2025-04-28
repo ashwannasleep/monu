@@ -12,7 +12,9 @@ import HabitTracker from './HabitTracker';
 import HabitModal from './HabitModal';
 import Pomodoro from './Pomodoro';
 import UserGuide from './UserGuide';
+import ScrollToTop from "./ScrollToTop";
 import { GoogleOAuthProvider} from '@react-oauth/google';
+
 
 <GoogleOAuthProvider clientId='632636220479-21mknsckuattniq6u5e8qvt1ktl0ptb4.apps.googleusercontent.com'>
   <App />
@@ -22,6 +24,8 @@ import { GoogleOAuthProvider} from '@react-oauth/google';
 
 export default function App() {
   return (
+    <>
+      <ScrollToTop />
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/choose" element={<ChoosePage />} />
@@ -37,5 +41,6 @@ export default function App() {
       <Route path="/pomodoro" element={<Pomodoro />} />
       <Route path="/user-guide" element={<UserGuide />} />
     </Routes>
+    </>
   )
 }

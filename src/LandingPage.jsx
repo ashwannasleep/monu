@@ -50,8 +50,8 @@ export default function LandingPage() {
   return (
     <div className="relative min-h-screen overflow-hidden flex items-center justify-center bg-[#F7F5EF] text-[#3A3A3A] px-6 text-center">
       <div className="transform scale-170 origin-center">
-      <h1 className="text-5xl font-serif font-semibold tracking-wide mb-4">MONU</h1>
-      <p className="italic text-xl text-[#5A5A5A] mb-10">moment & you</p>
+      <h1 className="text-5xl md:text-6xl font-serif font-semibold tracking-wide mb-4">MONU</h1>
+      <p className="italic text-xl md:text-xl text-[#5A5A5A] mb-10">moment & you</p>
 
       {!showQuote ? (
         <div className="flex flex-col items-center space-y-5 animate-fade-in">

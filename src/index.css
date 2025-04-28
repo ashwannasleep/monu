@@ -8,6 +8,13 @@ html {
     padding: 0;
     background-color: #F7F5EF; 
   }
+
+  html, body {
+    height: 100%;
+    overflow-x: hidden;
+    overscroll-behavior: none;
+  }
+  
   
   @media (max-width: 768px) {
     .landing-container {
