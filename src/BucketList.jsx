@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./BucketList.css";
+import { safeSetItem, safeGetItem } from './safeStorage';
 
 export default function BucketList() {
   const [items, setItems] = useState([]);
@@ -9,12 +10,12 @@ export default function BucketList() {
   const [link, setLink] = useState("");
 
   useEffect(() => {
-    const stored = localStorage.getItem("monu_bucket");
+    const stored = safeGetItem("monu_bucket");
     if (stored) setItems(JSON.parse(stored));
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("monu_bucket", JSON.stringify(items));
+    safeSetItem("monu_bucket", JSON.stringify(items));
   }, [items]);
 
   const handleAdd = () => {
@@ -48,8 +49,8 @@ export default function BucketList() {
   return (
     <div className="min-h-screen bg-[#F7F5EF] text-[#3A3A3A] px-6 py-12 flex flex-col items-center">
       <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
-  <h2 className="text-2xl font-semibold text-[#3A3A3A]">Bucket List</h2>
-  <p className="mt-4 italic text-gray-600">This is your moment to dream ✨</p>
+      <h2 className="text-2xl font-semibold text-[#3A3A3A]">Bucket List</h2>
+      <p className="mt-4 italic text-gray-600">This is your moment to dream ✨</p>
 
       <div className="bucket-input-area">
         <input
@@ -84,7 +85,6 @@ export default function BucketList() {
 
       <div className="bucket-list">
         {items.map((item, index) => (
-
           <div
             key={index}
             className={`bucket-item ${item.done ? "done" : ""}`}

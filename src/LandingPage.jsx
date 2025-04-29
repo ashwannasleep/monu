@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { safeSetItem, safeGetItem } from "./safeStorage"; 
 
 const quotes = [
   "Take your time, {name}.",
@@ -21,7 +22,7 @@ export default function LandingPage() {
   const [quote, setQuote] = useState("");
 
   useEffect(() => {
-    const stored = localStorage.getItem("monu_name");
+    const stored = safeGetItem("monu_name");
     if (stored) setInput(stored);
   }, []);
 
@@ -31,9 +32,8 @@ export default function LandingPage() {
       return;
     }
     const name = input;  
-    localStorage.setItem("monu_name", name);
+    safeSetItem("monu_name", name); 
   
-    // Personalize quote
     const picked = quotes[Math.floor(Math.random() * quotes.length)];
     const personalized = picked.includes("{name}")
       ? picked.replace("{name}", name)

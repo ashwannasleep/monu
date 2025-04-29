@@ -1,26 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HabitModal from './HabitModal';
 import './HabitTracker.css';
+import { safeSetItem, safeGetItem } from "./safeStorage"; // ✅ Add safeStorage import
 
 export default function HabitTracker() {
-  const [habits, setHabits] = useState([
-    {
-      name: 'Read for 10 mins',
-      icon: '📖',
-      mood: '🙂',
-      days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-      log: {
-        Mon: true,
-        Tue: true,
-        Wed: true,
-        Thu: false,
-        Fri: true,
-        Sat: false,
-        Sun: false
-      }
-    }
-  ]);
+  const [habits, setHabits] = useState([]);
   const [activeHabit, setActiveHabit] = useState(null);
+
+  // ✅ Load saved habits on page load
+  useEffect(() => {
+    const savedHabits = JSON.parse(safeGetItem("monu_habits")) || [];
+    setHabits(savedHabits);
+  }, []);
+
+  // ✅ Save habits whenever they change
+  useEffect(() => {
+    safeSetItem("monu_habits", JSON.stringify(habits));
+  }, [habits]);
 
   const openHabit = (habit, index) => {
     setActiveHabit({ ...habit, index });
@@ -79,17 +75,16 @@ export default function HabitTracker() {
 
       {activeHabit && (
         <HabitModal
-        habit={activeHabit}
-        onClose={() => setActiveHabit(null)}
-        onSave={(updated) => saveHabit(updated, activeHabit.index)}
-        onDelete={(index) => {
-          const updated = [...habits];
-          updated.splice(index, 1);
-          setHabits(updated);
-          setActiveHabit(null);
-        }}
-      />
-      
+          habit={activeHabit}
+          onClose={() => setActiveHabit(null)}
+          onSave={(updated) => saveHabit(updated, activeHabit.index)}
+          onDelete={(index) => {
+            const updated = [...habits];
+            updated.splice(index, 1);
+            setHabits(updated);
+            setActiveHabit(null);
+          }}
+        />
       )}
     </div>
   );

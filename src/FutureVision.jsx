@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./FutureVision.css";
+import { safeSetItem, safeGetItem } from "./safeStorage"; 
 
 export default function FutureVision() {
   const [ageTarget, setAgeTarget] = useState("<Replace> -year-old me");
@@ -14,15 +15,15 @@ export default function FutureVision() {
   });
 
   useEffect(() => {
-    const savedAge = localStorage.getItem("future_age");
-    const savedGoals = JSON.parse(localStorage.getItem("future_goals"));
+    const savedAge = safeGetItem("future_age"); 
+    const savedGoals = JSON.parse(safeGetItem("future_goals")) || null; 
     if (savedAge) setAgeTarget(savedAge);
     if (savedGoals) setGoals(savedGoals);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("future_age", ageTarget);
-    localStorage.setItem("future_goals", JSON.stringify(goals));
+    safeSetItem("future_age", ageTarget); 
+    safeSetItem("future_goals", JSON.stringify(goals)); 
   }, [ageTarget, goals]);
 
   const handleChange = (category, index, value) => {

@@ -90,7 +90,6 @@ export default function Pomodoro() {
 
   return (
     <>
-      {/* Header is now outside of the Pomodoro wrapper */}
       <div className="pomodoro-header overflow-hidden flex flex-col items-center max-h-screen justify-center">
         <h1 className="text-4xl font-serif font-bold mb-2 text-center">MONU</h1>
         <p className="italic text-gray-600 text-center">Your rhythm of focus and rest 🍅</p>

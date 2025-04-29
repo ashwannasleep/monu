@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { safeGetItem } from './safeStorage'; 
 
 export default function ChoosePage() {
   const [name, setName] = useState("you");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedName = localStorage.getItem("monu_name") || "you";
+    const storedName = safeGetItem("monu_name") || "you"; 
     setName(storedName);
   }, []);
 

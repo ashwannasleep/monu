@@ -5,6 +5,7 @@ import {
   Droppable,
   Draggable,
 } from "react-beautiful-dnd";
+import { safeSetItem, safeGetItem } from "./safeStorage"; 
 
 export default function DailyPlan() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -25,12 +26,12 @@ export default function DailyPlan() {
   };
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("monu_daily_plans")) || {};
+    const saved = JSON.parse(safeGetItem("monu_daily_plans")) || {}; 
     setPlans(saved);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("monu_daily_plans", JSON.stringify(plans));
+    safeSetItem("monu_daily_plans", JSON.stringify(plans)); 
   }, [plans]);
 
   const handleAdd = () => {
@@ -93,7 +94,6 @@ export default function DailyPlan() {
           </div>
         ))}
       </div>
-
 
       <p className="daily-subtitle mb-4">
         {selectedDate.toLocaleDateString("en-US", {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './YearlyOverview.css';
 import YearlyPopup from './YearlyPopup';
+import { safeSetItem, safeGetItem } from './safeStorage'; 
 
 export default function YearlyOverview() {
   const [selectedMonth, setSelectedMonth] = useState(null);
@@ -11,20 +12,19 @@ export default function YearlyOverview() {
   ];
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("monu_yearly_goals"));
+    const saved = JSON.parse(safeGetItem("monu_yearly_goals")) || null; 
     if (saved) setGoals(saved);
   }, []);
 
   const handleGoalChange = (index, value) => {
     const updated = [...goals];
     updated[index] = value;
-    localStorage.setItem("monu_yearly_goals", JSON.stringify(updated));
+    safeSetItem("monu_yearly_goals", JSON.stringify(updated)); 
     setGoals(updated);
   };
 
   return (
     <>
-      {/* ⬆️ Header is now OUTSIDE of the wrapper */}
       <div className="yearly-header">
         <h1 className="text-4xl font-serif font-bold mb-2 text-center">MONU</h1>
         <p className="italic text-gray-600 text-center">Plan your year with intention ✦</p>
