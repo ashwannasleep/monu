@@ -50,19 +50,19 @@ export default function UserGuide() {
   const content = guideContent[lang];
 
   return (
-    <div className="min-h-screen px-6 py-12 flex flex-col items-center font-serif">
+    <><div className="min-h-screen px-6 py-12 flex flex-col items-center font-serif">
       <Link
-  to="/choose"
-  title="Back to menu"
-  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
->
-  <h1 className="text-4xl font-serif font-bold mb-2">
-    MONU
-  </h1>
-</Link>
-  <p className="mt-4 italic text-gray-600 text-center">How to make the most of your moment ✨</p>
+        to="/choose"
+        title="Back to menu"
+        className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+      >
+        <h1 className="text-4xl font-serif font-bold mb-2">
+          MONU
+        </h1>
+      </Link>
+      <p className="mt-4 italic text-gray-600 text-center">How to make the most of your moment ✨</p>
 
-      
+
       <select
         className="mb-6 border border-[#ccc] rounded-md p-2 text-base"
         value={lang}
@@ -82,6 +82,33 @@ export default function UserGuide() {
         <p>{content.sections.pomodoro}</p>
         <p>{content.sections.futurevision}</p>
       </div>
-    </div>
+    </div><>
+        <style>
+          {`
+       .policy-link {
+         color: #666;
+         text-decoration: underline;
+         text-decoration-color: #666;
+       }
+ 
+       .policy-link:visited {
+         color: #666;
+       }
+     `}
+        </style>
+
+        <p style={{ fontSize: "0.875rem", textAlign: "center", marginTop: "3rem" }}>
+          <a
+            href="https://yourusername.github.io/monu-privacy/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="policy-link"
+          >
+            Privacy Policy & Terms of Service
+          </a>
+        </p>
+      </></>
   );
+  
+
 }
