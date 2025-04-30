@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import HabitModal from './HabitModal';
 import './HabitTracker.css';
-import { safeSetItem, safeGetItem } from "./safeStorage"; // ✅ Add safeStorage import
+import { safeSetItem, safeGetItem } from "./safeStorage"; 
+import { Link } from 'react-router-dom';
 
 export default function HabitTracker() {
   const [habits, setHabits] = useState([]);
   const [activeHabit, setActiveHabit] = useState(null);
 
-  // ✅ Load saved habits on page load
+ 
   useEffect(() => {
     const savedHabits = JSON.parse(safeGetItem("monu_habits")) || [];
     setHabits(savedHabits);
   }, []);
 
-  // ✅ Save habits whenever they change
+ 
   useEffect(() => {
     safeSetItem("monu_habits", JSON.stringify(habits));
   }, [habits]);
@@ -25,13 +26,21 @@ export default function HabitTracker() {
   const saveHabit = (updated, index) => {
     const updatedHabits = [...habits];
     updatedHabits[index] = updated;
-    setHabits(updatedHabits);
+    setHabits(updatedHabits); 
     setActiveHabit(null);
   };
 
   return (
     <div className="habit-page">
-      <h1 className="text-4xl font-serif font-bold mb-2 text-center">MONU</h1>
+      <Link
+  to="/choose"
+  title="Back to menu"
+  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+>
+  <h1 className="text-4xl font-serif font-bold mb-2">
+    MONU
+  </h1>
+</Link>
       <p className="mt-4 italic text-gray-600 text-center">Your habits, your rhythm 🎶</p>
 
       <div className="habit-tracker">

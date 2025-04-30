@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './HabitModal.css';
 
+
 const icons = ['💪', '❤️', '📖', '🧠', '🍃', '🎵', '💧', '✅', '✨', '⭐', '🧘', '🐾'];
 const moods = ['😐', '🙂', '😊', '😄', '😁'];
 

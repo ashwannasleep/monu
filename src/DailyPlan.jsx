@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./DailyPlan.css";
+import { Link } from 'react-router-dom';
 import {
   DragDropContext,
   Droppable,
@@ -76,8 +77,16 @@ export default function DailyPlan() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F5EF] text-[#3A3A3A] px-6 py-12 flex flex-col items-center">
-      <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
+    <div className="min-h-screen px-6 py-12 flex flex-col items-center">
+      <Link
+  to="/choose"
+  title="Back to menu"
+  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+>
+  <h1 className="text-4xl font-serif font-bold mb-2">
+    MONU
+  </h1>
+</Link>
       <p className="text-center italic text-[#666] mb-6">Balance, intention, and clarity — one day at a time.  ✨</p>
 
       <div className="week-selector">

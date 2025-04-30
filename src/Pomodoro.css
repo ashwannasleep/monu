@@ -1,8 +1,7 @@
 .pomodoro-wrapper {
   max-height: 80vh;
   height: 80vh;
-  background: #F7F5EF;
-  color: #3A3A3A;
+  
   padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
@@ -46,7 +45,6 @@
 
 .custom-time-input label {
   font-size: 0.95rem;
-  color: #666;
 }
 
 .custom-time-input input {
@@ -117,4 +115,40 @@
 
 .main-btn.reset:hover {
   background: #fde3df;
+}
+ 
+
+.dark .pomodoro-wrapper {
+  background-color: #1f1f1f;
+  color: #f0f0f0;
+}
+
+.dark .mode-btn {
+  background-color: #2e2e2e;
+  color: #f0f0f0;
+  border-color: #F29E8E;
+}
+
+.dark .mode-btn.active {
+  background-color: #F29E8E;
+  color: #fff;
+}
+
+.dark .timer-circle {
+  background: #2e2e2e;
+  border-color: #f0f0f0;
+}
+
+.dark .timer-display {
+  color: #f0f0f0;
+}
+
+.dark .main-btn.reset {
+  background-color: #2e2e2e;
+  color: #f0f0f0;
+  border: 1.5px solid #F29E8E;
+}
+
+.dark .main-btn:hover {
+  background-color: #e97e6c;
 }

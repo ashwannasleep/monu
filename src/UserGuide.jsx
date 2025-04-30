@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const guideContent = {
   en: {
@@ -49,8 +50,16 @@ export default function UserGuide() {
   const content = guideContent[lang];
 
   return (
-    <div className="min-h-screen bg-[#F7F5EF] text-[#3A3A3A] px-6 py-12 flex flex-col items-center font-serif">
-  <h1 className="text-4xl font-bold mb-2 text-center">MONU</h1>
+    <div className="min-h-screen px-6 py-12 flex flex-col items-center font-serif">
+      <Link
+  to="/choose"
+  title="Back to menu"
+  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+>
+  <h1 className="text-4xl font-serif font-bold mb-2">
+    MONU
+  </h1>
+</Link>
   <p className="mt-4 italic text-gray-600 text-center">How to make the most of your moment ✨</p>
 
       

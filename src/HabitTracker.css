@@ -1,5 +1,5 @@
 .habit-tracker {
-    background: #F7F5EF;
+    
     padding: 2rem;
     min-height: 100vh;
     font-family: serif;
@@ -25,6 +25,11 @@
     transition: transform 0.1s ease;
   }
   
+  html.dark .habit-card {
+    background: #2E2E2E;
+    color: #F0F0F0;
+  }
+
   .habit-card:hover {
     transform: scale(1.01);
   }
@@ -54,6 +59,12 @@
     padding: 0.5rem 1rem;
     font-size: 1.5rem;
     cursor: pointer;
+  }
+
+  html.dark .add-btn {
+    background: #2E2E2E;
+    color: #fff;
+    border-color: #ccc;
   }
   
   .day-picker {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './YearlyOverview.css';
 import YearlyPopup from './YearlyPopup';
 import { safeSetItem, safeGetItem } from './safeStorage'; 
+import { Link } from 'react-router-dom';
 
 export default function YearlyOverview() {
   const [selectedMonth, setSelectedMonth] = useState(null);
@@ -26,7 +27,15 @@ export default function YearlyOverview() {
   return (
     <>
       <div className="yearly-header">
-        <h1 className="text-4xl font-serif font-bold mb-2 text-center">MONU</h1>
+      <Link
+  to="/choose"
+  title="Back to menu"
+  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+>
+  <h1 className="text-4xl font-serif font-bold mb-2">
+    MONU
+  </h1>
+</Link>
         <p className="italic text-gray-600 text-center">Plan your year with intention ✦</p>
       </div>
 

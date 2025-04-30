@@ -6,6 +6,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './MonthlyPlanner.css';
+import { Link } from 'react-router-dom';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -171,10 +172,21 @@ export default function MonthlyPlanner() {
     
   return (
     <>
-      <div className="heading-box">
-        <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
-        <p className="mt-4 italic text-gray-600 text-center">Root in the rhythm of now.</p>
-      </div>
+      <div className="heading-box w-full flex flex-col items-center text-center pt-12">
+      <Link
+  to="/choose"
+  title="Back to menu"
+  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+>
+  <h1 className="text-4xl font-serif font-bold mb-2">
+    MONU
+  </h1>
+</Link>
+  <p className="mt-4 italic text-gray-600">
+    Root in the rhythm of now.
+  </p>
+</div>
+
   
       <div className="monthly-wrapper">
         {!googleToken && (

@@ -3,18 +3,23 @@
 @tailwind utilities;
 
 
-html {
-    margin: 0;
-    padding: 0;
-    background-color: #F7F5EF; 
-  }
+:root {
+  --monu-text-light: #3A3A3A;
+  --monu-text-dark: #F0F0F0;
+  --monu-bg-light: #F7F5EF;
+  --monu-bg-dark: #1E1E1E;
+}
 
-  html, body {
-    height: 100%;
-    overflow-x: hidden;
-    overscroll-behavior: none;
-  }
-  
+body {
+  color: var(--monu-text-light);
+  background-color: var(--monu-bg-light);
+}
+
+html.dark body {
+  color: var(--monu-text-dark);
+  background-color: var(--monu-bg-dark);
+}
+
   
   @media (max-width: 768px) {
     .landing-container {
@@ -32,7 +37,7 @@ html {
       font-size: 2.2rem;
       color: #333;
       margin-bottom: 1rem;
-      font-family: 'Playfair Display', serif; /* if you want luxury serif style */
+      font-family: 'Playfair Display', serif; 
     }
   
     p {

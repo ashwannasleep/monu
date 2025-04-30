@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import "./BucketList.css";
 import { safeSetItem, safeGetItem } from './safeStorage';
+import { Link } from 'react-router-dom';
+
+
 
 export default function BucketList() {
   const [items, setItems] = useState([]);
@@ -47,11 +50,19 @@ export default function BucketList() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F5EF] text-[#3A3A3A] px-6 py-12 flex flex-col items-center">
-      <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
-      <h2 className="text-2xl font-semibold text-[#3A3A3A]">Bucket List</h2>
+    <div className="min-h-screen px-6 py-12 flex flex-col items-center">
+      <Link
+  to="/choose"
+  title="Back to menu"
+  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+>
+  <h1 className="text-4xl font-serif font-bold mb-2">
+    MONU
+  </h1>
+</Link>
+      <h2 className="text-2xl font-semibold">Bucket List</h2>
       <p className="mt-4 italic text-gray-600">This is your moment to dream ✨</p>
-
+      
       <div className="bucket-input-area">
         <input
           type="text"
@@ -109,9 +120,12 @@ export default function BucketList() {
             <button onClick={() => deleteItem(index)} className="delete-btn">
               ×
             </button>
+            
           </div>
         ))}
       </div>
+      
     </div>
+    
   );
 }

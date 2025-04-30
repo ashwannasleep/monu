@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./FutureVision.css";
 import { safeSetItem, safeGetItem } from "./safeStorage"; 
+import { Link } from 'react-router-dom';
 
 export default function FutureVision() {
   const [ageTarget, setAgeTarget] = useState("<Replace> -year-old me");
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
   const [goals, setGoals] = useState({
     health: [""],
     relationships: [""],
@@ -11,7 +14,7 @@ export default function FutureVision() {
     travel: [""],
     environment: [""],
     career: [""],
-    finance: [""],
+    finance: [""], 
   });
 
   useEffect(() => {
@@ -45,8 +48,17 @@ export default function FutureVision() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F5EF] text-[#3A3A3A] px-6 py-12 flex flex-col items-center">
-      <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
+    <div className={`future-vision ${theme === "dark" ? "dark" : ""} min-h-screen px-6 py-12 flex flex-col items-center`}>
+
+      <Link
+  to="/choose"
+  title="Back to menu"
+  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+>
+  <h1 className="text-4xl font-serif font-bold mb-2">
+    MONU
+  </h1>
+</Link>
       <p className="future-subheader italic">Your 3-Year Blueprint</p>
 
       <div className="blueprint-wrapper">

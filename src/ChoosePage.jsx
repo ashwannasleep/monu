@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { safeGetItem } from './safeStorage'; 
+import { Link } from 'react-router-dom';
+import ThemeToggle from './ThemeToggle';
+
 
 export default function ChoosePage() {
   const [name, setName] = useState("you");
@@ -55,9 +58,18 @@ export default function ChoosePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F7F5EF] text-[#3A3A3A] px-6 py-12 flex flex-col items-center">
-      <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
-      <p className="text-center italic text-[#5A5A5A] mb-12">
+    <div className="bg-white rounded-3xl p-8 shadow-md hover:shadow-lg transition">
+      <Link
+  to="/choose"
+  title="Back to menu"
+  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+>
+  <h1 className="text-4xl font-serif font-bold mb-2">
+    MONU
+  </h1>
+</Link>
+
+      <p className="text-center italic text-[#3A3A3A] text-inherit mb-12">
         Choose a section to begin with.
       </p>
 
@@ -73,6 +85,15 @@ export default function ChoosePage() {
           </div>
         ))}
       </div>
+     
+
+      <div className="mt-16 flex justify-center items-center w-full duration-300">
+  <ThemeToggle />
+</div>
+
+
     </div>
   );
+
+
 }

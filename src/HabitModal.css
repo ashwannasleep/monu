@@ -1,109 +1,154 @@
 .habit-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-  }
-  
-  .habit-modal {
-    background: #fff;
-    border-radius: 24px;
-    padding: 2rem;
-    width: 90%;
-    max-width: 500px;
-    font-family: serif;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  }
-  
-  .habit-modal h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .habit-modal label {
-    display: block;
-    margin-top: 1rem;
-    font-weight: bold;
-  }
-  
-  .habit-modal input,
-  .habit-modal select,
-  .habit-modal textarea {
-    width: 100%;
-    padding: 0.6rem;
-    margin-top: 0.25rem;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    background: #FAF9F6;
-    font-family: inherit;
-  }
-  
-  textarea {
-    resize: vertical;
-    min-height: 60px;
-  }
-  
-  .mood-options,
-  .icon-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-  
-  .mood-options button,
-  .icon-options button {
-    font-size: 1.2rem;
-    padding: 0.5rem;
-    background: #FAF9F6;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-  
-  .mood-options button.selected,
-  .icon-options button.selected {
-    background: #FADCD9;
-    border-color: #F29E8E;
-  }
-  
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  
-  .modal-actions button {
-    padding: 0.5rem 1.2rem;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .modal-actions button:first-child {
-    background: #3A3A3A;
-    color: white;
-  }
-  
-  .modal-actions button:last-child {
-    background: #eee;
-  }
-  
-  .delete-btn {
-    background: #F29E8E;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.habit-modal {
+  background: #fff;
+  border-radius: 24px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  font-family: serif;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  color: #3A3A3A;
+}
+
+html.dark .habit-modal {
+  background: #2E2E2E;
+  color: #F0F0F0;
+}
+
+.habit-modal h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.habit-modal label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.habit-modal input,
+.habit-modal select,
+.habit-modal textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #FAF9F6;
+  font-family: inherit;
+  color: #2E2E2E;
+}
+
+html.dark .habit-modal input,
+html.dark .habit-modal select,
+html.dark .habit-modal textarea {
+  background: #3A3A3A;
+  border-color: #666;
+  color: #F0F0F0;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.mood-options,
+.icon-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.mood-options button,
+.icon-options button {
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  background: #FAF9F6;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  color: #2E2E2E;
+}
+
+html.dark .mood-options button,
+html.dark .icon-options button {
+  background: #3A3A3A;
+  border-color: #777;
+  color: #F0F0F0;
+}
+
+.mood-options button.selected,
+.icon-options button.selected {
+  background: #FADCD9;
+  border-color: #F29E8E;
+}
+
+html.dark .mood-options button.selected,
+html.dark .icon-options button.selected {
+  background: #F29E8E;
+  color: #2E2E2E;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-actions button {
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.modal-actions button:first-child {
+  background: #3A3A3A;
+  color: white;
+}
+
+html.dark .modal-actions button:first-child {
+  background: #F0F0F0;
+  color: #2E2E2E;
+}
+
+.modal-actions button:last-child {
+  background: #eee;
+  color: #2E2E2E;
+}
+
+html.dark .modal-actions button:last-child {
+  background: #444;
+  color: #fff;
+}
+
+.delete-btn {
+  background: #F29E8E;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+html.dark .delete-btn {
+  background: #FADCD9;
+  color: #2E2E2E;
+}

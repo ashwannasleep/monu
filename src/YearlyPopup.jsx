@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './YearlyPopup.css';
-import { safeSetItem, safeGetItem } from './safeStorage'; // ✅ Import safe functions
+import { safeSetItem, safeGetItem } from './safeStorage'; 
 
 export default function YearlyPopup({ month, onClose }) {
   const [tasks, setTasks] = useState({ toDo: [], done: [] });
@@ -15,12 +15,12 @@ export default function YearlyPopup({ month, onClose }) {
   ].indexOf(month);
 
   useEffect(() => {
-    const saved = JSON.parse(safeGetItem(`monu_tasks_${month}`)) || null; // ✅ use safeGetItem
+    const saved = JSON.parse(safeGetItem(`monu_tasks_${month}`)) || null; 
     if (saved) setTasks(saved);
   }, [month]);
 
   useEffect(() => {
-    safeSetItem(`monu_tasks_${month}`, JSON.stringify(tasks)); // ✅ use safeSetItem
+    safeSetItem(`monu_tasks_${month}`, JSON.stringify(tasks)); 
   }, [tasks, month]);
 
   const handleCalendarClick = (day) => {

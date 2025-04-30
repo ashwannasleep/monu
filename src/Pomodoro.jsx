@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Pomodoro.css';
+import { Link } from 'react-router-dom';
 
 export default function Pomodoro() {
   const [modes, setModes] = useState({
@@ -91,7 +92,15 @@ export default function Pomodoro() {
   return (
     <>
       <div className="pomodoro-header overflow-hidden flex flex-col items-center max-h-screen justify-center">
-        <h1 className="text-4xl font-serif font-bold mb-2 text-center">MONU</h1>
+      <Link
+  to="/choose"
+  title="Back to menu"
+  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+>
+  <h1 className="text-4xl font-serif font-bold mb-2">
+    MONU
+  </h1>
+</Link>
         <p className="italic text-gray-600 text-center">Your rhythm of focus and rest 🍅</p>
       </div>
 
@@ -133,7 +142,7 @@ export default function Pomodoro() {
           </div>
         ) : (
           <div className="break-toggle">
-            <p className="text-lg text-gray-700 mb-2">Break time! What do you need?</p>
+            <p className="text-lg mb-2">Break time! What do you need?</p>
             <button className="main-btn" onClick={() => handleBreakChoice('shortBreak')}>☕ Short Break</button>
             <button className="main-btn" onClick={() => handleBreakChoice('longBreak')}>🌿 Long Break</button>
           </div>
