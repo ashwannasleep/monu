@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-monu-dev-b6286-authRole",
+      "UnauthRoleArn": "arn:aws:iam::992382377735:role/amplify-monu-dev-b6286-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::992382377735:role/amplify-monu-dev-b6286-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-monu-dev-b6286-deployment",
+      "UnauthRoleName": "amplify-monu-dev-b6286-unauthRole",
+      "StackName": "amplify-monu-dev-b6286",
+      "StackId": "arn:aws:cloudformation:us-east-1:992382377735:stack/amplify-monu-dev-b6286/3ba74af0-261a-11f0-a835-126b53df9b35",
+      "AmplifyAppId": "d2hwrvzygvfci2"
+    },
+    "categories": {
+      "auth": {
+        "monu55178ac2": {}
+      }
+    }
+  }
+}

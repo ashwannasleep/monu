@@ -55,6 +55,11 @@ export default function ChoosePage() {
       description: "Your guide to mindful planning with MONU.",
       path: "/user-guide",
     },
+    {
+      title: "Settings",
+      description: "Customize and manage your account preferences.",
+      path: "/settings",
+    },
   ];
 
   return (
@@ -87,9 +92,7 @@ export default function ChoosePage() {
       </div>
      
 
-      <div className="mt-16 flex justify-center items-center w-full duration-300">
-  <ThemeToggle />
-</div>
+      
 
 
     </div>

@@ -1,79 +1,178 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { safeSetItem, safeGetItem } from "./safeStorage"; 
+import { signUp, confirmSignUp, signIn } from "aws-amplify/auth";
 
-const quotes = [
-  "Take your time, {name}.",
-  "Everything starts here, {name}.",
-  "A quiet place to begin.",
-  "Let today be gentle, {name}.",
-  "{name}, the moment is yours.",
-  "It’s okay to go slow, {name}.",
-  "This space belongs to you.",
-  "Little steps, {name}, lasting change.",
-  "This is where it begins, {name}.",
-  "{name}, you’ve arrived.",
-];
+import { safeSetItem, safeGetItem } from "./safeStorage";
+import "./LandingPage.css";
+import AuthModal from "./AuthModal";
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const [input, setInput] = useState("");
+
   const [showQuote, setShowQuote] = useState(false);
   const [quote, setQuote] = useState("");
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState("signIn");
+  const [signupUser, setSignupUser] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
+  const [showVerification, setShowVerification] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
 
-  useEffect(() => {
-    const stored = safeGetItem("monu_name");
-    if (stored) setInput(stored);
-  }, []);
+  const quotes = [
+    "Take your time, {name}.",
+    "Everything starts here, {name}.",
+    "A quiet place to begin.",
+    "Let today be gentle, {name}.",
+    "{name}, the moment is yours.",
+    "It’s okay to go slow, {name}.",
+    "This space belongs to you.",
+    "Little steps, {name}, lasting change.",
+    "This is where it begins, {name}.",
+    "{name}, you’ve arrived.",
+  ];
 
-  const handleStart = () => {
-    if (input.trim() === "") {
-      alert("Please enter your name.");
-      return;
-    }
-    const name = input;  
-    safeSetItem("monu_name", name); 
-  
+  const showQuoteAndRedirect = (name) => {
+    setShowAuthModal(false);
+    setShowVerification(false);
+    safeSetItem("monu_name", name);
     const picked = quotes[Math.floor(Math.random() * quotes.length)];
     const personalized = picked.includes("{name}")
       ? picked.replace("{name}", name)
       : `${picked} — ${name}`;
-  
     setQuote(personalized);
     setShowQuote(true);
-  
-    // Transition to next page
-    setTimeout(() => navigate("/choose"), 2300);
+    setTimeout(() => navigate("/choose"), 3000);
   };
-  
+
+  const handleSignUp = async ({ username, password, name }) => {
+    try {
+      await signUp({
+        username,
+        password,
+        options: { userAttributes: { email: username, name } },
+      });
+      setSignupUser(username);
+      setSignupPassword(password);
+      safeSetItem("monu_name", name);
+      setShowAuthModal(false);
+      setShowVerification(true);
+    } catch (error) {
+      console.error("Sign-up error:", error);
+      alert(error.message || "Error during sign-up.");
+    }
+  };
+
+  const handleSignIn = async ({ username, password }) => {
+    try {
+      await signIn({ username, password });
+      const displayName = safeGetItem("monu_name") || username;
+      showQuoteAndRedirect(displayName);
+    } catch (error) {
+      console.error("Sign-in error:", error);
+      alert(error.message || "Error during sign-in.");
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    try {
+      await confirmSignUp({
+        username: signupUser,
+        confirmationCode: verificationCode.trim(),
+      });
+    } catch (error) {
+      if (
+        error.message?.includes("Current status is CONFIRMED") ||
+        error.code === "NotAuthorizedException"
+      ) {
+        // already confirmed
+      } else {
+        console.error("Verification error:", error);
+        alert(`${error.code || ""}: ${error.message || "Invalid code."}`);
+        return;
+      }
+    }
+    const displayName = safeGetItem("monu_name") || signupUser;
+    showQuoteAndRedirect(displayName);
+    try {
+      await signIn({ username: signupUser, password: signupPassword });
+    } catch {
+      // ignore
+    }
+  };
 
   return (
     <div className="relative min-h-screen overflow-hidden flex items-center justify-center bg-[#F7F5EF] text-[#3A3A3A] px-6 text-center">
       <div className="transform scale-170 origin-center">
-      <h1 className="text-5xl md:text-6xl font-serif font-semibold tracking-wide mb-4">MONU</h1>
-      <p className="italic text-xl md:text-xl text-[#5A5A5A] mb-10">moment & you</p>
+        <h1 className="text-5xl md:text-6xl font-serif font-semibold tracking-wide mb-4">
+          MONU
+        </h1>
+        <p className="italic text-xl md:text-xl text-[#5A5A5A] mb-10">
+          moment & you
+        </p>
 
-      {!showQuote ? (
-        <div className="flex flex-col items-center space-y-5 animate-fade-in">
-          <input
-            type="text"
-            placeholder="Enter your name..."
-            required  
-            className="px-4 py-2 border border-gray-400 rounded-xl bg-white text-center text-[#333] w-64 shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
+        {showAuthModal && (
+          <AuthModal
+            initialMode={authMode}
+            onClose={() => setShowAuthModal(false)}
+            onSignUp={handleSignUp}
+            onSignIn={handleSignIn}
           />
-          <button
-            onClick={handleStart}
-            className="mt-[15px] bg-[#C7BFB2] hover:bg-[#b3aa9d] text-black font-semibold px-6 py-2 rounded-full shadow-md transition duration-200"
-          >
-            Start Planning →
-          </button>
-        </div>
-      ) : (
-        <p className="mt-16 text-2xl font-serif text-[#3A3A3A] animate-slidefade">{quote}</p>
-      )}
-    </div>
+        )}
+
+        {showVerification && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3 className="text-lg text-[#5A5A5A] mb-5">
+                We’ve sent a verification code to <strong>{signupUser}</strong>.
+                Please enter it:
+              </h3>
+              <input
+                type="text"
+                placeholder="Verification code"
+                className="px-4 py-2 border border-gray-400 rounded-xl bg-white text-center w-64 shadow-sm focus:outline-none"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={handleVerifyCode}
+                className="mt-4 bg-[#C7BFB2] hover:bg-[#b3aa9d] px-6 py-2 rounded-full"
+              >
+                Verify
+              </button>
+            </div>
+          </div>
+        )}
+
+        {!showQuote && !showVerification && !showAuthModal && (
+          <div className="flex flex-col items-center space-y-5 animate-fade-in">
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode("signIn");
+                setShowAuthModal(true);
+              }}
+              className="monu-button"
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode("signUp");
+                setShowAuthModal(true);
+              }}
+              className="monu-button"
+            >
+              Sign Up
+            </button>
+          </div>
+        )}
+
+        {showQuote && !showVerification && (
+          <p className="mt-16 text-2xl font-serif animate-slidefade">{quote}</p>
+        )}
+      </div>
     </div>
   );
 }

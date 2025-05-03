@@ -1,0 +1,126 @@
+.auth-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .auth-modal {
+    background-color: #f7f5ef;
+    border-radius: 2rem;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    min-width: 200px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+    font-family: Georgia, serif;
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.25s ease;
+  }
+  
+  .auth-modal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #2d2d2d;
+    font-weight: 600;
+  }
+
+  .form-container {
+    width: 100%;               
+    display: flex;
+    flex-direction: column;          
+  }
+ 
+  .auth-input {
+    width: 100%;
+    max-width: 300px;              
+    padding: 0.75rem 1.25rem;      
+    margin: 0 auto 1rem auto;      
+    border-radius: 9999px;
+    border: 2px solid #d6d3cd;
+    font-size: 0.75rem;
+    background: white;
+    text-align: left;            
+    box-sizing: border-box;
+  }
+  
+  
+  .auth-modal input {
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 9999px;
+    border: 2px solid #d6d3cd;
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.2s ease;
+  }
+  
+  .auth-modal input:focus {
+    outline: none;
+    border-color: #aaa397;
+  }
+  
+  .submit-button {
+    background-color: #c7bfb2;
+    color: #1a1a1a;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    padding: 0.6rem 2rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .submit-button:hover {
+    background-color: #b3aa9d;
+  }
+  
+  .toggle-text {
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: #3a3a3a;
+  }
+  
+  .toggle-text span {
+    display: inline-block;
+    margin-top: 0.25rem;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    font-size: 1.5rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #444;
+    transition: color 0.2s;
+  }
+  
+  .close-button:hover {
+    color: black;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  

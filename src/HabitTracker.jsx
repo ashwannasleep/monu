@@ -13,7 +13,7 @@ export default function HabitTracker() {
     const savedHabits = JSON.parse(safeGetItem("monu_habits")) || [];
     setHabits(savedHabits);
   }, []);
-
+ 
  
   useEffect(() => {
     safeSetItem("monu_habits", JSON.stringify(habits));

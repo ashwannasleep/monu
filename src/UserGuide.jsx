@@ -50,7 +50,7 @@ export default function UserGuide() {
   const content = guideContent[lang];
 
   return (
-    <><div className="min-h-screen px-6 py-12 flex flex-col items-center font-serif">
+    <div className="min-h-screen px-6 py-12 flex flex-col items-center font-serif">
       <Link
         to="/choose"
         title="Back to menu"
@@ -82,32 +82,8 @@ export default function UserGuide() {
         <p>{content.sections.pomodoro}</p>
         <p>{content.sections.futurevision}</p>
       </div>
-    </div><>
-        <style>
-          {`
-       .policy-link {
-         color: #666;
-         text-decoration: underline;
-         text-decoration-color: #666;
-       }
- 
-       .policy-link:visited {
-         color: #666;
-       }
-     `}
-        </style>
-
-        <p style={{ fontSize: "0.875rem", textAlign: "center", marginTop: "3rem" }}>
-          <a
-            href="https://yourusername.github.io/monu-privacy/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="policy-link"
-          >
-            Privacy Policy & Terms of Service
-          </a>
-        </p>
-      </></>
+    </div>
+       
   );
   
 
