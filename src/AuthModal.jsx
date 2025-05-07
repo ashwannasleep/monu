@@ -14,7 +14,7 @@ export default function AuthModal({
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Clear messages when switching between signIn/signUp
+ 
   useEffect(() => {
     setMessage('');
   }, [mode]);
@@ -30,7 +30,7 @@ export default function AuthModal({
       } else {
         await onSignUp({ username: email.trim(), password, name: fullName.trim() });
       }
-      // Success: parent will close modal or proceed
+  
     } catch (err) {
       setMessage(err.message || 'Something went wrong');
     } finally {

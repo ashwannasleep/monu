@@ -31,7 +31,8 @@ export default function LandingPage() {
     "{name}, you’ve arrived.",
   ];
 
-  const showQuoteAndRedirect = (name) => {
+  // Show the quote (but do NOT auto-redirect)
+  const showQuoteAndPrepare = (name) => {
     setShowAuthModal(false);
     setShowVerification(false);
     safeSetItem("monu_name", name);
@@ -41,7 +42,6 @@ export default function LandingPage() {
       : `${picked} — ${name}`;
     setQuote(personalized);
     setShowQuote(true);
-    setTimeout(() => navigate("/choose"), 3000);
   };
 
   const handleSignUp = async ({ username, password, name }) => {
@@ -66,7 +66,7 @@ export default function LandingPage() {
     try {
       await signIn({ username, password });
       const displayName = safeGetItem("monu_name") || username;
-      showQuoteAndRedirect(displayName);
+      showQuoteAndPrepare(displayName);
     } catch (error) {
       console.error("Sign-in error:", error);
       alert(error.message || "Error during sign-in.");
@@ -92,7 +92,7 @@ export default function LandingPage() {
       }
     }
     const displayName = safeGetItem("monu_name") || signupUser;
-    showQuoteAndRedirect(displayName);
+    showQuoteAndPrepare(displayName);
     try {
       await signIn({ username: signupUser, password: signupPassword });
     } catch {
@@ -110,6 +110,7 @@ export default function LandingPage() {
           moment & you
         </p>
 
+        {/* Auth Modal */}
         {showAuthModal && (
           <AuthModal
             initialMode={authMode}
@@ -119,6 +120,7 @@ export default function LandingPage() {
           />
         )}
 
+        {/* Verification Step */}
         {showVerification && (
           <div className="modal-overlay">
             <div className="modal-content">
@@ -144,6 +146,7 @@ export default function LandingPage() {
           </div>
         )}
 
+        {/* Before Login: Sign In / Sign Up */}
         {!showQuote && !showVerification && !showAuthModal && (
           <div className="flex flex-col items-center space-y-5 animate-fade-in">
             <button
@@ -169,8 +172,17 @@ export default function LandingPage() {
           </div>
         )}
 
+        {/* After Login: Quote + Start Planning */}
         {showQuote && !showVerification && (
-          <p className="mt-16 text-2xl font-serif animate-slidefade">{quote}</p>
+          <div className="mt-16 flex flex-col items-center space-y-6 animate-slidefade">
+            <p className="text-2xl font-serif">{quote}</p>
+            <button
+              onClick={() => navigate("/choose")}
+              className="monu-button px-8 py-3"
+            >
+              Start Planning
+            </button>
+          </div>
         )}
       </div>
     </div>

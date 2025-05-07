@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { safeGetItem } from './safeStorage'; 
 import { Link } from 'react-router-dom';
-import ThemeToggle from './ThemeToggle';
 
 
 export default function ChoosePage() {
@@ -63,6 +62,7 @@ export default function ChoosePage() {
   ];
 
   return (
+    
     <div className="bg-white rounded-3xl p-8 shadow-md hover:shadow-lg transition">
       <Link
   to="/choose"
@@ -90,11 +90,6 @@ export default function ChoosePage() {
           </div>
         ))}
       </div>
-     
-
-      
-
-
     </div>
   );
 
