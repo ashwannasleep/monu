@@ -5,12 +5,11 @@ import App from './App.jsx';
 import './index.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Amplify } from 'aws-amplify';
-import awsconfig from './aws-exports';
+import awsExports from './aws-exports';
 
 
 
-
-Amplify.configure(awsconfig)
+Amplify.configure(awsExports)
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <GoogleOAuthProvider clientId="632636220479-21mknsckuattniq6u5e8qvt1ktl0ptb4.apps.googleusercontent.com">

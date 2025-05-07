@@ -5,5 +5,8 @@ const isPreview = process.env.CF_PAGES === '1'
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  optimizeDeps: {
+    include: ['aws-amplify'],
+  },
 });
 
