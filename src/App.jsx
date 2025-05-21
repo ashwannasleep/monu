@@ -24,6 +24,23 @@ Amplify.configure({
   Auth,
 });
 
+const updatedConfig = {
+  ...awsExports,
+  Auth: {
+    ...awsExports.Auth,
+    // Allow multiple concurrent sessions
+    cookieStorage: {
+      domain: 'https://monu-planner.com',
+      path: '/',
+      expires: 365,
+      sameSite: 'strict',
+      secure: true
+    }
+  }
+};
+
+Amplify.configure(updatedConfig);
+
 export default function App() {
   return (
     <>

@@ -1,18 +1,25 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as Auth from '@aws-amplify/auth';
+import { signOut } from 'aws-amplify/auth';
 
 export default function LogoutButton() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await Auth.signOut();
-      localStorage.removeItem('monuUser');
+     
+      await signOut({ global: true });
+      // Clean up local storage
+      localStorage.removeItem('monu_name');
       navigate('/');
-    } catch (error) {
-      alert('Logout failed.');
+    } catch (err) {
+      alert('Logout failed: ' + (err.message || err));
     }
   };
 
-  return <button onClick={handleLogout}>Log Out</button>;
+  return (
+    <button onClick={handleLogout}>
+      Log Out
+    </button>
+  );
 }

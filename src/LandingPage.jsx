@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { signUp, confirmSignUp, signIn } from "aws-amplify/auth";
+import { signUp, confirmSignUp, signIn, fetchAuthSession } from "aws-amplify/auth";
 
 import { safeSetItem, safeGetItem } from "./safeStorage";
 import "./LandingPage.css";
@@ -18,17 +18,58 @@ export default function LandingPage() {
   const [showVerification, setShowVerification] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
 
+  // Check for existing session on component mount
+  useEffect(() => {
+    const checkExistingSession = async () => {
+      try {
+        const session = await fetchAuthSession();
+        if (session?.tokens) {
+          // Try to get the name from localStorage first
+          let displayName = safeGetItem("monu_name");
+          
+          // If no name is stored, fetch from user attributes
+          if (!displayName) {
+            try {
+              const { getCurrentUser, fetchUserAttributes } = await import('aws-amplify/auth');
+              const currentUser = await getCurrentUser();
+              if (currentUser) {
+                const attributes = await fetchUserAttributes();
+                if (attributes.name) {
+                  displayName = attributes.name;
+                  // Save for future use
+                  safeSetItem("monu_name", displayName);
+                } else if (attributes.email) {
+                  displayName = attributes.email;
+                }
+              }
+            } catch (attrError) {
+              console.error("Error fetching user attributes:", attrError);
+              // Fallback to "there" if we can't get any identifier
+              displayName = "there";
+            }
+          }
+          
+          showQuoteAndPrepare(displayName || "there");
+        }
+      } catch (error) {
+        // No active session or error, do nothing
+      }
+    };
+    
+    checkExistingSession();
+  }, []);
+
   const quotes = [
     "Take your time, {name}.",
     "Everything starts here, {name}.",
     "A quiet place to begin.",
     "Let today be gentle, {name}.",
     "{name}, the moment is yours.",
-    "It’s okay to go slow, {name}.",
+    "It's okay to go slow, {name}.",
     "This space belongs to you.",
     "Little steps, {name}, lasting change.",
     "This is where it begins, {name}.",
-    "{name}, you’ve arrived.",
+    "{name}, you've arrived.",
   ];
 
   // Show the quote (but do NOT auto-redirect)
@@ -64,9 +105,41 @@ export default function LandingPage() {
 
   const handleSignIn = async ({ username, password }) => {
     try {
-      await signIn({ username, password });
-      const displayName = safeGetItem("monu_name") || username;
-      showQuoteAndPrepare(displayName);
+      // Using signIn from Amplify Auth v6
+      const signInResult = await signIn({ username, password });
+      
+      if (signInResult.isSignedIn) {
+        // Fetch the user's attributes to get their name
+        try {
+          const { tokens } = await fetchAuthSession();
+          if (tokens) {
+            // Try to get the name from localStorage first (from previous sessions)
+            let displayName = safeGetItem("monu_name");
+            
+            if (!displayName || displayName === username) {
+              // If not available or it's the email, fetch from user attributes
+              const { getCurrentUser, fetchUserAttributes } = await import('aws-amplify/auth');
+              const currentUser = await getCurrentUser();
+              if (currentUser) {
+                const attributes = await fetchUserAttributes();
+                if (attributes.name) {
+                  displayName = attributes.name;
+                  // Save for future use
+                  safeSetItem("monu_name", displayName);
+                }
+              }
+            }
+            
+            // If we still don't have a name, fall back to username
+            displayName = displayName || username;
+            showQuoteAndPrepare(displayName);
+          }
+        } catch (attrError) {
+          console.error("Error fetching user attributes:", attrError);
+          // Fallback to email if we can't get the name
+          showQuoteAndPrepare(username);
+        }
+      }
     } catch (error) {
       console.error("Sign-in error:", error);
       alert(error.message || "Error during sign-in.");
@@ -125,7 +198,7 @@ export default function LandingPage() {
           <div className="modal-overlay">
             <div className="modal-content">
               <h3 className="text-lg text-[#5A5A5A] mb-5">
-                We’ve sent a verification code to <strong>{signupUser}</strong>.
+                We've sent a verification code to <strong>{signupUser}</strong>.
                 Please enter it:
               </h3>
               <input
