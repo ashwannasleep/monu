@@ -1,246 +1,320 @@
-.bucket-wrapper {
-    min-height: 100vh;
-    background-color: #f7f5ef;
-    padding: 2rem;
-    color: #3a3a3a;
-    font-family: "Georgia", serif;
+
+.bucket-container {
+  min-height: 100vh;
+  background-color: #F7F5EF;
+  padding: 2rem 1rem;
+  font-family: "Georgia", serif;
+  color: #3A3A3A;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+
+.bucket-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.app-title:hover {
+  opacity: 0.8;
+}
+
+.bucket-desc {
+  color: #777;
+  margin: 1rem 0;
+  font-style: italic;
+  font-size: 1.125rem;
+}
+
+
+.progress-container {
+  margin-bottom: 2rem;
+}
+
+.progress-bar-container {
+  width: 100%;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  height: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+  background-color: #C7BFB2;
+  height: 12px;
+  border-radius: 9999px;
+  transition: width 0.5s ease-out;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+
+.bucket-input-section {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.bucket-input-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.bucket-input,
+.bucket-dropdown {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: white;
+  font-size: 1rem;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.bucket-input:focus,
+.bucket-dropdown:focus {
+  outline: none;
+  border-color: #C7BFB2;
+  box-shadow: 0 0 0 3px rgba(199, 191, 178, 0.1);
+}
+
+.bucket-input:disabled,
+.bucket-dropdown:disabled {
+  background-color: #f9fafb;
+  cursor: not-allowed;
+}
+
+.bucket-add-btn {
+  width: 100%;
+  padding: 0.75rem 2rem;
+  background-color: #C7BFB2;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: inherit;
+}
+
+.bucket-add-btn:hover:not(:disabled) {
+  background-color: #b3aa9d;
+}
+
+.bucket-add-btn:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+
+.bucket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.bucket-item {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.bucket-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bucket-item.done {
+  opacity: 0.75;
+}
+
+.bucket-main {
+  flex: 1;
+  cursor: pointer;
+}
+
+.bucket-text {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.bucket-item.done .bucket-text {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.bucket-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.bucket-tag,
+.bucket-date,
+.bucket-link {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #f0eee7;
+  color: #555;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.bucket-link {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.bucket-link:hover {
+  background-color: #bfdbfe;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  margin-left: 1rem;
+}
+
+.delete-btn:hover {
+  color: #dc2626;
+  background-color: #fef2f2;
+}
+
+/* Loading and Empty States */
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid #f3f4f6;
+  border-top: 2px solid #C7BFB2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.empty-title {
+  font-size: 1.25rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.empty-subtitle {
+  color: #9ca3af;
+}
+
+
+@media (min-width: 640px) {
+  .bucket-input-grid {
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 1rem;
+  }
+  
+  .bucket-input-url {
+    grid-column: span 3;
+  }
+  
+  .bucket-add-btn {
+    width: auto;
+    align-self: flex-start;
+  }
+}
+
+@media (min-width: 768px) {
+  .bucket-container {
+    padding: 3rem 2rem;
   }
   
   .app-title {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-    
+    font-size: 3rem;
   }
   
-  .page-title {
-    text-align: center;
-    font-style: italic;
-    color: #5a5a5a;
-    margin-bottom: 2rem;
+  .bucket-input-grid {
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  }
+  
+  .bucket-input-url {
+    grid-column: span 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bucket-input-grid {
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    align-items: center;
   }
   
   .bucket-input-section {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
-  
-  .bucket-input {
-    padding: 0.6rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.6rem;
-    width: 260px;
-    background: white;
-  }
-
-  
-  .bucket-dropdown {
-    padding: 0.6rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.6rem;
-    background: white;
-  }
-  
-  .bucket-add-btn {
-    padding: 0.6rem 1rem;
-    background-color: #c7bfb2;
-    border: none;
-    border-radius: 0.6rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .bucket-add-btn:hover {
-    background-color: #b3aa9d;
-  }
-  
-  .bucket-list-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .bucket-card {
-    background-color: white;
-    border-radius: 1rem;
-    padding: 1rem;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.15s ease;
-  }
-  
-  .bucket-card:hover {
-    transform: scale(1.01);
-  }
-  
-  .bucket-card.done .bucket-card-text {
-    text-decoration: line-through;
-    color: #999;
-  }
-  
-  .bucket-card-text {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .bucket-badge {
-    background-color: #f1ece2;
-    font-size: 0.75rem;
-    padding: 0.3rem 0.6rem;
-    border-radius: 9999px;
-    display: inline-block;
-  }
-  
-  .bucket-delete {
-    position: absolute;
-    top: 0.6rem;
-    right: 0.8rem;
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: #aaa;
-    cursor: pointer;
-  }
-  
-  .bucket-delete:hover {
-    color: #555;
-  }
-  
-  .bucket-container {
-    min-height: 100vh;
-    background-color: #F7F5EF;
-    padding: 2rem 1rem;
-    font-family: "Georgia", serif;
-    color: #3A3A3A;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  
-  .app-title {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin-bottom: 0.5rem;
-  }
-  
-  .bucket-title {
-    text-align: center;
-    font-size: 1.8rem;
-    margin-top: 0.5rem;
-    font-weight: 500;
-  }
-  
-  .bucket-desc {
-    text-align: center;
-    color: #777;
-    margin-bottom: 2rem;
-    font-style: italic;
-  }
-  
-  .bucket-input-area {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
-  
-  .bucket-input-area input,
-  .bucket-input-area select {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: white;
-    font-size: 0.95rem;
-  }
-  
-  .bucket-input-area input[type="url"] {
-    width: 200px;
-  }
-  
-  .bucket-input-area button {
-    padding: 0.5rem 1rem;
-    background-color: #C7BFB2;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .bucket-input-area button:hover {
-    background-color: #b3aa9d;
-  }
-  
-  .bucket-list {
-    display: flex;
-    flex-direction: column;
+    align-items: flex-end;
     gap: 1rem;
   }
   
-  .bucket-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    border-radius: 16px;
-    padding: 1rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    transition: all 0.2s ease;
+  .bucket-input-grid {
+    flex: 1;
+    margin-bottom: 0;
   }
   
-  .bucket-item.done .bucket-text {
-    text-decoration: line-through;
-    color: #999;
+  .bucket-add-btn {
+    width: auto;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
-  
-  .bucket-main {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    cursor: pointer;
-  }
-  
-  .bucket-text {
-    font-weight: 500;
-    font-size: 1rem;
-  }
-  
-  .bucket-tag,
-  .bucket-date,
-  .bucket-link {
-    font-size: 0.85rem;
-    margin-top: 0.25rem;
-    display: inline-block;
-    background-color: #f0eee7;
-    padding: 2px 8px;
-    border-radius: 6px;
-    color: #555;
-    margin-right: 5px;
-  }
-  
-  .bucket-link {
-    background: none;
-    padding: 0;
-    margin-left: 4px;
-  }
-  
-  .delete-btn {
-    background: none;
-    border: none;
-    color: #888;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
-  
-  .delete-btn:hover {
-    color: #c33;
-  }
-  
+}
+
+
+.bucket-item:focus-within {
+  outline: 2px solid #C7BFB2;
+  outline-offset: 2px;
+}
+
+.delete-btn:focus {
+  outline: 2px solid #C7BFB2;
+  outline-offset: 2px;
+}

@@ -18,10 +18,11 @@ export default function DailyPlan() {
   const [input, setInput] = useState("");
   const [timeInputs, setTimeInputs] = useState({});
   const [durationInputs, setDurationInputs] = useState({});
-const todayKey = selectedDate.toDateString();
-const todayTasks = plans[todayKey] || [];
-const completedCount = todayTasks.filter(t => t.done).length;
-const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount / todayTasks.length) * 100);
+
+  const todayKey = selectedDate.toDateString();
+  const todayTasks = plans[todayKey] || [];
+  const completedCount = todayTasks.filter(t => t.done).length;
+  const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount / todayTasks.length) * 100);
 
   const currentWeek = () => {
     const today = new Date();
@@ -56,20 +57,35 @@ const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount
     const text = input.trim();
     if (!text) return;
 
+    // Log what we're trying to send
+    console.log('Attempting to add task with data:', {
+      date: selectedDate.toISOString().split('T')[0],
+      text,
+      time: timeInputs[key] || "",
+      duration: durationInputs[key] || "",
+      order: (plans[key]?.length || 0),
+    });
+
     const newTask = {
       date: selectedDate.toISOString().split('T')[0],
       text,
       time: timeInputs[key] || "",
       duration: durationInputs[key] || "",
       order: (plans[key]?.length || 0),
+      // Remove done field - it might not be in your schema
+      // done: false
     };
 
     try {
+      console.log('Sending GraphQL mutation...');
       const result = await client.graphql({
         query: createDailyTask,
         variables: { input: newTask }
       });
+      
+      console.log('GraphQL result:', result);
       const savedTask = result.data.createDailyTask;
+      
       setPlans(prev => ({
         ...prev,
         [key]: [...(prev[key] || []), savedTask]
@@ -77,14 +93,27 @@ const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount
       setInput("");
       setTimeInputs(prev => ({ ...prev, [key]: "" }));
       setDurationInputs(prev => ({ ...prev, [key]: "" }));
+      
+      console.log('Task added successfully');
     } catch (err) {
-      console.error('Failed to add task:', err);
+      console.error('Full error object:', err);
+      console.error('Error message:', err.message);
+      console.error('Error details:', err.errors);
+      
+      // More detailed error message
+      const errorMsg = err.errors?.[0]?.message || err.message || 'Unknown error';
+      alert(`Failed to add task: ${errorMsg}`);
     }
   };
 
   const handleDelete = async index => {
     const key = selectedDate.toDateString();
     const task = plans[key][index];
+
+    if (!task || !task.id) {
+      console.error('Task or task ID is missing');
+      return;
+    }
 
     try {
       await client.graphql({
@@ -96,6 +125,33 @@ const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount
       setPlans(prev => ({ ...prev, [key]: updated }));
     } catch (err) {
       console.error('Failed to delete task:', err);
+      alert('Failed to delete task. Please try again.');
+    }
+  };
+
+  const handleToggleComplete = async (index) => {
+    const key = selectedDate.toDateString();
+    const task = plans[key][index];
+    
+    if (!task || !task.id) {
+      console.error('Task or task ID is missing');
+      return;
+    }
+
+    const updatedTask = { ...task, done: !task.done };
+
+    try {
+      await client.graphql({
+        query: updateDailyTask,
+        variables: { input: { id: task.id, done: updatedTask.done } }
+      });
+      
+      const updated = [...plans[key]];
+      updated[index] = updatedTask;
+      setPlans(prev => ({ ...prev, [key]: updated }));
+    } catch (err) {
+      console.error('Failed to update task:', err);
+      alert('Failed to update task. Please try again.');
     }
   };
 
@@ -117,6 +173,15 @@ const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount
       console.log('Order updated');
     } catch (err) {
       console.error('Failed to update order:', err);
+      // Revert the local state change if the API call fails
+      fetchTasks();
+    }
+  };
+
+  // Add keyboard support for adding tasks
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleAdd();
     }
   };
 
@@ -132,7 +197,7 @@ const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount
       <div className="week-selector">
         {currentWeek().map(date => (
           <div
-            key={date}
+            key={date.toISOString()} // Use a more unique key
             className={
               "week-day " +
               (date.toDateString() === selectedDate.toDateString()
@@ -149,7 +214,6 @@ const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount
         ))}
       </div>
 
-
       <p className="daily-subtitle mb-4">
         {selectedDate.toLocaleDateString("en-US", {
           weekday: "long",
@@ -158,10 +222,10 @@ const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount
         })}
       </p>
 
-<div className="progress-bar-container">
-  <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
-</div>
-<p className="progress-text">{progressPercent}% complete</p>
+      <div className="progress-bar-container">
+        <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
+      </div>
+      <p className="progress-text">{progressPercent}% complete</p>
 
       <div className="task-container">
         <div className="add-plan">
@@ -169,6 +233,7 @@ const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
+            onKeyPress={handleKeyPress} // Add keyboard support
             placeholder="Add a new task..."
             className="plan-input"
           />
@@ -209,15 +274,21 @@ const progressPercent = todayTasks.length === 0 ? 0 : Math.round((completedCount
                 {...provided.droppableProps}
               >
                 {(plans[selectedDate.toDateString()] || []).map((item, idx) => (
-                  <Draggable key={item.id} draggableId={item.id} index={idx}>
+                  <Draggable key={item.id} draggableId={item.id.toString()} index={idx}>
                     {provided => (
                       <li
-                        className="plan-item"
+                        className={`plan-item ${item.done ? 'completed' : ''}`}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
                         <div className="task-content">
+                          <input
+                            type="checkbox"
+                            checked={item.done || false}
+                            onChange={() => handleToggleComplete(idx)}
+                            className="task-checkbox"
+                          />
                           {item.time && (
                             <span className="task-time">{item.time}</span>
                           )}

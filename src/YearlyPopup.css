@@ -199,3 +199,119 @@ html.dark .task-card li .btns button,
 html.dark .task-card li button {
   color: #ccc;
 }
+
+/* Mobile Scaling - Make everything smaller */
+@media (max-width: 768px) {
+  .popup-card {
+    padding: 1.2rem;
+    border-radius: 1rem;
+  }
+
+  .popup-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .close-btn {
+    font-size: 1rem;
+  }
+
+  .mini-calendar {
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .mini-calendar th,
+  .mini-calendar td {
+    padding: 0.3rem 0.2rem;
+  }
+
+  .popup-inputs input {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .popup-inputs button {
+    padding: 0.5rem 0.8rem;
+    font-size: 1rem;
+  }
+
+  .popup-sections {
+    gap: 1rem;
+  }
+
+  .task-card {
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+  }
+
+  .task-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .task-card li {
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.4rem;
+    border-radius: 6px;
+  }
+
+  .task-card li span {
+    font-size: 0.85rem;
+  }
+
+  .task-card li .btns button,
+  .task-card li button {
+    font-size: 0.9rem;
+    margin-left: 0.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-card {
+    padding: 1rem;
+  }
+
+  .popup-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .mini-calendar {
+    font-size: 0.7rem;
+  }
+
+  .mini-calendar th,
+  .mini-calendar td {
+    padding: 0.25rem 0.15rem;
+  }
+
+  .popup-inputs input {
+    padding: 0.45rem;
+    font-size: 0.85rem;
+  }
+
+  .popup-inputs button {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .task-card {
+    padding: 0.7rem;
+  }
+
+  .task-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .task-card li {
+    padding: 0.35rem 0.5rem;
+  }
+
+  .task-card li span {
+    font-size: 0.8rem;
+  }
+
+  .task-card li .btns button,
+  .task-card li button {
+    font-size: 0.85rem;
+  }
+}

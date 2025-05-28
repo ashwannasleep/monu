@@ -16,7 +16,7 @@ export default function ChoosePage() {
   const modules = [
     {
       title: "Dashboard",
-      description: "See an overview of all your plans, goals, and progress.",
+      description: "See an overview of all your progress.",
       path: "/dashboard",
     },
     {

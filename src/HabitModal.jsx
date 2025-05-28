@@ -64,7 +64,7 @@ export default function HabitModal({ habit, onClose, onSave, onDelete }) {
         <div className="modal-actions">
           <button onClick={() => onSave(form)}>Save</button>
           <button onClick={onClose}>Cancel</button>
-          <button className="delete-btn" onClick={() => onDelete(habit.index)}>Delete</button>
+          <button className="delete-btn" onClick={() => onDelete(habit.index)}>✕</button>
         </div>
 
         <label>Scheduled Days</label>

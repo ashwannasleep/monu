@@ -77,15 +77,13 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen px-6 py-12 flex flex-col items-center">
+    <div className="dashboard-container">
       <Link
         to="/choose"
         title="Back to menu"
-        className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+        className="dashboard-header"
       >
-        <h1 className="text-4xl font-serif font-bold mb-2">
-          MONU
-        </h1>
+        <h1>MONU</h1>
       </Link>
 
       <div className="dashboard-grid">
@@ -120,7 +118,7 @@ export default function Dashboard() {
               Sync Google Calendar
             </button>
           ) : (
-            <ul>
+            <ul className="events-list">
               {googleEvents.map((event) => (
                 <li key={event.id}>{event.summary}</li>
               ))}
