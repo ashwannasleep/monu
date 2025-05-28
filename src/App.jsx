@@ -18,6 +18,7 @@ import Pomodoro        from './Pomodoro';
 import UserGuide       from './UserGuide';
 import SettingsPage    from './SettingsPage';
 import ScrollToTop     from './ScrollToTop';
+import Dashboard from './Dashboard';
 
 Amplify.configure({
   ...awsExports,
@@ -62,6 +63,7 @@ export default function App() {
         <Route path="/pomodoro"         element={<Pomodoro />} />
         <Route path="/user-guide"       element={<UserGuide />} />
         <Route path="/settings"         element={<SettingsPage />} />
+        <Route path="/dashboard"        element={<Dashboard />} />
       </Routes>
     </>
   );

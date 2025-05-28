@@ -44,3 +44,29 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 300px;
 }
+
+@media (max-width: 640px) {
+  .monu-button {
+    font-size: 6px;
+    padding: 0.15rem 0.5rem;
+    margin: 0 2px;
+    margin-top: 6px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .monu-button {
+    font-size: 5px;
+    padding: 0.1rem 0.4rem;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 10px;
+  }
+}

@@ -72,7 +72,7 @@ export default function LandingPage() {
     "{name}, you've arrived.",
   ];
 
-  // Show the quote (but do NOT auto-redirect)
+ 
   const showQuoteAndPrepare = (name) => {
     setShowAuthModal(false);
     setShowVerification(false);
@@ -183,7 +183,7 @@ export default function LandingPage() {
           moment & you
         </p>
 
-        {/* Auth Modal */}
+        
         {showAuthModal && (
           <AuthModal
             initialMode={authMode}
@@ -193,7 +193,7 @@ export default function LandingPage() {
           />
         )}
 
-        {/* Verification Step */}
+        
         {showVerification && (
           <div className="modal-overlay">
             <div className="modal-content">
@@ -219,7 +219,7 @@ export default function LandingPage() {
           </div>
         )}
 
-        {/* Before Login: Sign In / Sign Up */}
+    
         {!showQuote && !showVerification && !showAuthModal && (
           <div className="flex flex-col items-center space-y-5 animate-fade-in">
             <button
@@ -245,7 +245,7 @@ export default function LandingPage() {
           </div>
         )}
 
-        {/* After Login: Quote + Start Planning */}
+       
         {showQuote && !showVerification && (
           <div className="mt-16 flex flex-col items-center space-y-6 animate-slidefade">
             <p className="text-2xl font-serif">{quote}</p>

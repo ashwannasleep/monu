@@ -1,73 +1,126 @@
-import React, { useState, useEffect } from "react";
-import "./FutureVision.css";
-import { safeSetItem, safeGetItem } from "./safeStorage"; 
+import React, { useState, useEffect } from 'react';
+import './FutureVision.css';
 import { Link } from 'react-router-dom';
+import { generateClient } from 'aws-amplify/api';
+import { listFutureGoals } from './graphql/queries';
+import { createFutureGoal, updateFutureGoal, deleteFutureGoal } from './graphql/mutations';
+
+const client = generateClient();
 
 export default function FutureVision() {
-  const [ageTarget, setAgeTarget] = useState("<Replace> -year-old me");
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
+  const [ageTarget, setAgeTarget] = useState('[Replace] -year-old me');
   const [goals, setGoals] = useState({
-    health: [""],
-    relationships: [""],
-    growth: [""],
-    travel: [""],
-    environment: [""],
-    career: [""],
-    finance: [""], 
+    health: [],
+    relationships: [],
+    growth: [],
+    travel: [],
+    environment: [],
+    career: [],
+    finance: []
   });
 
   useEffect(() => {
-    const savedAge = safeGetItem("future_age"); 
-    const savedGoals = JSON.parse(safeGetItem("future_goals")) || null; 
-    if (savedAge) setAgeTarget(savedAge);
-    if (savedGoals) setGoals(savedGoals);
+    fetchGoals();
   }, []);
 
-  useEffect(() => {
-    safeSetItem("future_age", ageTarget); 
-    safeSetItem("future_goals", JSON.stringify(goals)); 
-  }, [ageTarget, goals]);
+  const fetchGoals = async () => {
+    try {
+      const result = await client.graphql({ query: listFutureGoals });
+      const items = result.data.listFutureGoals.items;
 
-  const handleChange = (category, index, value) => {
-    const updated = { ...goals };
-    updated[category][index] = value;
-    setGoals(updated);
+      const organized = {
+        health: [],
+        relationships: [],
+        growth: [],
+        travel: [],
+        environment: [],
+        career: [],
+        finance: []
+      };
+
+      items.forEach(item => {
+        if (organized[item.category]) {
+          organized[item.category].push({
+            id: item.id,
+            text: item.text
+          });
+        }
+      });
+
+      setGoals(organized);
+    } catch (err) {
+      console.error('Failed to load future goals:', err);
+    }
   };
 
-  const handleAddLine = (category) => {
+  const handleChange = async (category, index, value) => {
     const updated = { ...goals };
-    updated[category].push("");
+    updated[category][index].text = value;
     setGoals(updated);
+
+    const item = updated[category][index];
+    if (item.id) {
+      try {
+        await client.graphql({
+          query: updateFutureGoal,
+          variables: { input: { id: item.id, text: value } }
+        });
+      } catch (err) {
+        console.error('Failed to update goal:', err);
+      }
+    }
   };
 
-  const handleDelete = (category, index) => {
+  const handleAddLine = async (category) => {
+    const updated = { ...goals };
+    const newItem = { text: '' };
+    updated[category].push(newItem);
+    setGoals(updated);
+
+    try {
+      const result = await client.graphql({
+        query: createFutureGoal,
+        variables: { input: { category, text: '' } }
+      });
+      updated[category][updated[category].length - 1].id = result.data.createFutureGoal.id;
+    } catch (err) {
+      console.error('Failed to add future goal:', err);
+    }
+  };
+
+  const handleDelete = async (category, index) => {
+    const item = goals[category][index];
+    if (item.id) {
+      try {
+        await client.graphql({
+          query: deleteFutureGoal,
+          variables: { input: { id: item.id } }
+        });
+      } catch (err) {
+        console.error('Failed to delete future goal:', err);
+      }
+    }
+
     const updated = { ...goals };
     updated[category].splice(index, 1);
     setGoals(updated);
   };
 
   return (
-    <div className={`future-vision ${theme === "dark" ? "dark" : ""} min-h-screen px-6 py-12 flex flex-col items-center`}>
-
+    <div className="future-vision min-h-screen px-6 py-12 flex flex-col items-center">
       <Link
-  to="/choose"
-  title="Back to menu"
-  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
->
-  <h1 className="text-4xl font-serif font-bold mb-2">
-    MONU
-  </h1>
-</Link>
+        to="/choose"
+        title="Back to menu"
+        className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+      >
+        <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
+      </Link>
       <p className="future-subheader italic">Your 3-Year Blueprint</p>
-
-      <div className="blueprint-wrapper">
-        <div className="column">
-          <div className="section">
+      <div className="section">
             <h3>
               TO:
               <input
-                className="editable-title"
+                className="editable-title text-center"
                 type="text"
                 value={ageTarget}
                 onChange={(e) => setAgeTarget(e.target.value)}
@@ -76,7 +129,11 @@ export default function FutureVision() {
             </h3>
           </div>
 
-          {["health", "relationships", "growth"].map((cat) => (
+      <div className="blueprint-wrapper">
+        <div className="column">
+          
+
+          {['health', 'relationships', 'growth'].map((cat) => (
             <div className="section" key={cat}>
               <h3>{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
               <ul>
@@ -85,7 +142,7 @@ export default function FutureVision() {
                     <div className="goal-item">
                       <input
                         type="text"
-                        value={item}
+                        value={item.text}
                         onChange={(e) => handleChange(cat, i, e.target.value)}
                       />
                       <button
@@ -111,7 +168,7 @@ export default function FutureVision() {
         </div>
 
         <div className="column">
-          {["travel", "environment", "career", "finance"].map((cat) => (
+          {['travel', 'environment', 'career', 'finance'].map((cat) => (
             <div className="section" key={cat}>
               <h3>{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
               <ul>
@@ -120,7 +177,7 @@ export default function FutureVision() {
                     <div className="goal-item">
                       <input
                         type="text"
-                        value={item}
+                        value={item.text}
                         onChange={(e) => handleChange(cat, i, e.target.value)}
                       />
                       <button

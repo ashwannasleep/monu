@@ -1,0 +1,47 @@
+type BucketItem @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  text: String!
+  category: String
+  date: AWSDate
+  link: AWSURL
+  done: Boolean
+}
+
+type DailyTask @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  date: AWSDate!
+  text: String!
+  time: String
+  duration: String
+  order: Int
+}
+
+type Habit @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  name: String!
+  icon: String
+  mood: String
+  days: [String]
+  log: AWSJSON
+}
+
+type FutureVision @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  ageTarget: String
+  goals: AWSJSON
+}
+
+type YearlyGoal @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  year: Int!
+  title: String!
+  details: String
+  completed: Boolean
+}
+
+type FutureGoal @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  category: String!
+  title: String!
+  done: Boolean
+}

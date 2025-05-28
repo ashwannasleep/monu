@@ -141,3 +141,28 @@ html.dark .month-card {
 html.dark .month-calendar {
   color: #CCCCCC;
 }
+
+.progress-bar-container {
+  width: 100%;
+  max-width: 400px;
+  height: 8px;
+  background: #ddd;
+  border-radius: 999px;
+  margin: 10px auto;
+  overflow: hidden;
+  
+}
+
+.progress-bar {
+  height: 100%;
+  background: #4caf50;
+  width: 0%; 
+  transition: width 0.4s ease;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  color: #555;
+  text-align: center;
+  margin-bottom: 10px;
+}

@@ -1,51 +1,99 @@
 import React, { useState, useEffect } from 'react';
 import HabitModal from './HabitModal';
 import './HabitTracker.css';
-import { safeSetItem, safeGetItem } from "./safeStorage"; 
 import { Link } from 'react-router-dom';
+import { generateClient } from 'aws-amplify/api';
+import { createHabit, updateHabit, deleteHabit } from './graphql/mutations';
+import { listHabits } from './graphql/queries';
+
+const client = generateClient();
 
 export default function HabitTracker() {
   const [habits, setHabits] = useState([]);
   const [activeHabit, setActiveHabit] = useState(null);
 
- 
   useEffect(() => {
-    const savedHabits = JSON.parse(safeGetItem("monu_habits")) || [];
-    setHabits(savedHabits);
+    fetchHabits();
   }, []);
- 
- 
-  useEffect(() => {
-    safeSetItem("monu_habits", JSON.stringify(habits));
-  }, [habits]);
 
-  const openHabit = (habit, index) => {
-    setActiveHabit({ ...habit, index });
+  const fetchHabits = async () => {
+    try {
+      const result = await client.graphql({
+        query: listHabits
+      });
+      setHabits(result.data.listHabits.items);
+    } catch (err) {
+      console.error('Failed to load habits:', err);
+    }
   };
 
-  const saveHabit = (updated, index) => {
+  const saveHabit = async (updated, index) => {
+    try {
+      if (updated.id) {
+        const result = await client.graphql({
+          query: updateHabit,
+          variables: { input: updated }
+        });
+        const updatedItem = result.data.updateHabit;
+        const updatedHabits = [...habits];
+        updatedHabits[index] = updatedItem;
+        setHabits(updatedHabits);
+      } else {
+        const result = await client.graphql({
+          query: createHabit,
+          variables: { input: updated }
+        });
+        const newItem = result.data.createHabit;
+        setHabits([...habits, newItem]);
+      }
+      setActiveHabit(null);
+    } catch (err) {
+      console.error('Failed to save habit:', err);
+    }
+  };
+
+  const handleDelete = async (index) => {
+    const habit = habits[index];
+    try {
+      await client.graphql({
+        query: deleteHabit,
+        variables: { input: { id: habit.id } }
+      });
+      const updated = [...habits];
+      updated.splice(index, 1);
+      setHabits(updated);
+      setActiveHabit(null);
+    } catch (err) {
+      console.error('Failed to delete habit:', err);
+    }
+  };
+
+  const toggleLog = async (i, day) => {
     const updatedHabits = [...habits];
-    updatedHabits[index] = updated;
-    setHabits(updatedHabits); 
-    setActiveHabit(null);
+    if (!updatedHabits[i].log) updatedHabits[i].log = {};
+    updatedHabits[i].log[day] = !updatedHabits[i].log[day];
+    setHabits(updatedHabits);
+
+    try {
+      await client.graphql({
+        query: updateHabit,
+        variables: { input: { id: updatedHabits[i].id, log: JSON.stringify(updatedHabits[i].log) } }
+      });
+    } catch (err) {
+      console.error('Failed to update log:', err);
+    }
   };
 
   return (
     <div className="habit-page">
-      <Link
-  to="/choose"
-  title="Back to menu"
-  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
->
-  <h1 className="text-4xl font-serif font-bold mb-2">
-    MONU
-  </h1>
-</Link>
+      <Link to="/choose" title="Back to menu" className="no-underline text-inherit hover:opacity-80">
+        <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
+      </Link>
       <p className="mt-4 italic text-gray-600 text-center">Your habits, your rhythm 🎶</p>
 
       <div className="habit-tracker">
         {habits.map((habit, i) => (
-          <div className="habit-card" key={i} onClick={() => setActiveHabit({ ...habit, index: i })}>
+          <div className="habit-card" key={habit.id || i} onClick={() => setActiveHabit({ ...habit, index: i })}>
             <div className="habit-header">
               <span className="icon">{habit.icon}</span>
               <span className="name">{habit.name}</span>
@@ -57,10 +105,7 @@ export default function HabitTracker() {
                   className={`circle ${habit.days?.includes(day) ? 'active' : ''} ${habit.log?.[day] ? 'done' : ''}`}
                   onClick={(e) => {
                     e.stopPropagation();
-                    const updatedHabits = [...habits];
-                    if (!updatedHabits[i].log) updatedHabits[i].log = {};
-                    updatedHabits[i].log[day] = !updatedHabits[i].log[day];
-                    setHabits(updatedHabits);
+                    toggleLog(i, day);
                   }}
                 />
               ))}
@@ -71,13 +116,13 @@ export default function HabitTracker() {
         <button
           className="add-btn"
           onClick={() =>
-            setHabits([...habits, {
+            setActiveHabit({
               name: '',
               icon: '🌟',
               mood: '',
               days: [],
               log: {}
-            }])
+            })
           }
         >＋</button>
       </div>
@@ -87,12 +132,7 @@ export default function HabitTracker() {
           habit={activeHabit}
           onClose={() => setActiveHabit(null)}
           onSave={(updated) => saveHabit(updated, activeHabit.index)}
-          onDelete={(index) => {
-            const updated = [...habits];
-            updated.splice(index, 1);
-            setHabits(updated);
-            setActiveHabit(null);
-          }}
+          onDelete={() => handleDelete(activeHabit.index)}
         />
       )}
     </div>

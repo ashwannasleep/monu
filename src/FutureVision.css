@@ -3,7 +3,7 @@
   min-height: 100vh;
   background-color: #F7F5EF;
   font-family: 'Georgia', serif;
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,6 +24,7 @@
   font-style: italic;
   font-size: 1rem;
   margin-bottom: 2rem;
+  text-align: center;
 }
 
 .blueprint-wrapper {
@@ -63,11 +64,13 @@
 .section ul {
   list-style-type: disc;
   padding-left: 1.5rem;
+  margin: 0;
 }
 
 .section li {
   font-style: italic;
   margin-bottom: 0.5rem;
+  list-style: none;
 }
 
 .section input {
@@ -103,8 +106,9 @@
 .goal-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   width: 100%;
+  margin-bottom: 0.5rem;
 }
 
 .goal-item input {
@@ -123,143 +127,274 @@
   border-bottom: 1px solid #3A3A3A; 
 }
 
-.goal-item .delete-btn,
-.goal-item .add-btn {
-  flex-shrink: 0;
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-}
-
 .goal-item .delete-btn {
+  flex-shrink: 0;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
   background-color: #e6a39e;
   color: white;
-}
-
-.goal-item .add-btn {
-  background-color: #d5d0c7;
-  color: #333;
-}
-
-.future-vision.dark .goal-item .add-btn {
-  background-color: #2E2E2E;
-  color: #fff;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .goal-item .delete-btn:hover {
   background-color: #d58b85;
 }
 
-.goal-item .add-btn:hover {
-  background-color: #c9c3b9;
-}
-
-.section > button {
-  margin-top: 1rem;
+.section > .add-btn {
+  margin-top: 0.75rem;
   padding: 0.5rem 1rem;
-  border-radius: 9999px;
+  border-radius: 20px;
   background-color: #d5d0c7;
   color: #333;
-  font-size: 1.2rem;
+  font-size: 1rem;
   border: 1px solid #aaa;
   cursor: pointer;
   transition: background 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.future-vision.dark .section > button {
+.future-vision.dark .section > .add-btn {
   background-color: #2E2E2E;
   color: #fff;
 }
 
-.section > button:hover {
+.section > .add-btn:hover {
   background-color: #c9c3b9;
 }
 
-.delete-btn {
-  background: none;
-  border: none;
-  color: #b33;
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 0.5rem;
-  line-height: 1;
-}
-
-.delete-btn:hover {
-  color: #800;
-}
-
+/* Mobile Styles */
 @media (max-width: 768px) {
+  .future-vision {
+    padding: 1rem 0.75rem;
+  }
+  
   .blueprint-wrapper {
-    flex-wrap: wrap; 
+    flex-direction: column;
     gap: 1.5rem;
-  }
-
-  .goal-item input {
-    border: none;
-    border-bottom: 1px dashed #aaa;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    padding: 0.3rem 0;
-    font-size: 1rem;
-    width: 100%;
-  }
-
-  .goal-item input:focus {
-    outline: none;
-    border-bottom: 1px solid #333;
+    max-width: 100%;
   }
 
   .column {
     flex: 1 1 100%;
     max-width: 100%;
-    padding: 1.5rem;
+    min-width: unset;
+    padding: 1rem;
+    margin: 0;
   }
 
-  .goal-item button,
-  .section > button {
-    flex-shrink: 0;
-    width: auto;
-    min-width: 30px; 
-    max-width: 60px;
-    padding: 0.4rem 0.6rem; 
+  .section {
+    margin-bottom: 1.25rem;
+  }
+
+  .section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .goal-item {
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .goal-item input {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.95rem;
+  }
+
+  .goal-item .delete-btn {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 6px;
+  }
+
+  .section > .add-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+
+  .future-subheader {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .editable-title {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .future-vision {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .column {
+    padding: 0.75rem;
+  }
+
+  .section h3 {
+    font-size: 1rem;
+  }
+
+  .goal-item input {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.2rem;
+  }
+
+  .goal-item .delete-btn {
+    min-width: 22px;
+    height: 22px;
+    font-size: 0.75rem;
+  }
+
+  .section > .add-btn {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Age Input Styles - Add these to your existing CSS */
+
+.age-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.age-placeholder {
+  color: #999;
+  font-style: italic;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border-bottom: 2px dashed #aaa;
+  padding: 0.2rem 0.5rem;
+  cursor: text;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.age-placeholder:hover {
+  color: #666;
+  border-bottom-color: #888;
+}
+
+.age-display {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.age-number-input {
+  border: none;
+  background: transparent;
+  border-bottom: 2px dashed #aaa;
+  padding: 0.2rem 0.5rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: inherit;
+  width: 3rem;
+  text-align: center;
+  font-family: 'Georgia', serif;
+  transition: border-bottom-color 0.2s ease;
+}
+
+.age-number-input:focus {
+  outline: none;
+  border-bottom: 2px solid #3A3A3A;
+}
+
+.age-number-input::placeholder {
+  color: #999;
+  font-style: italic;
+  font-weight: normal;
+}
+
+.age-suffix {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-left: 0.25rem;
+}
+
+.hidden-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  left: -9999px;
+}
+
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .age-header {
     font-size: 1.1rem;
   }
 
-  .goal-item .delete-btn,
-  .goal-item .add-btn {
-    font-size: 0.9rem;
-    padding: 0.3rem 0.6rem;
-    flex-shrink: 0;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
+  .age-placeholder,
+  .age-number-input,
+  .age-suffix {
+    font-size: 1.1rem;
   }
 
-  .delete-btn {
-    background-color: #e6a39e;
-    color: white;
+  .age-number-input {
+    width: 2.5rem;
+    padding: 0.15rem 0.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .age-placeholder,
+  .age-number-input,
+  .age-suffix {
+    font-size: 1rem;
   }
 
-  .add-btn {
-    background-color: #d5d0c7;
-    color: #333;
+  .age-number-input {
+    width: 2.2rem;
   }
+}
 
-  .future-vision.dark .add-btn {
-    background-color: #2E2E2E;
-    color: #fff;
-  }
+.to-section input.editable-title {
+  font-size: 1rem;
+  border: none;
+  border-bottom: 1px dashed #aaa;
+  background: transparent;
+  outline: none;
+  font-family: 'Georgia', serif;
+  color: inherit;
+  max-width: 300px;
+}
 
-  .add-btn:hover {
-    background-color: #c9c3b9;
-  }
+.to-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
 
-  .delete-btn:hover {
-    background-color: #d58b85;
-  }
+.big-age-input {
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-bottom: 2px solid #aaa;
+  background: transparent;
+  outline: none;
+  max-width: 300px;
+  color: inherit;
+  text-align: center; 
+}
+
+.to-label {
+  margin-bottom: 0.5rem;
 }
