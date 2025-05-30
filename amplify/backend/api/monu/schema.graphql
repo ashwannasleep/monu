@@ -7,13 +7,18 @@ type BucketItem @model @auth(rules: [{ allow: owner }]) {
   done: Boolean
 }
 
-type DailyTask @model @auth(rules: [{ allow: owner }]) {
+type DailyTask @model
+@auth(rules: [
+  { allow: owner },
+  { allow: public, operations: [create, update, delete, read] }
+]) {
   id: ID!
   date: AWSDate!
   text: String!
   time: String
   duration: String
   order: Int
+  done: Boolean
 }
 
 type Habit @model @auth(rules: [{ allow: owner }]) {

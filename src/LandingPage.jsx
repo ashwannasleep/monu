@@ -62,7 +62,6 @@ export default function LandingPage() {
   const quotes = [
     "Take your time, {name}.",
     "Everything starts here, {name}.",
-    "A quiet place to begin.",
     "Let today be gentle, {name}.",
     "{name}, the moment is yours.",
     "It's okay to go slow, {name}.",
@@ -248,10 +247,10 @@ export default function LandingPage() {
        
         {showQuote && !showVerification && (
           <div className="mt-16 flex flex-col items-center space-y-6 animate-slidefade">
-            <p className="text-2xl font-serif">{quote}</p>
+            <p className="quote-text">{quote}</p>
             <button
               onClick={() => navigate("/choose")}
-              className="monu-button px-8 py-3"
+              className="monu-button px-8 py-5 w-auto max-w-[240px] mx-auto"
             >
               Start Planning
             </button>

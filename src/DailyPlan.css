@@ -564,26 +564,32 @@ html.dark .empty-state {
   display: flex !important;
   flex-direction: column !important;
 }
-.progress-bar-container {
-  width: 100%;
-  max-width: 400px;
-  height: 8px;
-  background: #ddd;
-  border-radius: 999px;
-  margin: 10px auto;
-  overflow: hidden;
+
+
+
+.task-checkbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #c7bfb2;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
 }
 
-.progress-bar {
-  height: 100%;
-  background: #4caf50;
-  width: 0%;
-  transition: width 0.4s ease;
+.task-checkbox:checked {
+  background-color: #f29e8e;
+  border-color: #f29e8e;
 }
 
-.progress-text {
-  font-size: 0.85rem;
-  color: #555;
-  text-align: center;
-  margin-bottom: 10px;
+.task-checkbox:checked::after {
+  content: '✓';
+  color: white;
+  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

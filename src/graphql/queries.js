@@ -50,6 +50,7 @@ export const getDailyTask = /* GraphQL */ `
       time
       duration
       order
+      done
       createdAt
       updatedAt
       owner
@@ -71,6 +72,7 @@ export const listDailyTasks = /* GraphQL */ `
         time
         duration
         order
+        done
         createdAt
         updatedAt
         owner

@@ -57,35 +57,23 @@ export default function DailyPlan() {
     const text = input.trim();
     if (!text) return;
 
-    // Log what we're trying to send
-    console.log('Attempting to add task with data:', {
-      date: selectedDate.toISOString().split('T')[0],
-      text,
-      time: timeInputs[key] || "",
-      duration: durationInputs[key] || "",
-      order: (plans[key]?.length || 0),
-    });
-
     const newTask = {
       date: selectedDate.toISOString().split('T')[0],
       text,
       time: timeInputs[key] || "",
       duration: durationInputs[key] || "",
       order: (plans[key]?.length || 0),
-      // Remove done field - it might not be in your schema
-      // done: false
+      done: false,
     };
 
     try {
-      console.log('Sending GraphQL mutation...');
       const result = await client.graphql({
         query: createDailyTask,
         variables: { input: newTask }
       });
-      
-      console.log('GraphQL result:', result);
+
       const savedTask = result.data.createDailyTask;
-      
+
       setPlans(prev => ({
         ...prev,
         [key]: [...(prev[key] || []), savedTask]
@@ -93,16 +81,10 @@ export default function DailyPlan() {
       setInput("");
       setTimeInputs(prev => ({ ...prev, [key]: "" }));
       setDurationInputs(prev => ({ ...prev, [key]: "" }));
-      
-      console.log('Task added successfully');
     } catch (err) {
-      console.error('Full error object:', err);
-      console.error('Error message:', err.message);
-      console.error('Error details:', err.errors);
-      
-      // More detailed error message
-      const errorMsg = err.errors?.[0]?.message || err.message || 'Unknown error';
-      alert(`Failed to add task: ${errorMsg}`);
+      console.error('Failed to add task:', err);
+      const detailedMessage = err.errors?.[0]?.message || err.message || 'Unknown error';
+      alert(`Failed to add task: ${detailedMessage}`);
     }
   };
 
@@ -132,7 +114,7 @@ export default function DailyPlan() {
   const handleToggleComplete = async (index) => {
     const key = selectedDate.toDateString();
     const task = plans[key][index];
-    
+
     if (!task || !task.id) {
       console.error('Task or task ID is missing');
       return;
@@ -145,7 +127,7 @@ export default function DailyPlan() {
         query: updateDailyTask,
         variables: { input: { id: task.id, done: updatedTask.done } }
       });
-      
+
       const updated = [...plans[key]];
       updated[index] = updatedTask;
       setPlans(prev => ({ ...prev, [key]: updated }));
@@ -170,15 +152,12 @@ export default function DailyPlan() {
           variables: { input: { id: item.id, order: idx } }
         })
       ));
-      console.log('Order updated');
     } catch (err) {
       console.error('Failed to update order:', err);
-      // Revert the local state change if the API call fails
       fetchTasks();
     }
   };
 
-  // Add keyboard support for adding tasks
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleAdd();
@@ -190,14 +169,14 @@ export default function DailyPlan() {
       <Link to="/choose" title="Back to menu" className="no-underline text-inherit hover:opacity-80">
         <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
       </Link>
-      <p className="text-center italic text-[#666] mb-6">
-        Balance, intention, and clarity — one day at a time. ✨
+      <p className="mt-4 italic text-gray-600 text-center">
+        Balance, intention, and clarity — one day at a time.
       </p>
 
       <div className="week-selector">
         {currentWeek().map(date => (
           <div
-            key={date.toISOString()} // Use a more unique key
+            key={date.toISOString()}
             className={
               "week-day " +
               (date.toDateString() === selectedDate.toDateString()
@@ -222,10 +201,23 @@ export default function DailyPlan() {
         })}
       </p>
 
-      <div className="progress-bar-container">
-        <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
-      </div>
-      <p className="progress-text">{progressPercent}% complete</p>
+   
+<div className="progress-bar-container">
+  <div
+    className="progress-bar"
+    style={{
+      width: `${progressPercent}%`,
+      backgroundColor: document.documentElement.classList.contains('dark')
+        ? '#f7b7a3' 
+        : '#f29e8e', 
+    }}
+  />
+</div>
+<p className="progress-text">{progressPercent}% complete</p>
+
+
+
+
 
       <div className="task-container">
         <div className="add-plan">
@@ -233,7 +225,7 @@ export default function DailyPlan() {
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            onKeyPress={handleKeyPress} // Add keyboard support
+            onKeyPress={handleKeyPress}
             placeholder="Add a new task..."
             className="plan-input"
           />
@@ -282,24 +274,18 @@ export default function DailyPlan() {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        <div className="task-content">
-                          <input
-                            type="checkbox"
-                            checked={item.done || false}
-                            onChange={() => handleToggleComplete(idx)}
-                            className="task-checkbox"
-                          />
-                          {item.time && (
-                            <span className="task-time">{item.time}</span>
-                          )}
-                          <span className="task-description">
-                            {item.text}
-                          </span>
-                          {item.duration && (
-                            <span className="task-duration">
-                              {item.duration}
-                            </span>
-                          )}
+                        <input
+                          type="checkbox"
+                          checked={item.done || false}
+                          onChange={() => handleToggleComplete(idx)}
+                          className="task-checkbox"
+                        />
+                        <div className="task-info">
+                          <div className="task-header">
+                            {item.time && <span className="task-time">{item.time}</span>}
+                            {item.duration && <span className="task-duration">{item.duration}</span>}
+                          </div>
+                          <div className="task-text">{item.text}</div>
                         </div>
                         <button
                           onClick={() => handleDelete(idx)}

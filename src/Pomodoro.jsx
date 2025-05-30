@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function Pomodoro() {
   const [modes, setModes] = useState({
-    study: 1,
+    study: 30,
     reading: 45,
     work: 50,
   });

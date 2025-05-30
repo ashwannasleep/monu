@@ -8,7 +8,7 @@ import { createFutureGoal, updateFutureGoal, deleteFutureGoal } from './graphql/
 const client = generateClient();
 
 export default function FutureVision() {
-  const [ageTarget, setAgeTarget] = useState('[Replace] -year-old me');
+  const [ageTarget, setAgeTarget] = useState('21-year-old me');
   const [goals, setGoals] = useState({
     health: [],
     relationships: [],
