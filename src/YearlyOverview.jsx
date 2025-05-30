@@ -157,7 +157,7 @@ export default function YearlyOverview() {
                 onChange={(e) => handleGoalChange(i, e.target.value)}
                 placeholder={`Goal ${i + 1}`}
                 className="goal-input"
-                style={{ minWidth: '370px' }}
+                style={{ minWidth: '300px' }}
               />
               <input
                 type="checkbox"

@@ -1,3 +1,7 @@
+.dark .bucket-container {
+  background-color: #1E1E1E;
+  
+}
 
 .bucket-container {
   min-height: 100vh;
@@ -317,4 +321,82 @@
 .delete-btn:focus {
   outline: 2px solid #C7BFB2;
   outline-offset: 2px;
+}
+
+.dark .bucket-container {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+}
+
+.dark .bucket-input-section {
+  background-color: #2a2a2a;
+}
+
+.dark .bucket-input,
+.dark .bucket-dropdown {
+  background-color: #333333;
+  color: #f0f0f0;
+  border-color: #555555;
+}
+
+.dark .bucket-add-btn {
+  background-color: #555555;
+  color: #ffffff;
+}
+
+.dark .bucket-add-btn:hover:not(:disabled) {
+  background-color: #666666;
+}
+
+.dark .bucket-add-btn:disabled {
+  background-color: #777777;
+}
+
+.dark .bucket-item {
+  background-color: #2a2a2a;
+  color: #f0f0f0;
+}
+
+.dark .bucket-item.done .bucket-text {
+  color: #999999;
+}
+
+.dark .bucket-tag,
+.dark .bucket-date {
+  background-color: #444444;
+  color: #cccccc;
+}
+
+.dark .bucket-link {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.dark .bucket-link:hover {
+  background-color: #2563eb;
+}
+
+.dark .progress-bar-container {
+  background-color: #444444;
+}
+
+.dark .progress-bar {
+  background-color: #888888;
+}
+
+.dark .delete-btn {
+  color: #aaaaaa;
+}
+
+.dark .delete-btn:hover {
+  color: #ff6b6b;
+  background-color: #4b1d1d;
+}
+
+.dark .empty-title {
+  color: #bbbbbb;
+}
+
+.dark .empty-subtitle {
+  color: #888888;
 }

@@ -398,3 +398,60 @@
 .to-label {
   margin-bottom: 0.5rem;
 }
+
+.dark .future-vision {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+}
+
+.dark .column {
+  background-color: #2a2a2a;
+}
+
+.dark .section > .add-btn {
+  background-color: #444444;
+  color: #ffffff;
+  border-color: #666666;
+}
+
+.dark .section > .add-btn:hover {
+  background-color: #555555;
+}
+
+.dark .goal-item input,
+.dark .editable-title,
+.dark .section input,
+.dark .age-number-input,
+.dark .to-section input.editable-title,
+.dark .big-age-input {
+  background-color: transparent;
+  color: #f0f0f0;
+  border-bottom-color: #888888;
+}
+
+.dark .goal-item input:focus,
+.dark .editable-title:focus,
+.dark .section input:focus,
+.dark .age-number-input:focus,
+.dark .to-section input.editable-title:focus,
+.dark .big-age-input:focus {
+  border-bottom-color: #bbbbbb;
+}
+
+.dark .goal-item .delete-btn {
+  background-color: #aa4a44;
+}
+
+.dark .goal-item .delete-btn:hover {
+  background-color: #cc5a55;
+}
+
+.dark .age-placeholder {
+  color: #bbbbbb;
+  border-bottom-color: #888888;
+}
+
+.dark .age-placeholder:hover {
+  color: #dddddd;
+  border-bottom-color: #aaaaaa;
+}

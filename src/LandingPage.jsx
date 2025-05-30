@@ -18,16 +18,18 @@ export default function LandingPage() {
   const [showVerification, setShowVerification] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
 
+  // 🔧 FIX: Remove dark mode on landing page load
+  useEffect(() => {
+    document.documentElement.classList.remove('dark');
+  }, []);
+
   // Check for existing session on component mount
   useEffect(() => {
     const checkExistingSession = async () => {
       try {
         const session = await fetchAuthSession();
         if (session?.tokens) {
-          // Try to get the name from localStorage first
           let displayName = safeGetItem("monu_name");
-          
-          // If no name is stored, fetch from user attributes
           if (!displayName) {
             try {
               const { getCurrentUser, fetchUserAttributes } = await import('aws-amplify/auth');
@@ -36,7 +38,6 @@ export default function LandingPage() {
                 const attributes = await fetchUserAttributes();
                 if (attributes.name) {
                   displayName = attributes.name;
-                  // Save for future use
                   safeSetItem("monu_name", displayName);
                 } else if (attributes.email) {
                   displayName = attributes.email;
@@ -44,18 +45,15 @@ export default function LandingPage() {
               }
             } catch (attrError) {
               console.error("Error fetching user attributes:", attrError);
-              // Fallback to "there" if we can't get any identifier
               displayName = "there";
             }
           }
-          
           showQuoteAndPrepare(displayName || "there");
         }
       } catch (error) {
-        // No active session or error, do nothing
+        // no active session
       }
     };
-    
     checkExistingSession();
   }, []);
 
@@ -71,7 +69,6 @@ export default function LandingPage() {
     "{name}, you've arrived.",
   ];
 
- 
   const showQuoteAndPrepare = (name) => {
     setShowAuthModal(false);
     setShowVerification(false);
@@ -104,38 +101,28 @@ export default function LandingPage() {
 
   const handleSignIn = async ({ username, password }) => {
     try {
-      // Using signIn from Amplify Auth v6
       const signInResult = await signIn({ username, password });
-      
       if (signInResult.isSignedIn) {
-        // Fetch the user's attributes to get their name
         try {
           const { tokens } = await fetchAuthSession();
           if (tokens) {
-            // Try to get the name from localStorage first (from previous sessions)
             let displayName = safeGetItem("monu_name");
-            
             if (!displayName || displayName === username) {
-              // If not available or it's the email, fetch from user attributes
               const { getCurrentUser, fetchUserAttributes } = await import('aws-amplify/auth');
               const currentUser = await getCurrentUser();
               if (currentUser) {
                 const attributes = await fetchUserAttributes();
                 if (attributes.name) {
                   displayName = attributes.name;
-                  // Save for future use
                   safeSetItem("monu_name", displayName);
                 }
               }
             }
-            
-            // If we still don't have a name, fall back to username
             displayName = displayName || username;
             showQuoteAndPrepare(displayName);
           }
         } catch (attrError) {
           console.error("Error fetching user attributes:", attrError);
-          // Fallback to email if we can't get the name
           showQuoteAndPrepare(username);
         }
       }
@@ -173,7 +160,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden flex items-center justify-center bg-[#F7F5EF] text-[#3A3A3A] px-6 text-center">
+    <div className="landing-container">
       <div className="transform scale-170 origin-center">
         <h1 className="text-5xl md:text-6xl font-serif font-semibold tracking-wide mb-4">
           MONU
@@ -182,7 +169,6 @@ export default function LandingPage() {
           moment & you
         </p>
 
-        
         {showAuthModal && (
           <AuthModal
             initialMode={authMode}
@@ -192,7 +178,6 @@ export default function LandingPage() {
           />
         )}
 
-        
         {showVerification && (
           <div className="modal-overlay">
             <div className="modal-content">
@@ -218,7 +203,6 @@ export default function LandingPage() {
           </div>
         )}
 
-    
         {!showQuote && !showVerification && !showAuthModal && (
           <div className="flex flex-col items-center space-y-5 animate-fade-in">
             <button
@@ -244,7 +228,6 @@ export default function LandingPage() {
           </div>
         )}
 
-       
         {showQuote && !showVerification && (
           <div className="mt-16 flex flex-col items-center space-y-6 animate-slidefade">
             <p className="quote-text">{quote}</p>
