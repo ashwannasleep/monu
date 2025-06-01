@@ -99,9 +99,13 @@ html.dark .mood-options button.selected, html.dark .icon-options button.selected
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 2rem;
+  flex-wrap: nowrap;  
 }
 
 .modal-actions button {
+  flex: initial;        
+  min-width: unset;     
+  text-align: center;
   padding: 0.5rem 1.2rem;
   border-radius: 10px;
   border: none;
@@ -120,20 +124,25 @@ html.dark .modal-actions button:first-child {
   color: #2E2E2E;
 }
 
-.modal-actions button:last-child {
+.modal-actions button:last-child:not(.delete-btn) {
   background: #eee;
   color: #2E2E2E;
 }
 
-html.dark .modal-actions button:last-child {
+html.dark .modal-actions button:last-child:not(.delete-btn) {
   background: #444;
   color: #fff;
 }
 
 .delete-btn {
-  background: #F29E8E;
-  color: white;
-  
+  background: #444; 
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 html.dark .delete-btn {
@@ -141,7 +150,7 @@ html.dark .delete-btn {
   color: #2E2E2E;
 }
 
-/* Mobile Scaling - Make everything smaller */
+/* Mobile Scaling */
 @media (max-width: 768px) {
   .habit-modal {
     padding: 1.5rem;
@@ -182,19 +191,17 @@ html.dark .delete-btn {
 
   .modal-actions {
     gap: 0.8rem;
-    margin-top: 1.5rem;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap;  /* prevent wrapping */
   }
 
   .modal-actions button {
-    padding: 0.45rem 1rem;
-    border-radius: 8px;
     font-size: 0.9rem;
+    padding: 0.45rem 1rem;
+    min-width: 70px;
   }
 
   .delete-btn {
     padding: 0.45rem 0.8rem;
-    border-radius: 8px;
     font-size: 0.7rem;
   }
 }
@@ -237,13 +244,13 @@ html.dark .delete-btn {
 
   .modal-actions {
     gap: 0.7rem;
-    margin-top: 1.3rem;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap;  
   }
 
   .modal-actions button {
-    padding: 0.4rem 0.9rem;
     font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    min-width: 70px;
   }
 
   .delete-btn {
@@ -251,87 +258,16 @@ html.dark .delete-btn {
     font-size: 0.6rem;
   }
 
-}
-
-
-/* Apply same layout on small screens, just smaller sizes */
-@media (max-width: 768px) {
-  .habit-modal {
-    width: 90%;
-    padding: 1.5rem;
-  }
-
-  .habit-modal h3 {
-    font-size: 1.3rem;
-  }
-
-  .habit-modal label {
-    font-size: 0.95rem;
-  }
-
-  .habit-modal input,
-  .habit-modal select,
-  .habit-modal textarea {
-    font-size: 0.9rem;
-    padding: 0.5rem;
-  }
-
-  .mood-options button,
-  .icon-options button {
-    font-size: 1.1rem;
-    padding: 0.4rem;
-  }
-
-  .modal-actions {
-    gap: 0.8rem;
-  }
-
-  .modal-actions button {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .habit-modal {
-    width: 95%;
-    padding: 1.2rem;
-  }
-
-  .habit-modal h3 {
-    font-size: 1.2rem;
-  }
-
-  .habit-modal label {
-    font-size: 0.9rem;
-  }
-
-  .habit-modal input,
-  .habit-modal select,
-  .habit-modal textarea {
+  .day-picker button {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 0.85rem;
-    padding: 0.45rem;
-  }
-
-  .mood-options,
-  .icon-options {
-    gap: 0.4rem;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-  }
-
-  .mood-options button,
-  .icon-options button {
-    font-size: 1rem;
-    padding: 0.35rem;
-  }
-
-  .modal-actions {
-    gap: 0.6rem;
-  }
-
-  .modal-actions button {
-    font-size: 0.85rem;
-    padding: 0.45rem 0.9rem;
+    flex-shrink: 0;
   }
 }
