@@ -216,6 +216,28 @@ html.dark .month-calendar {
   }
 }
 
+@media (max-width: 375px) {
+  .goal-card {
+    max-width: 100%;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .goal-checkbox {
+    width: 1rem;
+    height: 1rem;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .goal-text-input {
+    font-size: 0.8rem;
+  }
+}
+
+.dark .goal-text-input {
+  background-color: #2E2E2E;
+  color: #F0F0F0;
+}
+
 .goals-card-container {
   display: flex;
   flex-wrap: wrap;

@@ -596,3 +596,8 @@ html.dark .empty-state {
   transform: translate(-50%, -50%);
 }
 
+.bucket-text.dash-out {
+  text-decoration: line-through;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}

@@ -1,4 +1,3 @@
-/* Grid */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -7,7 +6,6 @@
   max-width: 1200px;
 }
 
-/* Cards */
 .dashboard-card {
   background-color: var(--card-background, #ffffff);
   border-radius: 1rem;
@@ -33,7 +31,6 @@
   margin-bottom: 1rem;
 }
 
-/* Progress bar */
 .progress-bar {
   width: 100%;
   height: 12px;
@@ -49,16 +46,10 @@
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #f29e8e, #f7b7a3);
-  width: 0%;
   transition: width 0.8s ease;
   border-radius: 9999px;
 }
 
-.dark .progress-fill {
-  background: linear-gradient(90deg, #f29e8e, #f7b7a3);
-}
-
-/* Google button */
 .google-sync-btn {
   background-color: #4285f4;
   color: white;
@@ -74,29 +65,6 @@
   background-color: #357ae8;
 }
 
-/* Events list */
-.events-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-}
-
-.events-list li {
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  background-color: #f0f0f0;
-  border-radius: 0.5rem;
-  color: #333;
-}
-
-.dark .events-list li {
-  background-color: #333333;
-  color: #f0f0f0;
-}
-
-/* Overdue alert */
 .overdue-alert {
   background-color: #ffe4e1;
   color: #b91c1c;
@@ -118,10 +86,6 @@
   align-items: center;
   grid-column: 1 / -1;
   margin-top: 2rem;
-  background: transparent;    
-  padding: 0;                
-  border: none;             
-  box-shadow: none;            
 }
 
 .refresh-btn {
@@ -130,8 +94,19 @@
   font-size: 2.5rem;
   cursor: pointer;
   transition: transform 0.2s ease;
-  box-shadow: none;          
-  padding: 0;
-  margin: 0;
 }
 
+
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top: 4px solid #888;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -201,23 +201,18 @@ export default function DailyPlan() {
         })}
       </p>
 
-   
-<div className="progress-bar-container">
-  <div
-    className="progress-bar"
-    style={{
-      width: `${progressPercent}%`,
-      backgroundColor: document.documentElement.classList.contains('dark')
-        ? '#f7b7a3' 
-        : '#f29e8e', 
-    }}
-  />
-</div>
-<p className="progress-text">{progressPercent}% complete</p>
-
-
-
-
+      <div className="progress-bar-container">
+        <div
+          className="progress-bar"
+          style={{
+            width: `${progressPercent}%`,
+            backgroundColor: document.documentElement.classList.contains('dark')
+              ? '#f7b7a3'
+              : '#f29e8e',
+          }}
+        />
+      </div>
+      <p className="progress-text">{progressPercent}% complete</p>
 
       <div className="task-container">
         <div className="add-plan">
@@ -273,22 +268,20 @@ export default function DailyPlan() {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
+                        onClick={() => handleToggleComplete(idx)}
                       >
-                        <input
-                          type="checkbox"
-                          checked={item.done || false}
-                          onChange={() => handleToggleComplete(idx)}
-                          className="task-checkbox"
-                        />
-                        <div className="task-info">
-                          <div className="task-header">
-                            {item.time && <span className="task-time">{item.time}</span>}
-                            {item.duration && <span className="task-duration">{item.duration}</span>}
+                        <div className="bucket-main">
+                          <div className={`bucket-text ${item.done ? 'dash-out' : ''}`}>{item.text}</div>
+                          <div className="bucket-tags">
+                            {item.time && <span className="bucket-tag">{item.time}</span>}
+                            {item.duration && <span className="bucket-tag">{item.duration}</span>}
                           </div>
-                          <div className="task-text">{item.text}</div>
                         </div>
                         <button
-                          onClick={() => handleDelete(idx)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(idx);
+                          }}
                           className="delete-btn"
                         >
                           ✕
