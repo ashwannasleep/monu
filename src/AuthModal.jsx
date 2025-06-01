@@ -1,4 +1,3 @@
-// src/AuthModal.jsx
 import React, { useState, useEffect } from 'react';
 import { resetPassword, confirmResetPassword } from 'aws-amplify/auth';
 import './AuthModal.css';
@@ -9,14 +8,14 @@ export default function AuthModal({
   onSignIn,
   onSignUp,
 }) {
-  const [mode, setMode]             = useState(initialMode);
-  const [email, setEmail]           = useState('');
-  const [password, setPassword]     = useState('');
-  const [fullName, setFullName]     = useState('');
-  const [resetCode, setResetCode]   = useState('');
+  const [mode, setMode] = useState(initialMode);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [resetCode, setResetCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [message, setMessage]       = useState('');
-  const [loading, setLoading]       = useState(false);
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => setMessage(''), [mode]);
 
@@ -32,7 +31,6 @@ export default function AuthModal({
   const handleSendCode = async () => {
     setLoading(true);
     try {
-      // Use the resetPassword method from Amplify Auth v6
       await resetPassword({ username: email.trim() });
       setMode('resetPassword');
       setMessage('Code sent! Check your email.');
@@ -57,7 +55,6 @@ export default function AuthModal({
           name: fullName.trim(),
         });
       } else if (mode === 'forgotPassword') {
-        // fallback in case someone submits the form instead of clicking Send Code
         await resetPassword({ username: email.trim() });
         setMessage('Code sent! Check your email.');
         setMode('resetPassword');
@@ -65,7 +62,7 @@ export default function AuthModal({
         await confirmResetPassword({
           username: email.trim(),
           confirmationCode: resetCode.trim(),
-          newPassword
+          newPassword,
         });
         setMessage('Password reset successfully! You can now sign in.');
         setMode('signIn');
@@ -78,9 +75,26 @@ export default function AuthModal({
     }
   };
 
+  // 👇 Dynamically calculate padding for small screens
+  const modalStyle = {
+    padding: window.innerWidth <= 480 ? '1rem' : '2.5rem 2rem',
+    borderRadius: window.innerWidth <= 480 ? '1.5rem' : '2rem',
+    width: '100%',
+    maxWidth: '400px',
+    minWidth: '280px',
+    backgroundColor: '#f7f5ef',
+    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.1)',
+    fontFamily: 'Georgia, serif',
+    textAlign: 'center',
+    position: 'relative',
+    animation: 'fadeIn 0.25s ease',
+    boxSizing: 'border-box',
+    margin: window.innerWidth <= 480 ? '0.5rem' : '0',
+  };
+
   return (
     <div className="auth-modal-overlay" onClick={onClose}>
-      <div className="auth-modal" onClick={e => e.stopPropagation()}>
+      <div className="auth-modal" style={modalStyle} onClick={e => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>×</button>
         <h2>
           {mode === 'signIn' && 'Sign In'}
@@ -125,9 +139,7 @@ export default function AuthModal({
 
           {mode === 'forgotPassword' && (
             <>
-              <p className="info-text">
-                We'll send a reset code to your email.
-              </p>
+              <p className="info-text">We'll send a reset code to your email.</p>
               <button
                 type="button"
                 onClick={handleSendCode}
@@ -141,9 +153,7 @@ export default function AuthModal({
 
           {mode === 'resetPassword' && (
             <>
-              <p className="info-text">
-                Enter the code sent to {email} and your new password:
-              </p>
+              <p className="info-text">Enter the code sent to {email} and your new password:</p>
               <input
                 type="text"
                 placeholder="Reset Code"
@@ -164,11 +174,7 @@ export default function AuthModal({
           )}
 
           {(mode === 'signIn' || mode === 'signUp' || mode === 'resetPassword') && (
-            <button
-              type="submit"
-              className="submit-button"
-              disabled={loading}
-            >
+            <button type="submit" className="submit-button" disabled={loading}>
               {loading
                 ? 'Please wait…'
                 : mode === 'signIn'
@@ -182,13 +188,7 @@ export default function AuthModal({
 
         {mode === 'signIn' && (
           <p className="toggle-text">
-            <span
-              className="toggle-link"
-              onClick={() => {
-                resetAll();
-                setMode('forgotPassword');
-              }}
-            >
+            <span className="toggle-link" onClick={() => { resetAll(); setMode('forgotPassword'); }}>
               Forgot Password?
             </span>
           </p>
@@ -196,13 +196,7 @@ export default function AuthModal({
 
         <p className="toggle-text">
           {mode === 'signIn' ? "Don't have an account?" : 'Already have an account?'}{' '}
-          <span
-            className="toggle-link"
-            onClick={() => {
-              resetAll();
-              setMode(mode === 'signIn' ? 'signUp' : 'signIn');
-            }}
-          >
+          <span className="toggle-link" onClick={() => { resetAll(); setMode(mode === 'signIn' ? 'signUp' : 'signIn'); }}>
             {mode === 'signIn' ? 'Sign Up' : 'Sign In'}
           </span>
         </p>

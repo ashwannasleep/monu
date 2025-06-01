@@ -41,122 +41,6 @@ export const listBucketItems = /* GraphQL */ `
     }
   }
 `;
-export const getDailyTask = /* GraphQL */ `
-  query GetDailyTask($id: ID!) {
-    getDailyTask(id: $id) {
-      id
-      date
-      text
-      time
-      duration
-      order
-      done
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const listDailyTasks = /* GraphQL */ `
-  query ListDailyTasks(
-    $filter: ModelDailyTaskFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listDailyTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        date
-        text
-        time
-        duration
-        order
-        done
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getHabit = /* GraphQL */ `
-  query GetHabit($id: ID!) {
-    getHabit(id: $id) {
-      id
-      name
-      icon
-      mood
-      days
-      log
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const listHabits = /* GraphQL */ `
-  query ListHabits(
-    $filter: ModelHabitFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listHabits(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        icon
-        mood
-        days
-        log
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getFutureVision = /* GraphQL */ `
-  query GetFutureVision($id: ID!) {
-    getFutureVision(id: $id) {
-      id
-      ageTarget
-      goals
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const listFutureVisions = /* GraphQL */ `
-  query ListFutureVisions(
-    $filter: ModelFutureVisionFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listFutureVisions(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        ageTarget
-        goals
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
 export const getYearlyGoal = /* GraphQL */ `
   query GetYearlyGoal($id: ID!) {
     getYearlyGoal(id: $id) {
@@ -221,6 +105,94 @@ export const listFutureGoals = /* GraphQL */ `
         category
         title
         done
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getDailyTask = /* GraphQL */ `
+  query GetDailyTask($id: ID!) {
+    getDailyTask(id: $id) {
+      id
+      date
+      text
+      time
+      duration
+      order
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listDailyTasks = /* GraphQL */ `
+  query ListDailyTasks(
+    $filter: ModelDailyTaskFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDailyTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        date
+        text
+        time
+        duration
+        order
+        done
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getHabit = /* GraphQL */ `
+  query GetHabit($id: ID!) {
+    getHabit(id: $id) {
+      id
+      name
+      icon
+      mood
+      days
+      description
+      time
+      plan
+      log
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listHabits = /* GraphQL */ `
+  query ListHabits(
+    $filter: ModelHabitFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listHabits(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        icon
+        mood
+        days
+        description
+        time
+        plan
+        log
         createdAt
         updatedAt
         owner

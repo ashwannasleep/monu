@@ -1,11 +1,11 @@
-/* Overall background and layout */
+
 body, html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Main container */
+
 .landing-container {
   min-height: 100vh;
   display: flex;
@@ -17,22 +17,22 @@ body, html {
   padding: 1rem;
 }
 
-/* Force light mode override */
+
 html .landing-container,
 html.dark .landing-container {
   background-color: #F7F5EF;
   color: #3A3A3A;
 }
 
-/* Logo title */
+
 .landing-title {
   font-family: Georgia, serif;
-  font-size: clamp(2.5rem, 5vw, 3.5rem); /* slightly reduce max */
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
-/* Subtitle */
+
 .landing-subtitle {
   font-family: Georgia, serif;
   font-style: italic;
@@ -41,22 +41,20 @@ html.dark .landing-container {
   margin-bottom: 2rem;
 }
 
-/* Quote text */
+
 .quote-text {
   font-family: Georgia, serif;
   font-weight: 500;
-  font-size: clamp(1rem, 2vw, 1rem); 
+  font-size: clamp(1rem, 2vw, 1rem);
   text-align: center;
   max-width: 90%;
   word-wrap: break-word;
-  word-break: break-word;
-  overflow-wrap: break-word;
   line-height: 1.4;
   margin: 0 auto 1rem auto;
   padding: 0 1rem;
 }
 
-/* Buttons */
+
 .monu-button {
   background-color: #C7BFB2;
   color: #1a1a1a;
@@ -76,8 +74,8 @@ html.dark .landing-container {
   margin: 0 auto;
   width: auto;
   max-width: 240px;
-  min-width: 100px;  
-  min-height: 30px;  
+  min-width: 100px;
+  min-height: 30px;
 }
 
 .monu-button:hover {
@@ -85,22 +83,22 @@ html.dark .landing-container {
   cursor: pointer;
 }
 
-/* Auth modal overlay */
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);  
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; 
+  z-index: 1000;
   padding: 1rem;
 }
 
-/* Modal box */
+
 .modal-content {
   background: white;
   padding: 20px;
@@ -111,59 +109,62 @@ html.dark .landing-container {
   box-sizing: border-box;
 }
 
-/* Media queries */
-@media (max-width: 640px) {
-  .monu-button {
-    font-size: 15px;
-    padding: 0.7rem 1.3rem;
-    min-width: 100px;
-    min-height: 30px;
-    margin-top: 6px;
-  }
 
-  .modal-content {
-    width: 90%;
-    padding: 16px;
-    margin: 1rem;
+
+
+@media (max-width: 768px) {
+  .monu-button,
+  button.monu-button {
+    font-size: 12px !important;
+    padding: 0.5rem 1rem !important;
+    min-width: 75px !important;
+    min-height: 22px !important;
   }
 }
 
 @media (max-width: 480px) {
-  .monu-button {
-    font-size: 15px;
-    padding: 0.7rem 1.2rem;
-    min-width: 100px;
-    min-height: 30px;
-  }
-
-  .modal-content {
-    width: 95%;
-    padding: 16px;
+  .monu-button,
+  button.monu-button {
+    font-size: 12px !important;
+    padding: 0.5rem 1rem !important;
+    min-width: 75px !important;
+    min-height: 22px !important;
   }
 }
+
+
+@media (max-width: 375px) {
+  .monu-button,
+  button.monu-button {
+    font-size: 12px !important;
+    padding: 0.5rem 1rem !important;
+    min-width: 75px !important;
+    min-height: 22px !important;
+  }
+}
+
 @media (max-width: 480px) {
   .modal-content {
     width: 95%;
-    max-width: 200px;         /* very narrow */
-    padding: 8px;             /* tight padding */
-    font-size: 0.85rem;
-    border-radius: 6px;
+    max-width: 340px;
+    padding: 10px;
+    transform: scale(0.85);
   }
 
   .modal-content h3 {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     margin-bottom: 0.5rem;
   }
 
   .modal-content input {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
     width: 100%;
   }
 
   .modal-content button {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.6rem;
-    min-width: 90px;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+    min-width: 70px;
   }
 }

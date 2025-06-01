@@ -150,6 +150,7 @@ html.dark .daily-subtitle {
   flex: 1;
   min-width: 0;
   gap: 0.5rem;
+  
 }
 
 .task-main {
@@ -174,6 +175,7 @@ html.dark .plan-item:hover {
   color: #C2B8A3;
   font-size: 0.9rem;
   min-width: 60px;
+  margin-right: 50px;
   flex-shrink: 0;
 }
 
@@ -593,3 +595,4 @@ html.dark .empty-state {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+

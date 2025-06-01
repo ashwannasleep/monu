@@ -26,31 +26,55 @@ export default function HabitTracker() {
       console.error('Failed to load habits:', err);
     }
   };
-
+ 
   const saveHabit = async (updated, index) => {
     try {
       if (updated.id) {
+        // Update existing habit
         const result = await client.graphql({
           query: updateHabit,
-          variables: { input: updated }
+          variables: { input: { 
+            id: updated.id,
+            name: updated.name || 'Untitled Habit',
+            icon: updated.icon || '🌟',
+            mood: updated.mood || '',
+            days: updated.days || [],
+            description: updated.description || '',
+            time: updated.time || '',
+            plan: updated.plan || '',
+            log: updated.log ? JSON.stringify(updated.log) : '{}'
+          } }
         });
         const updatedItem = result.data.updateHabit;
         const updatedHabits = [...habits];
         updatedHabits[index] = updatedItem;
         setHabits(updatedHabits);
+        console.log('Updated habit:', updatedItem);
       } else {
+        // Create new habit
         const result = await client.graphql({
           query: createHabit,
-          variables: { input: updated }
+          variables: { input: { 
+            name: updated.name || 'Untitled Habit',
+            icon: updated.icon || '🌟',
+            mood: updated.mood || '',
+            days: updated.days || [],
+            description: updated.description || '',
+            time: updated.time || '',
+            plan: updated.plan || '',
+            log: updated.log ? JSON.stringify(updated.log) : '{}'
+          } }
         });
         const newItem = result.data.createHabit;
         setHabits([...habits, newItem]);
+        console.log('Created new habit:', newItem);
       }
       setActiveHabit(null);
     } catch (err) {
       console.error('Failed to save habit:', err);
     }
   };
+  
 
   const handleDelete = async (index) => {
     const habit = habits[index];

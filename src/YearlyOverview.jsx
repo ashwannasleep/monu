@@ -115,80 +115,62 @@ export default function YearlyOverview() {
   return (
     <>
       <div className="yearly-header">
-        <Link
-          to="/choose"
-          title="Back to menu"
-          className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
-        >
+        <Link to="/choose" title="Back to menu" className="no-underline text-inherit hover:opacity-80">
           <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
         </Link>
-        <p className="italic text-gray-600 text-center">Plan your year with intention ✦</p>
+        <p className="italic text-gray-600 dark:text-gray-300 text-center">Plan your year with intention ✦</p>
       </div>
 
       <div className="progress-bar-container mt-6 mb-4">
-        <div
-          className="progress-bar"
-          style={{
-            width: `${progressPercent}%`,
-            backgroundColor:
-              progressPercent === 100
-                ? '#4caf50'
-                : progressPercent >= 50
-                ? '#f29e8e'
-                : '#6bb6ff',
-            boxShadow:
-              progressPercent === 100
-                ? '0 0 10px #4caf50'
-                : progressPercent >= 50
-                ? '0 0 8px #f29e8e'
-                : '0 0 6px #6bb6ff',
-          }}
-        />
+  <div
+    className="progress-bar"
+    style={{
+      width: `${progressPercent}%`,
+      backgroundColor: document.documentElement.classList.contains('dark')
+        ? '#f7b7a3'  
+        : '#f29e8e', 
+    }}
+  />
+</div>
+<p className="progress-text mb-6">{progressPercent}% complete</p>
+
+
+      <div className="goals-card-container">
+        {goals.map((goal, i) => (
+          <div key={i} className={`goal-card ${goal.done ? 'completed' : ''}`}>
+            <input
+              type="checkbox"
+              checked={goal.done}
+              onChange={() => handleToggleDone(i)}
+              className="goal-checkbox"
+            />
+            <input
+              type="text"
+              value={goal.title}
+              onChange={(e) => handleGoalChange(i, e.target.value)}
+              placeholder={`Goal ${i + 1}`}
+              className="goal-text-input"
+            />
+          </div>
+        ))}
       </div>
-      <p className="progress-text mb-6">{progressPercent}% complete</p>
 
-      <div className="yearly-wrapper">
-        <div className="goals-box space-y-3">
-          {goals.map((goal, i) => (
-            <div key={i} className="goal-row flex items-center">
-              <input
-                type="text"
-                value={goal.title}
-                onChange={(e) => handleGoalChange(i, e.target.value)}
-                placeholder={`Goal ${i + 1}`}
-                className="goal-input"
-                style={{ minWidth: '300px' }}
-              />
-              <input
-                type="checkbox"
-                checked={goal.done}
-                onChange={() => handleToggleDone(i)}
-                className="ml-3 w-5 h-5 accent-[#f29e8e]"
-              />
+      <div className="calendar-grid mt-8">
+        {months.map((month) => (
+          <div key={month} className="month-card" onClick={() => setSelectedMonth(month)}>
+            <h3>{month}</h3>
+            <div className="month-calendar">
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+                <span key={day}>{day}</span>
+              ))}
             </div>
-          ))}
-        </div>
-
-        <div className="calendar-grid mt-8">
-          {months.map((month) => (
-            <div key={month} className="month-card" onClick={() => setSelectedMonth(month)}>
-              <h3>{month}</h3>
-              <div className="month-calendar">
-                {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                  <span key={day}>{day}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {selectedMonth && (
-          <YearlyPopup
-            month={selectedMonth.slice(0, 3)}
-            onClose={() => setSelectedMonth(null)}
-          />
-        )}
+          </div>
+        ))}
       </div>
+
+      {selectedMonth && (
+        <YearlyPopup month={selectedMonth.slice(0, 3)} onClose={() => setSelectedMonth(null)} />
+      )}
     </>
   );
 }

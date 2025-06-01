@@ -160,19 +160,19 @@
 
 @media (max-width: 480px) {
   .auth-modal {
-    padding: 2rem 1rem;
-    border-radius: 1.5rem;
+    padding: 2rem 1.5rem;
+    border-radius: 2rem;
     margin: 0.5rem;
   }
 
   .auth-modal h2 {
-    font-size: 1.3rem;
+    font-size: 1rem;
     margin-bottom: 1.25rem;
   }
 
   .auth-input,
   .auth-modal input {
-    font-size: 16px;
+    font-size: 14px;
     padding: 0.875rem 1rem;
   }
 
@@ -189,7 +189,7 @@
   }
 
   .auth-modal h2 {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 }
 

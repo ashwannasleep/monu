@@ -1,8 +1,3 @@
-.dark .bucket-container {
-  background-color: #1E1E1E;
-  
-}
-
 .bucket-container {
   min-height: 100vh;
   background-color: #F7F5EF;
@@ -12,7 +7,6 @@
   max-width: 1024px;
   margin: 0 auto;
 }
-
 
 .bucket-header {
   text-align: center;
@@ -39,21 +33,20 @@
   font-size: 1.125rem;
 }
 
-
 .progress-container {
   margin-bottom: 2rem;
 }
 
 .progress-bar-container {
   width: 100%;
-  background-color: #e5e7eb;
+  background-color: #e5e7eb; /* light gray background */
   border-radius: 9999px;
   height: 12px;
   margin-bottom: 0.5rem;
 }
 
 .progress-bar {
-  background-color: #C7BFB2;
+  background-color: #f29e8e; /* soft coral fill */
   height: 12px;
   border-radius: 9999px;
   transition: width 0.5s ease-out;
@@ -64,7 +57,6 @@
   font-size: 0.875rem;
   color: #6b7280;
 }
-
 
 .bucket-input-section {
   background-color: white;
@@ -127,7 +119,6 @@
   background-color: #d1d5db;
   cursor: not-allowed;
 }
-
 
 .bucket-list {
   display: flex;
@@ -253,17 +244,16 @@
   color: #9ca3af;
 }
 
-
 @media (min-width: 640px) {
   .bucket-input-grid {
     grid-template-columns: 2fr 1fr 1fr;
     gap: 1rem;
   }
-  
+
   .bucket-input-url {
     grid-column: span 3;
   }
-  
+
   .bucket-add-btn {
     width: auto;
     align-self: flex-start;
@@ -274,15 +264,15 @@
   .bucket-container {
     padding: 3rem 2rem;
   }
-  
+
   .app-title {
     font-size: 3rem;
   }
-  
+
   .bucket-input-grid {
     grid-template-columns: 2fr 1fr 1fr 1.5fr;
   }
-  
+
   .bucket-input-url {
     grid-column: span 1;
   }
@@ -293,25 +283,24 @@
     grid-template-columns: 2fr 1fr 1fr 1.5fr;
     align-items: center;
   }
-  
+
   .bucket-input-section {
     display: flex;
     align-items: flex-end;
     gap: 1rem;
   }
-  
+
   .bucket-input-grid {
     flex: 1;
     margin-bottom: 0;
   }
-  
+
   .bucket-add-btn {
     width: auto;
     white-space: nowrap;
     flex-shrink: 0;
   }
 }
-
 
 .bucket-item:focus-within {
   outline: 2px solid #C7BFB2;
@@ -323,6 +312,7 @@
   outline-offset: 2px;
 }
 
+/* Dark mode section */
 .dark .bucket-container {
   background-color: #1e1e1e;
   color: #f0f0f0;
@@ -381,7 +371,7 @@
 }
 
 .dark .progress-bar {
-  background-color: #888888;
+  background-color: #f29e8e; 
 }
 
 .dark .delete-btn {

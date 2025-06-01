@@ -58,171 +58,6 @@ export const deleteBucketItem = /* GraphQL */ `
     }
   }
 `;
-export const createDailyTask = /* GraphQL */ `
-  mutation CreateDailyTask(
-    $input: CreateDailyTaskInput!
-    $condition: ModelDailyTaskConditionInput
-  ) {
-    createDailyTask(input: $input, condition: $condition) {
-      id
-      date
-      text
-      time
-      duration
-      order
-      done
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const updateDailyTask = /* GraphQL */ `
-  mutation UpdateDailyTask(
-    $input: UpdateDailyTaskInput!
-    $condition: ModelDailyTaskConditionInput
-  ) {
-    updateDailyTask(input: $input, condition: $condition) {
-      id
-      date
-      text
-      time
-      duration
-      order
-      done
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const deleteDailyTask = /* GraphQL */ `
-  mutation DeleteDailyTask(
-    $input: DeleteDailyTaskInput!
-    $condition: ModelDailyTaskConditionInput
-  ) {
-    deleteDailyTask(input: $input, condition: $condition) {
-      id
-      date
-      text
-      time
-      duration
-      order
-      done
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const createHabit = /* GraphQL */ `
-  mutation CreateHabit(
-    $input: CreateHabitInput!
-    $condition: ModelHabitConditionInput
-  ) {
-    createHabit(input: $input, condition: $condition) {
-      id
-      name
-      icon
-      mood
-      days
-      log
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const updateHabit = /* GraphQL */ `
-  mutation UpdateHabit(
-    $input: UpdateHabitInput!
-    $condition: ModelHabitConditionInput
-  ) {
-    updateHabit(input: $input, condition: $condition) {
-      id
-      name
-      icon
-      mood
-      days
-      log
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const deleteHabit = /* GraphQL */ `
-  mutation DeleteHabit(
-    $input: DeleteHabitInput!
-    $condition: ModelHabitConditionInput
-  ) {
-    deleteHabit(input: $input, condition: $condition) {
-      id
-      name
-      icon
-      mood
-      days
-      log
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const createFutureVision = /* GraphQL */ `
-  mutation CreateFutureVision(
-    $input: CreateFutureVisionInput!
-    $condition: ModelFutureVisionConditionInput
-  ) {
-    createFutureVision(input: $input, condition: $condition) {
-      id
-      ageTarget
-      goals
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const updateFutureVision = /* GraphQL */ `
-  mutation UpdateFutureVision(
-    $input: UpdateFutureVisionInput!
-    $condition: ModelFutureVisionConditionInput
-  ) {
-    updateFutureVision(input: $input, condition: $condition) {
-      id
-      ageTarget
-      goals
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const deleteFutureVision = /* GraphQL */ `
-  mutation DeleteFutureVision(
-    $input: DeleteFutureVisionInput!
-    $condition: ModelFutureVisionConditionInput
-  ) {
-    deleteFutureVision(input: $input, condition: $condition) {
-      id
-      ageTarget
-      goals
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
 export const createYearlyGoal = /* GraphQL */ `
   mutation CreateYearlyGoal(
     $input: CreateYearlyGoalInput!
@@ -321,6 +156,132 @@ export const deleteFutureGoal = /* GraphQL */ `
       category
       title
       done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const createDailyTask = /* GraphQL */ `
+  mutation CreateDailyTask(
+    $input: CreateDailyTaskInput!
+    $condition: ModelDailyTaskConditionInput
+  ) {
+    createDailyTask(input: $input, condition: $condition) {
+      id
+      date
+      text
+      time
+      duration
+      order
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const updateDailyTask = /* GraphQL */ `
+  mutation UpdateDailyTask(
+    $input: UpdateDailyTaskInput!
+    $condition: ModelDailyTaskConditionInput
+  ) {
+    updateDailyTask(input: $input, condition: $condition) {
+      id
+      date
+      text
+      time
+      duration
+      order
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const deleteDailyTask = /* GraphQL */ `
+  mutation DeleteDailyTask(
+    $input: DeleteDailyTaskInput!
+    $condition: ModelDailyTaskConditionInput
+  ) {
+    deleteDailyTask(input: $input, condition: $condition) {
+      id
+      date
+      text
+      time
+      duration
+      order
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const createHabit = /* GraphQL */ `
+  mutation CreateHabit(
+    $input: CreateHabitInput!
+    $condition: ModelHabitConditionInput
+  ) {
+    createHabit(input: $input, condition: $condition) {
+      id
+      name
+      icon
+      mood
+      days
+      description
+      time
+      plan
+      log
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const updateHabit = /* GraphQL */ `
+  mutation UpdateHabit(
+    $input: UpdateHabitInput!
+    $condition: ModelHabitConditionInput
+  ) {
+    updateHabit(input: $input, condition: $condition) {
+      id
+      name
+      icon
+      mood
+      days
+      description
+      time
+      plan
+      log
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const deleteHabit = /* GraphQL */ `
+  mutation DeleteHabit(
+    $input: DeleteHabitInput!
+    $condition: ModelHabitConditionInput
+  ) {
+    deleteHabit(input: $input, condition: $condition) {
+      id
+      name
+      icon
+      mood
+      days
+      description
+      time
+      plan
+      log
       createdAt
       updatedAt
       owner

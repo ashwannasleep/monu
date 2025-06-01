@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
-import LogoutButton from './LogoutButton'; 
+import LogoutButton from './LogoutButton';
 import ThemeToggle from './ThemeToggle';
-
-
 
 export default function Settings() {
   return (
@@ -14,7 +12,9 @@ export default function Settings() {
           className="no-underline text-inherit hover:opacity-80 transition cursor-pointer mb-10 block text-center"
         >
           <h1 className="text-4xl font-serif font-bold">MONU</h1>
-          <p className="mt-4 italic text-gray-600 text-center">Turn the dials, tune the moment</p>
+          <p className="mt-4 italic text-gray-600 text-center">
+            Turn the dials, tune the moment
+          </p>
         </Link>
 
         <div className="mb-8 text-center">
@@ -39,9 +39,24 @@ export default function Settings() {
         .policy-link:visited {
           color: #666;
         }
+        /* Remove hover background + opacity for ThemeToggle button */
+        button[aria-label='Toggle dark mode'] {
+          background: transparent !important;
+          border: none !important;
+        }
+        button[aria-label='Toggle dark mode']:hover {
+          background: transparent !important;
+          opacity: 1 !important;
+        }
       `}</style>
 
-      <p style={{ fontSize: "0.875rem", textAlign: "center", marginTop: "3rem" }}>
+      <p
+        style={{
+          fontSize: '0.875rem',
+          textAlign: 'center',
+          marginTop: '3rem',
+        }}
+      >
         <a
           href="https://ashwannasleep.github.io/monu-privacy/"
           target="_blank"

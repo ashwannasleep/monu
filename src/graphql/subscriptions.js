@@ -58,171 +58,6 @@ export const onDeleteBucketItem = /* GraphQL */ `
     }
   }
 `;
-export const onCreateDailyTask = /* GraphQL */ `
-  subscription OnCreateDailyTask(
-    $filter: ModelSubscriptionDailyTaskFilterInput
-    $owner: String
-  ) {
-    onCreateDailyTask(filter: $filter, owner: $owner) {
-      id
-      date
-      text
-      time
-      duration
-      order
-      done
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onUpdateDailyTask = /* GraphQL */ `
-  subscription OnUpdateDailyTask(
-    $filter: ModelSubscriptionDailyTaskFilterInput
-    $owner: String
-  ) {
-    onUpdateDailyTask(filter: $filter, owner: $owner) {
-      id
-      date
-      text
-      time
-      duration
-      order
-      done
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onDeleteDailyTask = /* GraphQL */ `
-  subscription OnDeleteDailyTask(
-    $filter: ModelSubscriptionDailyTaskFilterInput
-    $owner: String
-  ) {
-    onDeleteDailyTask(filter: $filter, owner: $owner) {
-      id
-      date
-      text
-      time
-      duration
-      order
-      done
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onCreateHabit = /* GraphQL */ `
-  subscription OnCreateHabit(
-    $filter: ModelSubscriptionHabitFilterInput
-    $owner: String
-  ) {
-    onCreateHabit(filter: $filter, owner: $owner) {
-      id
-      name
-      icon
-      mood
-      days
-      log
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onUpdateHabit = /* GraphQL */ `
-  subscription OnUpdateHabit(
-    $filter: ModelSubscriptionHabitFilterInput
-    $owner: String
-  ) {
-    onUpdateHabit(filter: $filter, owner: $owner) {
-      id
-      name
-      icon
-      mood
-      days
-      log
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onDeleteHabit = /* GraphQL */ `
-  subscription OnDeleteHabit(
-    $filter: ModelSubscriptionHabitFilterInput
-    $owner: String
-  ) {
-    onDeleteHabit(filter: $filter, owner: $owner) {
-      id
-      name
-      icon
-      mood
-      days
-      log
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onCreateFutureVision = /* GraphQL */ `
-  subscription OnCreateFutureVision(
-    $filter: ModelSubscriptionFutureVisionFilterInput
-    $owner: String
-  ) {
-    onCreateFutureVision(filter: $filter, owner: $owner) {
-      id
-      ageTarget
-      goals
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onUpdateFutureVision = /* GraphQL */ `
-  subscription OnUpdateFutureVision(
-    $filter: ModelSubscriptionFutureVisionFilterInput
-    $owner: String
-  ) {
-    onUpdateFutureVision(filter: $filter, owner: $owner) {
-      id
-      ageTarget
-      goals
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onDeleteFutureVision = /* GraphQL */ `
-  subscription OnDeleteFutureVision(
-    $filter: ModelSubscriptionFutureVisionFilterInput
-    $owner: String
-  ) {
-    onDeleteFutureVision(filter: $filter, owner: $owner) {
-      id
-      ageTarget
-      goals
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
 export const onCreateYearlyGoal = /* GraphQL */ `
   subscription OnCreateYearlyGoal(
     $filter: ModelSubscriptionYearlyGoalFilterInput
@@ -321,6 +156,132 @@ export const onDeleteFutureGoal = /* GraphQL */ `
       category
       title
       done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateDailyTask = /* GraphQL */ `
+  subscription OnCreateDailyTask(
+    $filter: ModelSubscriptionDailyTaskFilterInput
+    $owner: String
+  ) {
+    onCreateDailyTask(filter: $filter, owner: $owner) {
+      id
+      date
+      text
+      time
+      duration
+      order
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateDailyTask = /* GraphQL */ `
+  subscription OnUpdateDailyTask(
+    $filter: ModelSubscriptionDailyTaskFilterInput
+    $owner: String
+  ) {
+    onUpdateDailyTask(filter: $filter, owner: $owner) {
+      id
+      date
+      text
+      time
+      duration
+      order
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteDailyTask = /* GraphQL */ `
+  subscription OnDeleteDailyTask(
+    $filter: ModelSubscriptionDailyTaskFilterInput
+    $owner: String
+  ) {
+    onDeleteDailyTask(filter: $filter, owner: $owner) {
+      id
+      date
+      text
+      time
+      duration
+      order
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateHabit = /* GraphQL */ `
+  subscription OnCreateHabit(
+    $filter: ModelSubscriptionHabitFilterInput
+    $owner: String
+  ) {
+    onCreateHabit(filter: $filter, owner: $owner) {
+      id
+      name
+      icon
+      mood
+      days
+      description
+      time
+      plan
+      log
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateHabit = /* GraphQL */ `
+  subscription OnUpdateHabit(
+    $filter: ModelSubscriptionHabitFilterInput
+    $owner: String
+  ) {
+    onUpdateHabit(filter: $filter, owner: $owner) {
+      id
+      name
+      icon
+      mood
+      days
+      description
+      time
+      plan
+      log
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteHabit = /* GraphQL */ `
+  subscription OnDeleteHabit(
+    $filter: ModelSubscriptionHabitFilterInput
+    $owner: String
+  ) {
+    onDeleteHabit(filter: $filter, owner: $owner) {
+      id
+      name
+      icon
+      mood
+      days
+      description
+      time
+      plan
+      log
       createdAt
       updatedAt
       owner

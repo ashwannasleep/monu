@@ -18,12 +18,10 @@ export default function LandingPage() {
   const [showVerification, setShowVerification] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
 
-  // 🔧 FIX: Remove dark mode on landing page load
   useEffect(() => {
-    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.remove("dark");
   }, []);
 
-  // Check for existing session on component mount
   useEffect(() => {
     const checkExistingSession = async () => {
       try {
@@ -32,7 +30,7 @@ export default function LandingPage() {
           let displayName = safeGetItem("monu_name");
           if (!displayName) {
             try {
-              const { getCurrentUser, fetchUserAttributes } = await import('aws-amplify/auth');
+              const { getCurrentUser, fetchUserAttributes } = await import("aws-amplify/auth");
               const currentUser = await getCurrentUser();
               if (currentUser) {
                 const attributes = await fetchUserAttributes();
@@ -108,7 +106,7 @@ export default function LandingPage() {
           if (tokens) {
             let displayName = safeGetItem("monu_name");
             if (!displayName || displayName === username) {
-              const { getCurrentUser, fetchUserAttributes } = await import('aws-amplify/auth');
+              const { getCurrentUser, fetchUserAttributes } = await import("aws-amplify/auth");
               const currentUser = await getCurrentUser();
               if (currentUser) {
                 const attributes = await fetchUserAttributes();
@@ -158,6 +156,30 @@ export default function LandingPage() {
       // ignore
     }
   };
+
+  // 💥 Force modal scaling on small screens globally
+  useEffect(() => {
+    const applyForcedModalResize = () => {
+      const modals = document.querySelectorAll(".modal-content");
+      modals.forEach((modal) => {
+        if (window.innerWidth <= 480) {
+          modal.style.width = "90%";
+          modal.style.maxWidth = "300px";
+          modal.style.padding = "10px";
+          modal.style.transform = "scale(0.85)";
+        } else {
+          modal.style.width = "";
+          modal.style.maxWidth = "";
+          modal.style.padding = "";
+          modal.style.transform = "";
+        }
+      });
+    };
+
+    applyForcedModalResize();
+    window.addEventListener("resize", applyForcedModalResize);
+    return () => window.removeEventListener("resize", applyForcedModalResize);
+  }, [showAuthModal, showVerification]);
 
   return (
     <div className="landing-container">

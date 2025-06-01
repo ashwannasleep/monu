@@ -133,10 +133,7 @@ html.dark .modal-actions button:last-child {
 .delete-btn {
   background: #F29E8E;
   color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  cursor: pointer;
+  
 }
 
 html.dark .delete-btn {
@@ -254,4 +251,87 @@ html.dark .delete-btn {
     font-size: 0.6rem;
   }
 
+}
+
+
+/* Apply same layout on small screens, just smaller sizes */
+@media (max-width: 768px) {
+  .habit-modal {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .habit-modal h3 {
+    font-size: 1.3rem;
+  }
+
+  .habit-modal label {
+    font-size: 0.95rem;
+  }
+
+  .habit-modal input,
+  .habit-modal select,
+  .habit-modal textarea {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  .mood-options button,
+  .icon-options button {
+    font-size: 1.1rem;
+    padding: 0.4rem;
+  }
+
+  .modal-actions {
+    gap: 0.8rem;
+  }
+
+  .modal-actions button {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .habit-modal {
+    width: 95%;
+    padding: 1.2rem;
+  }
+
+  .habit-modal h3 {
+    font-size: 1.2rem;
+  }
+
+  .habit-modal label {
+    font-size: 0.9rem;
+  }
+
+  .habit-modal input,
+  .habit-modal select,
+  .habit-modal textarea {
+    font-size: 0.85rem;
+    padding: 0.45rem;
+  }
+
+  .mood-options,
+  .icon-options {
+    gap: 0.4rem;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .mood-options button,
+  .icon-options button {
+    font-size: 1rem;
+    padding: 0.35rem;
+  }
+
+  .modal-actions {
+    gap: 0.6rem;
+  }
+
+  .modal-actions button {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.9rem;
+  }
 }
