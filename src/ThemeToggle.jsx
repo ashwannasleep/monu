@@ -22,7 +22,9 @@ export default function ThemeToggle({ userId }) {
           variables: { id: userId },
         });
         const theme = res.data?.getUserSettings?.theme;
-        if (theme) {
+
+        // ✅ Only apply if it's different from what's already set
+        if (theme && theme !== local) {
           setDarkMode(theme === 'dark');
           document.documentElement.classList.toggle('dark', theme === 'dark');
           localStorage.setItem('theme', theme);

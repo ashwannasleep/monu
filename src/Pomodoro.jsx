@@ -14,21 +14,87 @@ export default function Pomodoro() {
   const [isRunning, setIsRunning] = useState(false);
   const [phase, setPhase] = useState('focus');
   const [showBreakChoice, setShowBreakChoice] = useState(false);
+
   const intervalRef = useRef(null);
   const audioRef = useRef(null);
-
-  useEffect(() => {
-    if (phase === 'focus') {
-      setCustomTime(modes[mode]);
-      setSecondsLeft(modes[mode] * 60);
-    }
-    pauseTimer();
-  }, [mode, phase]);
+  const restoringRef = useRef(false); // to avoid reset on restore
 
   const formatTime = (s) => {
     const m = Math.floor(s / 60);
     const sec = s % 60;
     return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+  };
+
+  const saveToLocalStorage = (updatedSeconds) => {
+    localStorage.setItem('monuPomodoro', JSON.stringify({
+      secondsLeft: updatedSeconds,
+      isRunning: true,
+      phase,
+      mode,
+      timestamp: Date.now(),
+    }));
+  };
+
+  const startTimer = () => {
+    if (intervalRef.current) return;
+
+    setIsRunning(true);
+
+  
+    if (audioRef.current.paused) {
+      audioRef.current.play().catch(err => {
+        console.warn('Audio autoplay blocked:', err);
+      });
+    }
+
+    intervalRef.current = setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+          setIsRunning(false);
+          localStorage.removeItem('monuPomodoro');
+          audioRef.current.pause();
+
+          if (phase === 'focus') {
+            setShowBreakChoice(true);
+          } else {
+            setPhase('focus');
+            setShowBreakChoice(false);
+          }
+
+          return 0;
+        }
+
+        const updated = prev - 1;
+        saveToLocalStorage(updated);
+        return updated;
+      });
+    }, 1000);
+  };
+
+  const pauseTimer = () => {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+    setIsRunning(false);
+    audioRef.current.pause();
+    localStorage.removeItem('monuPomodoro');
+  };
+
+  const resetTimer = () => {
+    pauseTimer();
+    const resetSeconds =
+      phase === 'focus' ? customTime * 60 : phase === 'shortBreak' ? 5 * 60 : 15 * 60;
+    setSecondsLeft(resetSeconds);
+    localStorage.removeItem('monuPomodoro');
+  };
+
+  const handleBreakChoice = (type) => {
+    setPhase(type);
+    const breakSeconds = type === 'shortBreak' ? 5 * 60 : 15 * 60;
+    setSecondsLeft(breakSeconds);
+    setShowBreakChoice(false);
+    startTimer();
   };
 
   const handleCustomTimeChange = (e) => {
@@ -42,65 +108,59 @@ export default function Pomodoro() {
     }
   };
 
-  const startTimer = () => {
-    if (intervalRef.current) return;
-    setIsRunning(true);
-    audioRef.current.play();
-    intervalRef.current = setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-          setIsRunning(false);
-          audioRef.current.pause();
-          if (phase === 'focus') {
-            setShowBreakChoice(true);
-          } else {
-            setPhase('focus');
-            setShowBreakChoice(false);
-          }
-          return 0;
+  // 🚀 Restore timer state
+  useEffect(() => {
+    const saved = localStorage.getItem('monuPomodoro');
+    if (saved) {
+      restoringRef.current = true;
+      const { secondsLeft, isRunning, mode, phase, timestamp } = JSON.parse(saved);
+      const elapsed = Math.floor((Date.now() - timestamp) / 1000);
+      const remaining = secondsLeft - elapsed;
+
+      if (remaining > 0) {
+        setMode(mode);
+        setPhase(phase);
+        setCustomTime(modes[mode]);
+        setSecondsLeft(remaining);
+        setShowBreakChoice(phase !== 'focus');
+
+        if (isRunning) {
+          setTimeout(() => {
+            startTimer();
+          }, 100); // delay to ensure refs are ready
         }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const pauseTimer = () => {
-    clearInterval(intervalRef.current);
-    intervalRef.current = null;
-    setIsRunning(false);
-    audioRef.current.pause();
-  };
-
-  const resetTimer = () => {
-    pauseTimer();
-    if (phase === 'focus') {
-      setSecondsLeft(customTime * 60);
-    } else {
-      setSecondsLeft(phase === 'shortBreak' ? 5 * 60 : 15 * 60);
+      } else {
+        localStorage.removeItem('monuPomodoro');
+      }
     }
-  };
+   
+  }, []);
 
-  const handleBreakChoice = (type) => {
-    setPhase(type);
-    setSecondsLeft(type === 'shortBreak' ? 5 * 60 : 15 * 60);
-    setShowBreakChoice(false);
-    startTimer();
-  };
+  useEffect(() => {
+    if (restoringRef.current) {
+      restoringRef.current = false;
+      return;
+    }
+
+    if (phase === 'focus') {
+      setCustomTime(modes[mode]);
+      setSecondsLeft(modes[mode] * 60);
+    }
+
+    pauseTimer();
+   
+  }, [mode, phase]);
 
   return (
     <>
       <div className="pomodoro-header overflow-hidden flex flex-col items-center max-h-screen justify-center">
-      <Link
-  to="/choose"
-  title="Back to menu"
-  className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
->
-  <h1 className="text-4xl font-serif font-bold mb-2">
-    MONU
-  </h1>
-</Link>
+        <Link
+          to="/choose"
+          title="Back to menu"
+          className="no-underline text-inherit hover:opacity-80 transition cursor-pointer"
+        >
+          <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
+        </Link>
         <p className="italic text-gray-600 text-center">Your rhythm of focus and rest 🍅</p>
       </div>
 

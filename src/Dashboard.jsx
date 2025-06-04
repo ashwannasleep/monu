@@ -7,7 +7,7 @@ import {
   listYearlyGoals,
   listFutureGoals
 } from './graphql/queries';
-import FocusCard from "./FocusCard"; 
+import FocusCard from "./FocusCard";
 import "./Dashboard.css";
 
 const client = generateClient();
@@ -28,10 +28,12 @@ export default function Dashboard() {
     setLoading(true);
     setError(null);
     try {
-      await fetchBucket();
-      await fetchDaily();
-      await fetchYearly();
-      await fetchFuture();
+      await Promise.all([
+        fetchBucket(),
+        fetchDaily(),
+        fetchYearly(),
+        fetchFuture(),
+      ]);
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('Failed to fetch data. Please try again.');
@@ -41,10 +43,19 @@ export default function Dashboard() {
 
   const fetchBucket = async () => {
     try {
-      const res = await client.graphql({ query: listBucketItems });
+      const res = await client.graphql({
+        query: listBucketItems,
+        variables: { limit: 50 },
+      });
       const items = res.data?.listBucketItems?.items || [];
-      const completed = items.filter(item => item.done).length;
-      setBucketProgress(items.length ? Math.round((completed / items.length) * 100) : 0);
+      
+      // Filter out deleted items for consistency
+      const activeItems = items.filter(item => !item._deleted);
+      const completed = activeItems.filter(item => {
+        return item.done === true || item.done === "true";
+      }).length;
+      
+      setBucketProgress(activeItems.length ? Math.round((completed / activeItems.length) * 100) : 0);
     } catch (err) {
       console.error('Error fetching bucket items:', err);
     }
@@ -52,38 +63,79 @@ export default function Dashboard() {
 
   const fetchDaily = async () => {
     try {
-      const res = await client.graphql({ query: listDailyTasks });
+      const res = await client.graphql({
+        query: listDailyTasks,
+        variables: { limit: 50 },
+      });
       const items = res.data?.listDailyTasks?.items || [];
       const today = new Date().toISOString().split("T")[0];
       const todayTasks = items.filter(task => task.date?.split("T")[0] === today && !task._deleted);
-      const completed = todayTasks.filter(task => task.done).length;
+      const completed = todayTasks.filter(task => {
+        return task.done === true || task.done === "true";
+      }).length;
+      
       setDailyProgress(todayTasks.length ? Math.round((completed / todayTasks.length) * 100) : 0);
     } catch (err) {
       console.error('Error fetching daily tasks:', err);
     }
   };
 
-   const fetchYearly = async () => {
-  try {
-    const res = await client.graphql({ query: listYearlyGoals });
-    const items = res.data?.listYearlyGoals?.items || [];
-    const completed = items.filter(goal => goal.done).length;
-    setYearlyProgress(items.length ? Math.round((completed / items.length) * 100) : 0);
-  } catch (err) {
-    console.error('Error fetching yearly goals:', err);
-  }
-};
+  const fetchYearly = async () => {
+    try {
+      const year = new Date().getFullYear();
+      const res = await client.graphql({
+        query: listYearlyGoals,
+        variables: { filter: { year: { eq: year } } },
+      });
+      const items = res.data?.listYearlyGoals?.items || [];
 
+      // Create the same 5-slot structure as YearlyOverview
+      const goals = [
+        { id: null, title: '', done: false, details: '', order: 0 },
+        { id: null, title: '', done: false, details: '', order: 1 },
+        { id: null, title: '', done: false, details: '', order: 2 },
+        { id: null, title: '', done: false, details: '', order: 3 },
+        { id: null, title: '', done: false, details: '', order: 4 },
+      ];
 
+      // Fill in the goals from database, just like YearlyOverview does
+      items.forEach(goal => {
+        if (goal.order < goals.length) {
+          goals[goal.order] = {
+            id: goal.id,
+            title: goal.title || '',
+            done: goal.done || false,
+            details: goal.details || '',
+            order: goal.order,
+          };
+        }
+      });
 
-
+      // Calculate progress exactly like YearlyOverview
+      const completed = goals.filter(g => g.done).length;
+      const progress = goals.length ? Math.round((completed / goals.length) * 100) : 0;
+      
+      setYearlyProgress(progress);
+    } catch (err) {
+      console.error('Error fetching yearly goals:', err);
+    }
+  };
 
   const fetchFuture = async () => {
     try {
-      const res = await client.graphql({ query: listFutureGoals });
+      const res = await client.graphql({
+        query: listFutureGoals,
+        variables: { limit: 50 },
+      });
       const items = res.data?.listFutureGoals?.items || [];
-      const completed = items.filter(goal => goal.done).length;
-      setFutureProgress(items.length ? Math.round((completed / items.length) * 100) : 0);
+      
+      // Filter out deleted items for consistency
+      const activeItems = items.filter(goal => !goal._deleted);
+      const completed = activeItems.filter(goal => {
+        return goal.done === true || goal.done === "true";
+      }).length;
+      
+      setFutureProgress(activeItems.length ? Math.round((completed / activeItems.length) * 100) : 0);
     } catch (err) {
       console.error('Error fetching future goals:', err);
     }
@@ -106,9 +158,15 @@ export default function Dashboard() {
           <h3>Bucket List</h3>
           <p>{bucketProgress}% complete</p>
           <div className="progress-bar">
-            {bucketProgress > 0 && (
-              <div className="progress-fill" style={{ width: `${bucketProgress}%` }} />
-            )}
+            <div 
+              className="progress-fill" 
+              style={{ 
+                width: `${bucketProgress}%`,
+                height: '100%',
+                backgroundColor: '#f29e8e',
+                borderRadius: '9999px'
+              }} 
+            />
           </div>
         </div>
 
@@ -116,9 +174,15 @@ export default function Dashboard() {
           <h3>Daily Plan</h3>
           <p>{dailyProgress}% complete</p>
           <div className="progress-bar">
-            {dailyProgress > 0 && (
-              <div className="progress-fill" style={{ width: `${dailyProgress}%` }} />
-            )}
+            <div 
+              className="progress-fill" 
+              style={{ 
+                width: `${dailyProgress}%`,
+                height: '100%',
+                backgroundColor: '#f29e8e',
+                borderRadius: '9999px'
+              }} 
+            />
           </div>
         </div>
 
@@ -126,14 +190,19 @@ export default function Dashboard() {
           <h3>Yearly Goals</h3>
           <p>{yearlyProgress}% complete</p>
           <div className="progress-bar">
-            {yearlyProgress > 0 && (
-              <div className="progress-fill" style={{ width: `${yearlyProgress}%` }} />
-            )}
+            <div 
+              className="progress-fill" 
+              style={{ 
+                width: `${yearlyProgress}%`,
+                height: '100%',
+                backgroundColor: '#f29e8e',
+                borderRadius: '9999px'
+              }} 
+            />
           </div>
         </div>
       </div>
 
-      {/* ➕ FocusCard block */}
       <div className="mt-10 w-full flex justify-center">
         <FocusCard />
       </div>

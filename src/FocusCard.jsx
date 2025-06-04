@@ -1,51 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { generateClient } from 'aws-amplify/api';
-import {
-  listFocusTasks,
-  listDailyTasks
-} from './graphql/queries';
-import {
-  createFocusTask,
-  updateFocusTask,
-  deleteFocusTask
-} from './graphql/mutations';
+import { listDailyTasks } from './graphql/queries';
 
 const client = generateClient();
 const today = new Date().toISOString().split('T')[0];
 
 export default function FocusCard() {
-  const [tasks, setTasks] = useState([]);
-  const [input, setInput] = useState('');
+  const [todayTasks, setTodayTasks] = useState([]);
   const [glimpse, setGlimpse] = useState([]);
   const [stats, setStats] = useState({ done: 0, total: 0 });
 
   useEffect(() => {
-    fetchFocusTasks();
-    fetchCalendarGlimpse();
+    fetchTodayFocus();
+    fetchComingUp();
     fetchStats();
   }, []);
 
-  const fetchFocusTasks = async () => {
-    try {
-      const res = await client.graphql({ query: listFocusTasks });
-      const items = res.data?.listFocusTasks?.items || [];
-      const todayTasks = items.filter(t => t.date === today);
-      setTasks(todayTasks);
-    } catch (err) {
-      console.error("Fetch focus tasks failed:", err);
-    }
-  };
-
-  const fetchCalendarGlimpse = async () => {
+  const fetchTodayFocus = async () => {
     try {
       const res = await client.graphql({ query: listDailyTasks });
       const items = res.data?.listDailyTasks?.items || [];
-      const upcoming = items.filter(t => t.date > today && !t.done)
+      const tasks = items.filter(t => t.date === today && !t._deleted);
+      setTodayTasks(tasks);
+    } catch (err) {
+      console.error("Failed to fetch today's tasks:", err);
+    }
+  };
+
+  const fetchComingUp = async () => {
+    try {
+      const res = await client.graphql({ query: listDailyTasks });
+      const items = res.data?.listDailyTasks?.items || [];
+      const upcoming = items
+        .filter(t => t.date > today && !t.done && !t._deleted)
         .sort((a, b) => a.date.localeCompare(b.date))
         .slice(0, 3);
       setGlimpse(upcoming);
     } catch (err) {
-      console.error("Calendar glimpse fetch failed:", err);
+      console.error("Failed to fetch coming up tasks:", err);
     }
   };
 
@@ -57,114 +49,106 @@ export default function FocusCard() {
         const date = new Date(t.date);
         const now = new Date();
         const diff = (now - date) / (1000 * 60 * 60 * 24);
-        return diff >= 0 && diff < 7;
+        return diff >= 0 && diff < 7 && !t._deleted;
       });
       const done = thisWeek.filter(t => t.done).length;
       setStats({ done, total: thisWeek.length });
     } catch (err) {
-      console.error("Stats fetch failed:", err);
+      console.error("Failed to fetch stats:", err);
     }
   };
 
-  const handleAdd = async () => {
-    if (!input.trim()) return;
-    try {
-      const res = await client.graphql({
-        query: createFocusTask,
-        variables: {
-          input: { title: input.trim(), date: today, done: false }
-        },
-      });
-      const newTask = res.data?.createFocusTask;
-      setTasks([...tasks, newTask]);
-      setInput('');
-    } catch (err) {
-      console.error("Create failed:", err);
-    }
-  };
-
-  const handleToggle = async (task) => {
-    try {
-      const res = await client.graphql({
-        query: updateFocusTask,
-        variables: {
-          input: {
-            id: task.id,
-            title: task.title,
-            date: task.date,
-            done: !task.done,
-          },
-        },
-      });
-      const updated = res.data?.updateFocusTask;
-      setTasks(tasks.map(t => t.id === updated.id ? updated : t));
-    } catch (err) {
-      console.error("Toggle failed:", err);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await client.graphql({
-        query: deleteFocusTask,
-        variables: { input: { id } },
-      });
-      setTasks(tasks.filter(t => t.id !== id));
-    } catch (err) {
-      console.error("Delete failed:", err);
-    }
-  };
+  const completionRate = stats.total > 0 ? Math.round((stats.done / stats.total) * 100) : 0;
+  const circumference = 2 * Math.PI * 40;
+  const strokeDasharray = circumference;
+  const strokeDashoffset = circumference - (completionRate / 100) * circumference;
 
   return (
-    <div className="dashboard-card mt-10 mb-10">
-      <h3>Today's Focus</h3>
+    <div className="dashboard-card w-full max-w-6xl">
+      <div className="flex gap-8">
+        
+        {/* Focus - Left */}
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold mb-4">Today's Focus</h3>
+          {todayTasks.length === 0 ? (
+            <p className="text-sm italic text-gray-500">No tasks for today.</p>
+          ) : (
+            <ul className="space-y-2">
+              {todayTasks.map(task => (
+                <li key={task.id} className="flex items-start">
+                  <span className="text-gray-400 mr-3 mt-1 flex-shrink-0">•</span>
+                  <span className={`text-sm leading-relaxed ${
+                    task.done 
+                      ? 'line-through text-gray-400' 
+                      : 'text-gray-800 dark:text-gray-100'
+                  }`}>
+                    {task.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
-      <ul className="list-disc list-inside text-gray-800 dark:text-gray-100 mb-2">
-        {tasks.map(task => (
-          <li key={task.id} className="flex justify-between items-center">
-            <span className={task.done ? 'line-through text-gray-400' : ''}>{task.title}</span>
-            <div className="flex gap-2">
-              <button onClick={() => handleToggle(task)} className="text-green-600 text-sm">✔️</button>
-              <button onClick={() => handleDelete(task.id)} className="text-red-500 text-sm">✕</button>
+        <div className="flex-1">
+          <h4 className="text-lg font-semibold mb-4">Coming Up</h4>
+          {glimpse.length === 0 ? (
+            <p className="text-sm italic text-gray-500">No upcoming tasks.</p>
+          ) : (
+            <ul className="space-y-2">
+              {glimpse.map(task => (
+                <li key={task.id} className="flex items-start">
+                  <span className="text-gray-400 mr-3 mt-1 flex-shrink-0">•</span>
+                  <span className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                    <span className="font-medium">{task.date}:</span> {task.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+       
+        <div className="flex-1">
+          <h4 className="text-lg font-semibold mb-4">Weekly Stats</h4>
+          <div className="flex flex-col items-center">
+            
+            <div className="relative w-24 h-24 mb-3">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  stroke="#e5e7eb"
+                  strokeWidth="8"
+                  fill="none"
+                  className="dark:stroke-gray-600"
+                />
+                
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  stroke="#f29e8e"
+                  strokeWidth="8"
+                  fill="none"
+                  strokeDasharray={strokeDasharray}
+                  strokeDashoffset={strokeDashoffset}
+                  strokeLinecap="round"
+                  className="transition-all duration-500 ease-out"
+                />
+              </svg>
+             
+            
             </div>
-          </li>
-        ))}
-      </ul>
-
-      <div className="flex items-center gap-2 mt-4">
-  <input
-    value={input}
-    onChange={e => setInput(e.target.value)}
-    placeholder="Add a focus task..."
-    className="flex-1 px-4 py-2 rounded-full border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-green-400 text-sm"
-  />
-  <button
-    onClick={handleAdd}
-    className="whitespace-nowrap px-4 py-2 text-sm rounded-full bg-green-500 text-white hover:bg-green-600"
-  >
-    Add
-  </button>
-</div>
-
-
-      <div className="mt-6">
-        <h4>Coming Up</h4>
-        {glimpse.length === 0 ? (
-          <p className="text-sm italic">No upcoming tasks.</p>
-        ) : (
-          <ul className="text-sm list-disc list-inside">
-            {glimpse.map(task => (
-              <li key={task.id}>{task.date}: {task.text}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      <div className="mt-6">
-        <h4>Weekly Stats</h4>
-        <p className="text-sm">
-          {stats.done} of {stats.total} daily tasks completed this week
-        </p>
+            
+            <p className="text-sm text-gray-600 dark:text-gray-300 text-center">
+              {stats.done} of {stats.total} daily tasks completed this week
+            </p>
+          </div>
+        </div>
+        
       </div>
     </div>
   );
