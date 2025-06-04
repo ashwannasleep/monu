@@ -3,137 +3,130 @@ import './YearlyOverview.css';
 import YearlyPopup from './YearlyPopup';
 import { Link } from 'react-router-dom';
 import { generateClient } from 'aws-amplify/api';
-import { createYearlyGoal, updateYearlyGoal } from './graphql/mutations';
 import { listYearlyGoals } from './graphql/queries';
+import { createYearlyGoal, updateYearlyGoal } from './graphql/mutations';
 
 const client = generateClient();
 
 export default function YearlyOverview() {
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [goals, setGoals] = useState([
-    { title: '', done: false },
-    { title: '', done: false },
-    { title: '', done: false },
-    { title: '', done: false },
-    { title: '', done: false },
+    { id: null, title: '', done: false, details: '', order: 0 },
+    { id: null, title: '', done: false, details: '', order: 1 },
+    { id: null, title: '', done: false, details: '', order: 2 },
+    { id: null, title: '', done: false, details: '', order: 3 },
+    { id: null, title: '', done: false, details: '', order: 4 },
   ]);
-  const [goalIds, setGoalIds] = useState([null, null, null, null, null]);
-  const year = new Date().getFullYear();
 
-  const completedCount = goals.filter(g => g.done).length;
-  const progressPercent = Math.min(completedCount * 20, 100);
+  const year = new Date().getFullYear();
+  const completed = goals.filter(g => g.done).length;
+  const progress = goals.length ? Math.round((completed / goals.length) * 100) : 0;
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
   useEffect(() => {
-    fetchGoals();
+    fetchGoalsFromAWS();
   }, []);
 
-  const fetchGoals = async () => {
+  const fetchGoalsFromAWS = async () => {
     try {
-      const result = await client.graphql({
+      const res = await client.graphql({
         query: listYearlyGoals,
         variables: { filter: { year: { eq: year } } },
       });
-      const items = result.data.listYearlyGoals.items;
-      const updatedGoals = [...goals];
-      const updatedIds = [...goalIds];
+      const items = res.data?.listYearlyGoals?.items || [];
 
-      items.forEach(item => {
-        updatedGoals[item.index] = { title: item.title, done: item.done || false };
-        updatedIds[item.index] = item.id;
+      const newGoals = [...goals];
+      items.forEach(goal => {
+        if (goal.order < newGoals.length) {
+          newGoals[goal.order] = {
+            id: goal.id,
+            title: goal.title || '',
+            done: goal.done || false,
+            details: goal.details || '',
+            order: goal.order,
+          };
+        }
       });
 
-      setGoals(updatedGoals);
-      setGoalIds(updatedIds);
+      setGoals(newGoals);
     } catch (err) {
-      console.error('Failed to load yearly goals:', err);
+      console.error('❌ Failed to fetch goals:', err);
     }
   };
 
-  const handleGoalChange = async (index, value) => {
-    const updated = [...goals];
-    updated[index].title = value;
-    setGoals(updated);
-
+  const saveGoal = async (goal, index) => {
     const input = {
       year,
-      index,
-      title: value,
-      done: updated[index].done,
+      title: goal.title,
+      done: goal.done,
+      details: goal.details,
+      order: index,
     };
 
     try {
-      if (goalIds[index]) {
+      if (goal.id) {
         await client.graphql({
           query: updateYearlyGoal,
-          variables: { input: { id: goalIds[index], ...input } },
+          variables: { input: { ...input, id: goal.id } },
         });
       } else {
         const result = await client.graphql({
           query: createYearlyGoal,
           variables: { input },
         });
-        const newId = result.data.createYearlyGoal.id;
-        const newIds = [...goalIds];
-        newIds[index] = newId;
-        setGoalIds(newIds);
+        const newId = result.data?.createYearlyGoal?.id;
+        setGoals(prev => {
+          const updated = [...prev];
+          updated[index].id = newId;
+          return updated;
+        });
       }
     } catch (err) {
-      console.error('Failed to save yearly goal:', err);
+      console.error('❌ Failed to save goal:', err);
     }
   };
 
-  const handleToggleDone = async (index) => {
+  const handleToggle = (index) => {
     const updated = [...goals];
     updated[index].done = !updated[index].done;
     setGoals(updated);
+    saveGoal(updated[index], index);
+  };
 
-    if (!goalIds[index]) return;
-
-    const input = {
-      id: goalIds[index],
-      year,
-      index,
-      title: updated[index].title,
-      done: updated[index].done,
-    };
-
-    try {
-      await client.graphql({
-        query: updateYearlyGoal,
-        variables: { input },
-      });
-    } catch (err) {
-      console.error('Failed to update goal status:', err);
-    }
+  const handleTitleChange = (index, newTitle) => {
+    const updated = [...goals];
+    updated[index].title = newTitle;
+    setGoals(updated);
+    saveGoal(updated[index], index);
   };
 
   return (
     <>
       <div className="yearly-header">
-        <Link to="/choose" title="Back to menu" className="no-underline text-inherit hover:opacity-80">
+        <Link to="/choose" className="no-underline text-inherit hover:opacity-80">
           <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
         </Link>
-        <p className="italic text-gray-600 dark:text-gray-300 text-center">Plan your year with intention ✦</p>
+        <p className="italic text-gray-600 dark:text-gray-300 text-center">
+          Plan your year with intention ✦
+        </p>
       </div>
 
       <div className="progress-bar-container mt-6 mb-4">
-  <div
-    className="progress-bar"
-    style={{
-      width: `${progressPercent}%`,
-      backgroundColor: document.documentElement.classList.contains('dark')
-        ? '#f7b7a3'  
-        : '#f29e8e', 
-    }}
-  />
-</div>
-<p className="progress-text mb-6">{progressPercent}% complete</p>
-
+        <div
+          className="progress-bar"
+          style={{
+            width: `${progress}%`,
+            backgroundColor: document.documentElement.classList.contains('dark')
+              ? '#f7b7a3'
+              : '#f29e8e',
+          }}
+        />
+      </div>
+      <p className="progress-text mb-6">{progress}% complete</p>
 
       <div className="goals-card-container">
         {goals.map((goal, i) => (
@@ -141,14 +134,14 @@ export default function YearlyOverview() {
             <input
               type="checkbox"
               checked={goal.done}
-              onChange={() => handleToggleDone(i)}
+              onChange={() => handleToggle(i)}
               className="goal-checkbox"
             />
             <input
               type="text"
               value={goal.title}
-              onChange={(e) => handleGoalChange(i, e.target.value)}
               placeholder={`Goal ${i + 1}`}
+              onChange={(e) => handleTitleChange(i, e.target.value)}
               className="goal-text-input"
             />
           </div>
@@ -156,12 +149,12 @@ export default function YearlyOverview() {
       </div>
 
       <div className="calendar-grid mt-8">
-        {months.map((month) => (
+        {months.map(month => (
           <div key={month} className="month-card" onClick={() => setSelectedMonth(month)}>
             <h3>{month}</h3>
             <div className="month-calendar">
-              {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                <span key={day}>{day}</span>
+              {[...Array(31).keys()].map((_, i) => (
+                <span key={i + 1}>{i + 1}</span>
               ))}
             </div>
           </div>
@@ -169,7 +162,10 @@ export default function YearlyOverview() {
       </div>
 
       {selectedMonth && (
-        <YearlyPopup month={selectedMonth.slice(0, 3)} onClose={() => setSelectedMonth(null)} />
+        <YearlyPopup
+          month={selectedMonth.slice(0, 3)}
+          onClose={() => setSelectedMonth(null)}
+        />
       )}
     </>
   );

@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './YearlyPopup.css';
-import { safeSetItem, safeGetItem } from './safeStorage'; 
+import { generateClient } from 'aws-amplify/api';
+import {
+  listYearlyPopupTasks,
+} from './graphql/queries';
+import {
+  createYearlyPopupTask,
+  deleteYearlyPopupTask,
+  updateYearlyPopupTask
+} from './graphql/mutations';
+
+const client = generateClient();
 
 export default function YearlyPopup({ month, onClose }) {
   const [tasks, setTasks] = useState({ toDo: [], done: [] });
@@ -15,13 +25,23 @@ export default function YearlyPopup({ month, onClose }) {
   ].indexOf(month);
 
   useEffect(() => {
-    const saved = JSON.parse(safeGetItem(`monu_tasks_${month}`)) || null; 
-    if (saved) setTasks(saved);
-  }, [month]);
+    const fetchTasksFromAWS = async () => {
+      try {
+        const result = await client.graphql({
+          query: listYearlyPopupTasks,
+          variables: { filter: { month: { eq: month } } },
+        });
+        const items = result.data.listYearlyPopupTasks.items;
+        const toDo = items.filter(item => !item.done);
+        const done = items.filter(item => item.done);
+        setTasks({ toDo, done });
+      } catch (err) {
+        console.error('Failed to fetch from AWS:', err);
+      }
+    };
 
-  useEffect(() => {
-    safeSetItem(`monu_tasks_${month}`, JSON.stringify(tasks)); 
-  }, [tasks, month]);
+    fetchTasksFromAWS();
+  }, [month]);
 
   const handleCalendarClick = (day) => {
     const paddedMonth = String(monthIndex + 1).padStart(2, '0');
@@ -30,25 +50,64 @@ export default function YearlyPopup({ month, onClose }) {
     setSelectedDate(formatted);
   };
 
-  const addTask = () => {
+  const addTask = async () => {
     if (!newTask.trim()) return;
-    const task = `${newTask}${selectedDate ? ` (${selectedDate}${selectedTime ? ` ${selectedTime}` : ''})` : ''}`;
-    setTasks({ ...tasks, toDo: [...tasks.toDo, task] });
-    setNewTask('');
-    setSelectedDate('');
-    setSelectedTime('');
+
+    try {
+      const res = await client.graphql({
+        query: createYearlyPopupTask,
+        variables: {
+          input: {
+            month,
+            title: newTask,
+            date: selectedDate || null,
+            time: selectedTime || null,
+            done: false,
+          },
+        },
+      });
+      const savedTask = res.data.createYearlyPopupTask;
+      setTasks(prev => ({ ...prev, toDo: [...prev.toDo, savedTask] }));
+      setNewTask('');
+      setSelectedDate('');
+      setSelectedTime('');
+    } catch (err) {
+      console.error('Failed to add task to AWS:', err);
+    }
   };
 
-  const completeTask = (i) => {
-    const updatedToDo = [...tasks.toDo];
-    const item = updatedToDo.splice(i, 1)[0];
-    setTasks({ toDo: updatedToDo, done: [...tasks.done, item] });
+  const completeTask = async (i) => {
+    const task = tasks.toDo[i];
+    try {
+      await client.graphql({
+        query: updateYearlyPopupTask,
+        variables: { input: { id: task.id, done: true } },
+      });
+      setTasks(prev => {
+        const newToDo = [...prev.toDo];
+        newToDo.splice(i, 1);
+        return { toDo: newToDo, done: [...prev.done, { ...task, done: true }] };
+      });
+    } catch (err) {
+      console.error('Failed to mark task done:', err);
+    }
   };
 
-  const deleteTask = (i, type) => {
-    const updated = [...tasks[type]];
-    updated.splice(i, 1);
-    setTasks({ ...tasks, [type]: updated });
+  const deleteTask = async (i, type) => {
+    const task = tasks[type][i];
+    try {
+      await client.graphql({
+        query: deleteYearlyPopupTask,
+        variables: { input: { id: task.id } },
+      });
+      setTasks(prev => {
+        const updated = [...prev[type]];
+        updated.splice(i, 1);
+        return { ...prev, [type]: updated };
+      });
+    } catch (err) {
+      console.error('Failed to delete task:', err);
+    }
   };
 
   const renderMiniCalendar = () => {
@@ -120,8 +179,8 @@ export default function YearlyPopup({ month, onClose }) {
             <h3>To Do</h3>
             <ul>
               {tasks.toDo.map((task, i) => (
-                <li key={i}>
-                  <span>{task}</span>
+                <li key={task.id}>
+                  <span>{task.title}</span>
                   <div className="btns">
                     <button onClick={() => completeTask(i)}>✔</button>
                     <button onClick={() => deleteTask(i, 'toDo')}>✕</button>
@@ -135,8 +194,8 @@ export default function YearlyPopup({ month, onClose }) {
             <h3>Completed</h3>
             <ul>
               {tasks.done.map((task, i) => (
-                <li key={i}>
-                  <span>{task}</span>
+                <li key={task.id}>
+                  <span>{task.title}</span>
                   <button onClick={() => deleteTask(i, 'done')}>✕</button>
                 </li>
               ))}

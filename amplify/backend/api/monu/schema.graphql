@@ -1,4 +1,7 @@
-type BucketItem @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read] }]) {
+type BucketItem @model @auth(rules: [
+  { allow: owner },
+  { allow: public, operations: [create, update, delete, read] }
+]) {
   id: ID!
   text: String!
   category: String
@@ -7,21 +10,18 @@ type BucketItem @model @auth(rules: [{ allow: owner }, { allow: public, operatio
   done: Boolean
 }
 
-type YearlyGoal @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read] }]) {
+type YearlyGoal @model
+@auth(rules: [
+  { allow: owner },
+  { allow: public, operations: [create, update, delete, read] }
+]) {
   id: ID!
   year: Int!
   title: String!
   details: String
-  completed: Boolean
-}
-
-type FutureGoal @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read] }]) {
-  id: ID!
-  category: String!
-  title: String!
+  order: Int
   done: Boolean
 }
-
 
 type DailyTask @model
 @auth(rules: [
@@ -53,6 +53,54 @@ type Habit @model
   log: AWSJSON
 }
 
+type FutureGoal @model 
+@auth(rules: [{ allow: owner }, { allow: public, operations: [create, update, delete, read] }]) {
+  id: ID!
+  category: String!
+  title: String!
+  done: Boolean
+}
+
+type YearlyPopupTask @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read, create, update, delete] }]) {
+  id: ID!
+  month: String!
+  title: String!
+  date: AWSDate
+  time: AWSTime
+  done: Boolean
+}
+
+type FocusTask @model @auth(rules: [
+  { allow: owner },
+  { allow: public, operations: [read, create, update, delete] }
+]) {
+  id: ID!
+  title: String!
+  date: AWSDate
+  done: Boolean
+}
+
+type MonthlyEvent @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  title: String!
+  start: AWSDateTime!
+  end: AWSDateTime!
+}
+
+type GoogleAuth @model 
+@auth(rules: [
+  { allow: owner },
+  { allow: public, operations: [create, update, delete, read] }
+]) {
+  id: ID!
+  token: String!
+}
 
 
+type UserSettings @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  googleToken: String
+  isSynced: Boolean
+  theme: String
+}
 

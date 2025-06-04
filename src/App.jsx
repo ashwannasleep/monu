@@ -19,6 +19,7 @@ import UserGuide       from './UserGuide';
 import SettingsPage    from './SettingsPage';
 import ScrollToTop     from './ScrollToTop';
 import Dashboard from './Dashboard';
+import FocusCard from './FocusCard';
 
 Amplify.configure({
   ...awsExports,
@@ -64,6 +65,7 @@ export default function App() {
         <Route path="/user-guide"       element={<UserGuide />} />
         <Route path="/settings"         element={<SettingsPage />} />
         <Route path="/dashboard"        element={<Dashboard />} />
+        <Route path="/focuscard"        element={<FocusCard />} />
       </Routes>
     </>
   );

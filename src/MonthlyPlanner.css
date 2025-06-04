@@ -324,3 +324,16 @@ html.dark .rbc-today {
   border-radius: 4px;
   font-family: 'Georgia', serif;
 }
+.google-sync-btn {
+  background-color: #4f46e5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.google-sync-btn:hover {
+  background-color: #4338ca;
+}

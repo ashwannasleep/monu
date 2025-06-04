@@ -68,7 +68,8 @@ export const onCreateYearlyGoal = /* GraphQL */ `
       year
       title
       details
-      completed
+      order
+      done
       createdAt
       updatedAt
       owner
@@ -86,7 +87,8 @@ export const onUpdateYearlyGoal = /* GraphQL */ `
       year
       title
       details
-      completed
+      order
+      done
       createdAt
       updatedAt
       owner
@@ -104,57 +106,7 @@ export const onDeleteYearlyGoal = /* GraphQL */ `
       year
       title
       details
-      completed
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onCreateFutureGoal = /* GraphQL */ `
-  subscription OnCreateFutureGoal(
-    $filter: ModelSubscriptionFutureGoalFilterInput
-    $owner: String
-  ) {
-    onCreateFutureGoal(filter: $filter, owner: $owner) {
-      id
-      category
-      title
-      done
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onUpdateFutureGoal = /* GraphQL */ `
-  subscription OnUpdateFutureGoal(
-    $filter: ModelSubscriptionFutureGoalFilterInput
-    $owner: String
-  ) {
-    onUpdateFutureGoal(filter: $filter, owner: $owner) {
-      id
-      category
-      title
-      done
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onDeleteFutureGoal = /* GraphQL */ `
-  subscription OnDeleteFutureGoal(
-    $filter: ModelSubscriptionFutureGoalFilterInput
-    $owner: String
-  ) {
-    onDeleteFutureGoal(filter: $filter, owner: $owner) {
-      id
-      category
-      title
+      order
       done
       createdAt
       updatedAt
@@ -282,6 +234,309 @@ export const onDeleteHabit = /* GraphQL */ `
       time
       plan
       log
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateFutureGoal = /* GraphQL */ `
+  subscription OnCreateFutureGoal(
+    $filter: ModelSubscriptionFutureGoalFilterInput
+    $owner: String
+  ) {
+    onCreateFutureGoal(filter: $filter, owner: $owner) {
+      id
+      category
+      title
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateFutureGoal = /* GraphQL */ `
+  subscription OnUpdateFutureGoal(
+    $filter: ModelSubscriptionFutureGoalFilterInput
+    $owner: String
+  ) {
+    onUpdateFutureGoal(filter: $filter, owner: $owner) {
+      id
+      category
+      title
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteFutureGoal = /* GraphQL */ `
+  subscription OnDeleteFutureGoal(
+    $filter: ModelSubscriptionFutureGoalFilterInput
+    $owner: String
+  ) {
+    onDeleteFutureGoal(filter: $filter, owner: $owner) {
+      id
+      category
+      title
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateYearlyPopupTask = /* GraphQL */ `
+  subscription OnCreateYearlyPopupTask(
+    $filter: ModelSubscriptionYearlyPopupTaskFilterInput
+    $owner: String
+  ) {
+    onCreateYearlyPopupTask(filter: $filter, owner: $owner) {
+      id
+      month
+      title
+      date
+      time
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateYearlyPopupTask = /* GraphQL */ `
+  subscription OnUpdateYearlyPopupTask(
+    $filter: ModelSubscriptionYearlyPopupTaskFilterInput
+    $owner: String
+  ) {
+    onUpdateYearlyPopupTask(filter: $filter, owner: $owner) {
+      id
+      month
+      title
+      date
+      time
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteYearlyPopupTask = /* GraphQL */ `
+  subscription OnDeleteYearlyPopupTask(
+    $filter: ModelSubscriptionYearlyPopupTaskFilterInput
+    $owner: String
+  ) {
+    onDeleteYearlyPopupTask(filter: $filter, owner: $owner) {
+      id
+      month
+      title
+      date
+      time
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateFocusTask = /* GraphQL */ `
+  subscription OnCreateFocusTask(
+    $filter: ModelSubscriptionFocusTaskFilterInput
+    $owner: String
+  ) {
+    onCreateFocusTask(filter: $filter, owner: $owner) {
+      id
+      title
+      date
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateFocusTask = /* GraphQL */ `
+  subscription OnUpdateFocusTask(
+    $filter: ModelSubscriptionFocusTaskFilterInput
+    $owner: String
+  ) {
+    onUpdateFocusTask(filter: $filter, owner: $owner) {
+      id
+      title
+      date
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteFocusTask = /* GraphQL */ `
+  subscription OnDeleteFocusTask(
+    $filter: ModelSubscriptionFocusTaskFilterInput
+    $owner: String
+  ) {
+    onDeleteFocusTask(filter: $filter, owner: $owner) {
+      id
+      title
+      date
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateMonthlyEvent = /* GraphQL */ `
+  subscription OnCreateMonthlyEvent(
+    $filter: ModelSubscriptionMonthlyEventFilterInput
+    $owner: String
+  ) {
+    onCreateMonthlyEvent(filter: $filter, owner: $owner) {
+      id
+      title
+      start
+      end
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateMonthlyEvent = /* GraphQL */ `
+  subscription OnUpdateMonthlyEvent(
+    $filter: ModelSubscriptionMonthlyEventFilterInput
+    $owner: String
+  ) {
+    onUpdateMonthlyEvent(filter: $filter, owner: $owner) {
+      id
+      title
+      start
+      end
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteMonthlyEvent = /* GraphQL */ `
+  subscription OnDeleteMonthlyEvent(
+    $filter: ModelSubscriptionMonthlyEventFilterInput
+    $owner: String
+  ) {
+    onDeleteMonthlyEvent(filter: $filter, owner: $owner) {
+      id
+      title
+      start
+      end
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateGoogleAuth = /* GraphQL */ `
+  subscription OnCreateGoogleAuth(
+    $filter: ModelSubscriptionGoogleAuthFilterInput
+    $owner: String
+  ) {
+    onCreateGoogleAuth(filter: $filter, owner: $owner) {
+      id
+      token
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateGoogleAuth = /* GraphQL */ `
+  subscription OnUpdateGoogleAuth(
+    $filter: ModelSubscriptionGoogleAuthFilterInput
+    $owner: String
+  ) {
+    onUpdateGoogleAuth(filter: $filter, owner: $owner) {
+      id
+      token
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteGoogleAuth = /* GraphQL */ `
+  subscription OnDeleteGoogleAuth(
+    $filter: ModelSubscriptionGoogleAuthFilterInput
+    $owner: String
+  ) {
+    onDeleteGoogleAuth(filter: $filter, owner: $owner) {
+      id
+      token
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateUserSettings = /* GraphQL */ `
+  subscription OnCreateUserSettings(
+    $filter: ModelSubscriptionUserSettingsFilterInput
+    $owner: String
+  ) {
+    onCreateUserSettings(filter: $filter, owner: $owner) {
+      id
+      googleToken
+      isSynced
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateUserSettings = /* GraphQL */ `
+  subscription OnUpdateUserSettings(
+    $filter: ModelSubscriptionUserSettingsFilterInput
+    $owner: String
+  ) {
+    onUpdateUserSettings(filter: $filter, owner: $owner) {
+      id
+      googleToken
+      isSynced
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteUserSettings = /* GraphQL */ `
+  subscription OnDeleteUserSettings(
+    $filter: ModelSubscriptionUserSettingsFilterInput
+    $owner: String
+  ) {
+    onDeleteUserSettings(filter: $filter, owner: $owner) {
+      id
+      googleToken
+      isSynced
       createdAt
       updatedAt
       owner

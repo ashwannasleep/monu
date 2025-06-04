@@ -48,7 +48,8 @@ export const getYearlyGoal = /* GraphQL */ `
       year
       title
       details
-      completed
+      order
+      done
       createdAt
       updatedAt
       owner
@@ -68,42 +69,7 @@ export const listYearlyGoals = /* GraphQL */ `
         year
         title
         details
-        completed
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getFutureGoal = /* GraphQL */ `
-  query GetFutureGoal($id: ID!) {
-    getFutureGoal(id: $id) {
-      id
-      category
-      title
-      done
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const listFutureGoals = /* GraphQL */ `
-  query ListFutureGoals(
-    $filter: ModelFutureGoalFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listFutureGoals(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        category
-        title
+        order
         done
         createdAt
         updatedAt
@@ -193,6 +159,224 @@ export const listHabits = /* GraphQL */ `
         time
         plan
         log
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getFutureGoal = /* GraphQL */ `
+  query GetFutureGoal($id: ID!) {
+    getFutureGoal(id: $id) {
+      id
+      category
+      title
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listFutureGoals = /* GraphQL */ `
+  query ListFutureGoals(
+    $filter: ModelFutureGoalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFutureGoals(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        category
+        title
+        done
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getYearlyPopupTask = /* GraphQL */ `
+  query GetYearlyPopupTask($id: ID!) {
+    getYearlyPopupTask(id: $id) {
+      id
+      month
+      title
+      date
+      time
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listYearlyPopupTasks = /* GraphQL */ `
+  query ListYearlyPopupTasks(
+    $filter: ModelYearlyPopupTaskFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listYearlyPopupTasks(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        month
+        title
+        date
+        time
+        done
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getFocusTask = /* GraphQL */ `
+  query GetFocusTask($id: ID!) {
+    getFocusTask(id: $id) {
+      id
+      title
+      date
+      done
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listFocusTasks = /* GraphQL */ `
+  query ListFocusTasks(
+    $filter: ModelFocusTaskFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFocusTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        title
+        date
+        done
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getMonthlyEvent = /* GraphQL */ `
+  query GetMonthlyEvent($id: ID!) {
+    getMonthlyEvent(id: $id) {
+      id
+      title
+      start
+      end
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listMonthlyEvents = /* GraphQL */ `
+  query ListMonthlyEvents(
+    $filter: ModelMonthlyEventFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMonthlyEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        title
+        start
+        end
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getGoogleAuth = /* GraphQL */ `
+  query GetGoogleAuth($id: ID!) {
+    getGoogleAuth(id: $id) {
+      id
+      token
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listGoogleAuths = /* GraphQL */ `
+  query ListGoogleAuths(
+    $filter: ModelGoogleAuthFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGoogleAuths(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        token
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getUserSettings = /* GraphQL */ `
+  query GetUserSettings($id: ID!) {
+    getUserSettings(id: $id) {
+      id
+      googleToken
+      isSynced
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listUserSettings = /* GraphQL */ `
+  query ListUserSettings(
+    $filter: ModelUserSettingsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserSettings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        googleToken
+        isSynced
         createdAt
         updatedAt
         owner

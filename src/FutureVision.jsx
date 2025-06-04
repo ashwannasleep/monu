@@ -18,12 +18,14 @@ export default function FutureVision() {
     career: [],
     finance: []
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchGoals();
   }, []);
 
   const fetchGoals = async () => {
+    setLoading(true);
     try {
       const result = await client.graphql({ query: listFutureGoals });
       const items = result.data.listFutureGoals.items;
@@ -40,30 +42,29 @@ export default function FutureVision() {
 
       items.forEach(item => {
         if (organized[item.category]) {
-          organized[item.category].push({
-            id: item.id,
-            text: item.text
-          });
+          organized[item.category].push(item);
         }
       });
 
       setGoals(organized);
     } catch (err) {
       console.error('Failed to load future goals:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleChange = async (category, index, value) => {
     const updated = { ...goals };
-    updated[category][index].text = value;
+    const item = updated[category][index];
+    item.title = value;
     setGoals(updated);
 
-    const item = updated[category][index];
     if (item.id) {
       try {
         await client.graphql({
           query: updateFutureGoal,
-          variables: { input: { id: item.id, text: value } }
+          variables: { input: { id: item.id, title: value } }
         });
       } catch (err) {
         console.error('Failed to update goal:', err);
@@ -72,17 +73,17 @@ export default function FutureVision() {
   };
 
   const handleAddLine = async (category) => {
-    const updated = { ...goals };
-    const newItem = { text: '' };
-    updated[category].push(newItem);
-    setGoals(updated);
-
     try {
       const result = await client.graphql({
         query: createFutureGoal,
-        variables: { input: { category, text: '' } }
+        variables: { input: { category, title: '', done: false } }
       });
-      updated[category][updated[category].length - 1].id = result.data.createFutureGoal.id;
+      const newItem = result.data.createFutureGoal;
+
+      setGoals(prev => ({
+        ...prev,
+        [category]: [...prev[category], newItem]
+      }));
     } catch (err) {
       console.error('Failed to add future goal:', err);
     }
@@ -90,20 +91,21 @@ export default function FutureVision() {
 
   const handleDelete = async (category, index) => {
     const item = goals[category][index];
-    if (item.id) {
-      try {
-        await client.graphql({
-          query: deleteFutureGoal,
-          variables: { input: { id: item.id } }
-        });
-      } catch (err) {
-        console.error('Failed to delete future goal:', err);
-      }
-    }
+    if (!item.id) return;
 
-    const updated = { ...goals };
-    updated[category].splice(index, 1);
-    setGoals(updated);
+    try {
+      await client.graphql({
+        query: deleteFutureGoal,
+        variables: { input: { id: item.id } }
+      });
+      setGoals(prev => {
+        const updated = [...prev[category]];
+        updated.splice(index, 1);
+        return { ...prev, [category]: updated };
+      });
+    } catch (err) {
+      console.error('Failed to delete future goal:', err);
+    }
   };
 
   return (
@@ -116,33 +118,32 @@ export default function FutureVision() {
         <h1 className="text-4xl font-serif font-bold mb-2">MONU</h1>
       </Link>
       <p className="future-subheader italic">Your 3-Year Blueprint</p>
+
       <div className="section">
-            <h3>
-              TO:
-              <input
-                className="editable-title text-center"
-                type="text"
-                value={ageTarget}
-                onChange={(e) => setAgeTarget(e.target.value)}
-                placeholder="e.g. 21 year old me"
-              />
-            </h3>
-          </div>
+        <h3>
+          TO:
+          <input
+            className="editable-title text-center"
+            type="text"
+            value={ageTarget}
+            onChange={(e) => setAgeTarget(e.target.value)}
+            placeholder="e.g. 21 year old me"
+          />
+        </h3>
+      </div>
 
       <div className="blueprint-wrapper">
         <div className="column">
-          
-
           {['health', 'relationships', 'growth'].map((cat) => (
             <div className="section" key={cat}>
               <h3>{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
               <ul>
                 {goals[cat].map((item, i) => (
-                  <li key={i}>
+                  <li key={item.id || i}>
                     <div className="goal-item">
                       <input
                         type="text"
-                        value={item.text}
+                        value={item.title}
                         onChange={(e) => handleChange(cat, i, e.target.value)}
                       />
                       <button
@@ -173,11 +174,11 @@ export default function FutureVision() {
               <h3>{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
               <ul>
                 {goals[cat].map((item, i) => (
-                  <li key={i}>
+                  <li key={item.id || i}>
                     <div className="goal-item">
                       <input
                         type="text"
-                        value={item.text}
+                        value={item.title}
                         onChange={(e) => handleChange(cat, i, e.target.value)}
                       />
                       <button
