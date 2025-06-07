@@ -359,6 +359,7 @@ export const getUserSettings = /* GraphQL */ `
       id
       googleToken
       isSynced
+      theme
       createdAt
       updatedAt
       owner
@@ -377,6 +378,7 @@ export const listUserSettings = /* GraphQL */ `
         id
         googleToken
         isSynced
+        theme
         createdAt
         updatedAt
         owner

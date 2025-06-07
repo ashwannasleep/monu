@@ -1,7 +1,4 @@
-type BucketItem @model @auth(rules: [
-  { allow: owner },
-  { allow: public, operations: [create, update, delete, read] }
-]) {
+type BucketItem @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   text: String!
   category: String
@@ -10,11 +7,7 @@ type BucketItem @model @auth(rules: [
   done: Boolean
 }
 
-type YearlyGoal @model
-@auth(rules: [
-  { allow: owner },
-  { allow: public, operations: [create, update, delete, read] }
-]) {
+type YearlyGoal @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   year: Int!
   title: String!
@@ -23,11 +16,7 @@ type YearlyGoal @model
   done: Boolean
 }
 
-type DailyTask @model
-@auth(rules: [
-  { allow: owner },
-  { allow: public, operations: [create, update, delete, read] }
-]) {
+type DailyTask @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   date: AWSDate!
   text: String!
@@ -37,11 +26,7 @@ type DailyTask @model
   done: Boolean
 }
 
-type Habit @model
-@auth(rules: [
-  { allow: owner },
-  { allow: public, operations: [create, update, delete, read] }
-]) {
+type Habit @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
   icon: String
@@ -53,15 +38,14 @@ type Habit @model
   log: AWSJSON
 }
 
-type FutureGoal @model 
-@auth(rules: [{ allow: owner }, { allow: public, operations: [create, update, delete, read] }]) {
+type FutureGoal @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   category: String!
   title: String!
   done: Boolean
 }
 
-type YearlyPopupTask @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read, create, update, delete] }]) {
+type YearlyPopupTask @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   month: String!
   title: String!
@@ -70,10 +54,7 @@ type YearlyPopupTask @model @auth(rules: [{ allow: owner }, { allow: public, ope
   done: Boolean
 }
 
-type FocusTask @model @auth(rules: [
-  { allow: owner },
-  { allow: public, operations: [read, create, update, delete] }
-]) {
+type FocusTask @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   title: String!
   date: AWSDate
@@ -87,15 +68,10 @@ type MonthlyEvent @model @auth(rules: [{ allow: owner }]) {
   end: AWSDateTime!
 }
 
-type GoogleAuth @model 
-@auth(rules: [
-  { allow: owner },
-  { allow: public, operations: [create, update, delete, read] }
-]) {
+type GoogleAuth @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   token: String!
 }
-
 
 type UserSettings @model @auth(rules: [{ allow: owner }]) {
   id: ID!
@@ -103,4 +79,3 @@ type UserSettings @model @auth(rules: [{ allow: owner }]) {
   isSynced: Boolean
   theme: String
 }
-

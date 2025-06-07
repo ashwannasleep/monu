@@ -505,6 +505,7 @@ export const onCreateUserSettings = /* GraphQL */ `
       id
       googleToken
       isSynced
+      theme
       createdAt
       updatedAt
       owner
@@ -521,6 +522,7 @@ export const onUpdateUserSettings = /* GraphQL */ `
       id
       googleToken
       isSynced
+      theme
       createdAt
       updatedAt
       owner
@@ -537,6 +539,7 @@ export const onDeleteUserSettings = /* GraphQL */ `
       id
       googleToken
       isSynced
+      theme
       createdAt
       updatedAt
       owner
