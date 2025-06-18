@@ -10,7 +10,9 @@ import { generateClient } from 'aws-amplify/api';
 import { createDailyTask, updateDailyTask, deleteDailyTask } from './graphql/mutations';
 import { listDailyTasks } from './graphql/queries';
 
-const client = generateClient();
+const client = generateClient({
+  authMode: 'userPool', // ✅ Matches BucketList
+});
 
 export default function DailyPlan() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -43,12 +45,15 @@ export default function DailyPlan() {
     try {
       const result = await client.graphql({
         query: listDailyTasks,
-        variables: { filter: { date: { eq: selectedDate.toISOString().split('T')[0] } } }
+        variables: {
+          filter: { date: { eq: selectedDate.toISOString().split("T")[0] } },
+        },
       });
       const tasks = result.data.listDailyTasks.items.sort((a, b) => a.order - b.order);
       setPlans(prev => ({ ...prev, [selectedDate.toDateString()]: tasks }));
     } catch (err) {
-      console.error('Failed to load tasks:', err);
+      console.error("Failed to load tasks:", err);
+      alert("Could not fetch daily tasks. Please check login.");
     }
   };
 
@@ -58,7 +63,7 @@ export default function DailyPlan() {
     if (!text) return;
 
     const newTask = {
-      date: selectedDate.toISOString().split('T')[0],
+      date: selectedDate.toISOString().split("T")[0],
       text,
       time: timeInputs[key] || "",
       duration: durationInputs[key] || "",
@@ -69,75 +74,64 @@ export default function DailyPlan() {
     try {
       const result = await client.graphql({
         query: createDailyTask,
-        variables: { input: newTask }
+        variables: { input: newTask },
       });
 
       const savedTask = result.data.createDailyTask;
-
       setPlans(prev => ({
         ...prev,
-        [key]: [...(prev[key] || []), savedTask]
+        [key]: [...(prev[key] || []), savedTask],
       }));
       setInput("");
       setTimeInputs(prev => ({ ...prev, [key]: "" }));
       setDurationInputs(prev => ({ ...prev, [key]: "" }));
     } catch (err) {
-      console.error('Failed to add task:', err);
-      const detailedMessage = err.errors?.[0]?.message || err.message || 'Unknown error';
-      alert(`Failed to add task: ${detailedMessage}`);
+      console.error("Failed to add task:", err);
+      alert("Failed to add task. Please try again.");
     }
   };
 
-  const handleDelete = async index => {
+  const handleDelete = async (index) => {
     const key = selectedDate.toDateString();
     const task = plans[key][index];
-
-    if (!task || !task.id) {
-      console.error('Task or task ID is missing');
-      return;
-    }
+    if (!task || !task.id) return;
 
     try {
       await client.graphql({
         query: deleteDailyTask,
-        variables: { input: { id: task.id } }
+        variables: { input: { id: task.id } },
       });
       const updated = [...plans[key]];
       updated.splice(index, 1);
       setPlans(prev => ({ ...prev, [key]: updated }));
     } catch (err) {
-      console.error('Failed to delete task:', err);
-      alert('Failed to delete task. Please try again.');
+      console.error("Failed to delete task:", err);
+      alert("Failed to delete task. Please try again.");
     }
   };
 
   const handleToggleComplete = async (index) => {
     const key = selectedDate.toDateString();
     const task = plans[key][index];
-
-    if (!task || !task.id) {
-      console.error('Task or task ID is missing');
-      return;
-    }
+    if (!task || !task.id) return;
 
     const updatedTask = { ...task, done: !task.done };
 
     try {
       await client.graphql({
         query: updateDailyTask,
-        variables: { input: { id: task.id, done: updatedTask.done } }
+        variables: { input: { id: task.id, done: updatedTask.done } },
       });
-
       const updated = [...plans[key]];
       updated[index] = updatedTask;
       setPlans(prev => ({ ...prev, [key]: updated }));
     } catch (err) {
-      console.error('Failed to update task:', err);
-      alert('Failed to update task. Please try again.');
+      console.error("Failed to update task:", err);
+      alert("Failed to update task. Please try again.");
     }
   };
 
-  const handleDragEnd = async result => {
+  const handleDragEnd = async (result) => {
     if (!result.destination) return;
     const key = selectedDate.toDateString();
     const items = Array.from(plans[key]);
@@ -146,20 +140,22 @@ export default function DailyPlan() {
     setPlans(prev => ({ ...prev, [key]: items }));
 
     try {
-      await Promise.all(items.map((item, idx) =>
-        client.graphql({
-          query: updateDailyTask,
-          variables: { input: { id: item.id, order: idx } }
-        })
-      ));
+      await Promise.all(
+        items.map((item, idx) =>
+          client.graphql({
+            query: updateDailyTask,
+            variables: { input: { id: item.id, order: idx } },
+          })
+        )
+      );
     } catch (err) {
-      console.error('Failed to update order:', err);
+      console.error("Failed to update order:", err);
       fetchTasks();
     }
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleAdd();
     }
   };
@@ -174,14 +170,12 @@ export default function DailyPlan() {
       </p>
 
       <div className="week-selector">
-        {currentWeek().map(date => (
+        {currentWeek().map((date) => (
           <div
             key={date.toISOString()}
             className={
               "week-day " +
-              (date.toDateString() === selectedDate.toDateString()
-                ? "selected-day"
-                : "")
+              (date.toDateString() === selectedDate.toDateString() ? "selected-day" : "")
             }
             onClick={() => setSelectedDate(date)}
           >
@@ -206,9 +200,9 @@ export default function DailyPlan() {
           className="progress-bar"
           style={{
             width: `${progressPercent}%`,
-            backgroundColor: document.documentElement.classList.contains('dark')
-              ? '#f7b7a3'
-              : '#f29e8e',
+            backgroundColor: document.documentElement.classList.contains("dark")
+              ? "#f7b7a3"
+              : "#f29e8e",
           }}
         />
       </div>
@@ -219,7 +213,7 @@ export default function DailyPlan() {
           <input
             type="text"
             value={input}
-            onChange={e => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Add a new task..."
             className="plan-input"
@@ -227,8 +221,8 @@ export default function DailyPlan() {
           <input
             type="time"
             value={timeInputs[selectedDate.toDateString()] || ""}
-            onChange={e =>
-              setTimeInputs(prev => ({
+            onChange={(e) =>
+              setTimeInputs((prev) => ({
                 ...prev,
                 [selectedDate.toDateString()]: e.target.value,
               }))
@@ -239,39 +233,35 @@ export default function DailyPlan() {
             type="text"
             placeholder="e.g. 30 min"
             value={durationInputs[selectedDate.toDateString()] || ""}
-            onChange={e =>
-              setDurationInputs(prev => ({
+            onChange={(e) =>
+              setDurationInputs((prev) => ({
                 ...prev,
                 [selectedDate.toDateString()]: e.target.value,
               }))
             }
             className="plan-duration"
           />
-          <button onClick={handleAdd} className="add-btn">
-            ＋
-          </button>
+          <button onClick={handleAdd} className="add-btn">＋</button>
         </div>
 
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="plan-list">
-            {provided => (
-              <ul
-                className="plan-list"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
+            {(provided) => (
+              <ul className="plan-list" ref={provided.innerRef} {...provided.droppableProps}>
                 {(plans[selectedDate.toDateString()] || []).map((item, idx) => (
                   <Draggable key={item.id} draggableId={item.id.toString()} index={idx}>
-                    {provided => (
+                    {(provided) => (
                       <li
-                        className={`plan-item ${item.done ? 'completed' : ''}`}
+                        className={`plan-item ${item.done ? "completed" : ""}`}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                         onClick={() => handleToggleComplete(idx)}
                       >
                         <div className="bucket-main">
-                          <div className={`bucket-text ${item.done ? 'dash-out' : ''}`}>{item.text}</div>
+                          <div className={`bucket-text ${item.done ? "dash-out" : ""}`}>
+                            {item.text}
+                          </div>
                           <div className="bucket-tags">
                             {item.time && <span className="bucket-tag">{item.time}</span>}
                             {item.duration && <span className="bucket-tag">{item.duration}</span>}

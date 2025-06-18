@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { generateClient } from 'aws-amplify/api';
 import { listDailyTasks } from './graphql/queries';
 
-const client = generateClient();
+// ✅ Set authMode for owner access
+const client = generateClient({
+  authMode: 'userPool',
+});
+
 const today = new Date().toISOString().split('T')[0];
 
 export default function FocusCard() {
@@ -90,6 +94,7 @@ export default function FocusCard() {
           )}
         </div>
 
+        {/* Coming Up */}
         <div className="flex-1">
           <h4 className="text-lg font-semibold mb-4">Coming Up</h4>
           {glimpse.length === 0 ? (
@@ -108,14 +113,12 @@ export default function FocusCard() {
           )}
         </div>
 
-       
+        {/* Weekly Stats */}
         <div className="flex-1">
           <h4 className="text-lg font-semibold mb-4">Weekly Stats</h4>
           <div className="flex flex-col items-center">
-            
             <div className="relative w-24 h-24 mb-3">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                
                 <circle
                   cx="50"
                   cy="50"
@@ -125,7 +128,6 @@ export default function FocusCard() {
                   fill="none"
                   className="dark:stroke-gray-600"
                 />
-                
                 <circle
                   cx="50"
                   cy="50"
@@ -139,16 +141,12 @@ export default function FocusCard() {
                   className="transition-all duration-500 ease-out"
                 />
               </svg>
-             
-            
             </div>
-            
             <p className="text-sm text-gray-600 dark:text-gray-300 text-center">
               {stats.done} of {stats.total} daily tasks completed this week
             </p>
           </div>
         </div>
-        
       </div>
     </div>
   );

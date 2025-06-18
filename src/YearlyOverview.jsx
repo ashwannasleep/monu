@@ -34,6 +34,7 @@ export default function YearlyOverview() {
   const fetchGoalsFromAWS = async () => {
     try {
       const res = await client.graphql({
+        authMode: 'userPool',
         query: listYearlyGoals,
         variables: { filter: { year: { eq: year } } },
       });
@@ -70,11 +71,13 @@ export default function YearlyOverview() {
     try {
       if (goal.id) {
         await client.graphql({
+          authMode: 'userPool',
           query: updateYearlyGoal,
           variables: { input: { ...input, id: goal.id } },
         });
       } else {
         const result = await client.graphql({
+          authMode: 'userPool',
           query: createYearlyGoal,
           variables: { input },
         });

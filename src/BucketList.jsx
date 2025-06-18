@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./BucketList.css";
 import { Link } from 'react-router-dom';
 import { generateClient } from 'aws-amplify/api';
-import { createBucketItem, updateBucketItem, deleteBucketItem } from './graphql/mutations';
+import {
+  createBucketItem,
+  updateBucketItem,
+  deleteBucketItem,
+} from './graphql/mutations';
 import { listBucketItems } from './graphql/queries';
 
-const client = generateClient();
+const client = generateClient({
+  authMode: 'userPool', // ✅ Needed for @auth(allow: owner)
+});
 
 export default function BucketList() {
   const [items, setItems] = useState([]);
@@ -22,11 +28,14 @@ export default function BucketList() {
   const fetchItems = async () => {
     try {
       setLoading(true);
-      const result = await client.graphql({ query: listBucketItems });
+      const result = await client.graphql({
+        query: listBucketItems,
+      });
       const userItems = result.data.listBucketItems.items;
       setItems(userItems);
     } catch (err) {
       console.error('Failed to load items:', err);
+      alert("Could not fetch bucket list. Please check login.");
     } finally {
       setLoading(false);
     }

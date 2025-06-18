@@ -13,9 +13,9 @@ export const createBucketItem = /* GraphQL */ `
       date
       link
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -32,9 +32,9 @@ export const updateBucketItem = /* GraphQL */ `
       date
       link
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -51,9 +51,9 @@ export const deleteBucketItem = /* GraphQL */ `
       date
       link
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -70,9 +70,9 @@ export const createYearlyGoal = /* GraphQL */ `
       details
       order
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -89,9 +89,9 @@ export const updateYearlyGoal = /* GraphQL */ `
       details
       order
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -108,9 +108,9 @@ export const deleteYearlyGoal = /* GraphQL */ `
       details
       order
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -128,9 +128,9 @@ export const createDailyTask = /* GraphQL */ `
       duration
       order
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -148,9 +148,9 @@ export const updateDailyTask = /* GraphQL */ `
       duration
       order
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -168,9 +168,9 @@ export const deleteDailyTask = /* GraphQL */ `
       duration
       order
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -190,9 +190,9 @@ export const createHabit = /* GraphQL */ `
       time
       plan
       log
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -212,9 +212,9 @@ export const updateHabit = /* GraphQL */ `
       time
       plan
       log
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -234,9 +234,9 @@ export const deleteHabit = /* GraphQL */ `
       time
       plan
       log
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -251,9 +251,9 @@ export const createFutureGoal = /* GraphQL */ `
       category
       title
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -268,9 +268,9 @@ export const updateFutureGoal = /* GraphQL */ `
       category
       title
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -285,9 +285,9 @@ export const deleteFutureGoal = /* GraphQL */ `
       category
       title
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -304,9 +304,9 @@ export const createYearlyPopupTask = /* GraphQL */ `
       date
       time
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -323,9 +323,9 @@ export const updateYearlyPopupTask = /* GraphQL */ `
       date
       time
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -342,9 +342,9 @@ export const deleteYearlyPopupTask = /* GraphQL */ `
       date
       time
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -359,9 +359,9 @@ export const createFocusTask = /* GraphQL */ `
       title
       date
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -376,9 +376,9 @@ export const updateFocusTask = /* GraphQL */ `
       title
       date
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -393,9 +393,9 @@ export const deleteFocusTask = /* GraphQL */ `
       title
       date
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -410,9 +410,9 @@ export const createMonthlyEvent = /* GraphQL */ `
       title
       start
       end
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -427,9 +427,9 @@ export const updateMonthlyEvent = /* GraphQL */ `
       title
       start
       end
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -444,9 +444,9 @@ export const deleteMonthlyEvent = /* GraphQL */ `
       title
       start
       end
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -459,9 +459,9 @@ export const createGoogleAuth = /* GraphQL */ `
     createGoogleAuth(input: $input, condition: $condition) {
       id
       token
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -474,9 +474,9 @@ export const updateGoogleAuth = /* GraphQL */ `
     updateGoogleAuth(input: $input, condition: $condition) {
       id
       token
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -489,9 +489,9 @@ export const deleteGoogleAuth = /* GraphQL */ `
     deleteGoogleAuth(input: $input, condition: $condition) {
       id
       token
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -506,9 +506,9 @@ export const createUserSettings = /* GraphQL */ `
       googleToken
       isSynced
       theme
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -523,9 +523,9 @@ export const updateUserSettings = /* GraphQL */ `
       googleToken
       isSynced
       theme
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -540,9 +540,9 @@ export const deleteUserSettings = /* GraphQL */ `
       googleToken
       isSynced
       theme
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }

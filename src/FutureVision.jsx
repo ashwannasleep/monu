@@ -5,7 +5,9 @@ import { generateClient } from 'aws-amplify/api';
 import { listFutureGoals } from './graphql/queries';
 import { createFutureGoal, updateFutureGoal, deleteFutureGoal } from './graphql/mutations';
 
-const client = generateClient();
+const client = generateClient({
+  authMode: 'userPool',
+});
 
 export default function FutureVision() {
   const [ageTarget, setAgeTarget] = useState('21-year-old me');

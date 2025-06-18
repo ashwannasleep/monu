@@ -28,6 +28,7 @@ export default function YearlyPopup({ month, onClose }) {
     const fetchTasksFromAWS = async () => {
       try {
         const result = await client.graphql({
+          authMode: 'userPool',
           query: listYearlyPopupTasks,
           variables: { filter: { month: { eq: month } } },
         });
@@ -55,6 +56,7 @@ export default function YearlyPopup({ month, onClose }) {
 
     try {
       const res = await client.graphql({
+        authMode: 'userPool',
         query: createYearlyPopupTask,
         variables: {
           input: {
@@ -80,6 +82,7 @@ export default function YearlyPopup({ month, onClose }) {
     const task = tasks.toDo[i];
     try {
       await client.graphql({
+        authMode: 'userPool',
         query: updateYearlyPopupTask,
         variables: { input: { id: task.id, done: true } },
       });
@@ -97,6 +100,7 @@ export default function YearlyPopup({ month, onClose }) {
     const task = tasks[type][i];
     try {
       await client.graphql({
+        authMode: 'userPool',
         query: deleteYearlyPopupTask,
         variables: { input: { id: task.id } },
       });

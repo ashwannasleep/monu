@@ -10,9 +10,9 @@ export const getBucketItem = /* GraphQL */ `
       date
       link
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -31,9 +31,9 @@ export const listBucketItems = /* GraphQL */ `
         date
         link
         done
+        owner
         createdAt
         updatedAt
-        owner
         __typename
       }
       nextToken
@@ -50,9 +50,9 @@ export const getYearlyGoal = /* GraphQL */ `
       details
       order
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -71,9 +71,9 @@ export const listYearlyGoals = /* GraphQL */ `
         details
         order
         done
+        owner
         createdAt
         updatedAt
-        owner
         __typename
       }
       nextToken
@@ -91,9 +91,9 @@ export const getDailyTask = /* GraphQL */ `
       duration
       order
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -113,9 +113,9 @@ export const listDailyTasks = /* GraphQL */ `
         duration
         order
         done
+        owner
         createdAt
         updatedAt
-        owner
         __typename
       }
       nextToken
@@ -135,9 +135,9 @@ export const getHabit = /* GraphQL */ `
       time
       plan
       log
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -159,9 +159,9 @@ export const listHabits = /* GraphQL */ `
         time
         plan
         log
+        owner
         createdAt
         updatedAt
-        owner
         __typename
       }
       nextToken
@@ -176,9 +176,9 @@ export const getFutureGoal = /* GraphQL */ `
       category
       title
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -195,9 +195,9 @@ export const listFutureGoals = /* GraphQL */ `
         category
         title
         done
+        owner
         createdAt
         updatedAt
-        owner
         __typename
       }
       nextToken
@@ -214,9 +214,9 @@ export const getYearlyPopupTask = /* GraphQL */ `
       date
       time
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -239,9 +239,9 @@ export const listYearlyPopupTasks = /* GraphQL */ `
         date
         time
         done
+        owner
         createdAt
         updatedAt
-        owner
         __typename
       }
       nextToken
@@ -256,9 +256,9 @@ export const getFocusTask = /* GraphQL */ `
       title
       date
       done
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -275,9 +275,9 @@ export const listFocusTasks = /* GraphQL */ `
         title
         date
         done
+        owner
         createdAt
         updatedAt
-        owner
         __typename
       }
       nextToken
@@ -292,9 +292,9 @@ export const getMonthlyEvent = /* GraphQL */ `
       title
       start
       end
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -311,9 +311,9 @@ export const listMonthlyEvents = /* GraphQL */ `
         title
         start
         end
+        owner
         createdAt
         updatedAt
-        owner
         __typename
       }
       nextToken
@@ -326,9 +326,9 @@ export const getGoogleAuth = /* GraphQL */ `
     getGoogleAuth(id: $id) {
       id
       token
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -343,9 +343,9 @@ export const listGoogleAuths = /* GraphQL */ `
       items {
         id
         token
+        owner
         createdAt
         updatedAt
-        owner
         __typename
       }
       nextToken
@@ -360,9 +360,9 @@ export const getUserSettings = /* GraphQL */ `
       googleToken
       isSynced
       theme
+      owner
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -379,9 +379,9 @@ export const listUserSettings = /* GraphQL */ `
         googleToken
         isSynced
         theme
+        owner
         createdAt
         updatedAt
-        owner
         __typename
       }
       nextToken

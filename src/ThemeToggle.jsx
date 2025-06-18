@@ -11,20 +11,24 @@ export default function ThemeToggle({ userId }) {
   useEffect(() => {
     const applyStoredTheme = async () => {
       const local = localStorage.getItem('theme');
-      if (local) {
+
+      // ✅ If theme is already in localStorage, apply it
+      if (local === 'dark' || local === 'light') {
         setDarkMode(local === 'dark');
         document.documentElement.classList.toggle('dark', local === 'dark');
+        return;
       }
 
+      // ✅ Otherwise, try to fetch from AWS
       try {
         const res = await client.graphql({
           query: getUserSettings,
           variables: { id: userId },
         });
+
         const theme = res.data?.getUserSettings?.theme;
 
-        // ✅ Only apply if it's different from what's already set
-        if (theme && theme !== local) {
+        if (theme === 'dark' || theme === 'light') {
           setDarkMode(theme === 'dark');
           document.documentElement.classList.toggle('dark', theme === 'dark');
           localStorage.setItem('theme', theme);

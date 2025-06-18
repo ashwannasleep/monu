@@ -64,6 +64,7 @@ export default function MonthlyPlanner() {
       setGoogleToken(token);
       try {
         await client.graphql({
+          authMode: 'userPool',
           query: createGoogleAuth,
           variables: { input: { id: userId, token } },
         });
@@ -77,6 +78,7 @@ export default function MonthlyPlanner() {
   const unsyncCalendar = async () => {
     try {
       await client.graphql({
+        authMode: 'userPool',
         query: deleteGoogleAuth,
         variables: { input: { id: userId } },
       });
@@ -92,6 +94,7 @@ export default function MonthlyPlanner() {
     const loadTokenFromAWS = async () => {
       try {
         const res = await client.graphql({
+          authMode: 'userPool',
           query: getGoogleAuth,
           variables: { id: userId },
         });
@@ -150,6 +153,7 @@ export default function MonthlyPlanner() {
       setEvents((prev) => [...prev, newEvent]);
       try {
         await client.graphql({
+          authMode: 'userPool',
           query: createMonthlyEvent,
           variables: {
             input: {

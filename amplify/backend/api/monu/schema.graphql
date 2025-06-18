@@ -5,6 +5,7 @@ type BucketItem @model @auth(rules: [{ allow: owner }]) {
   date: AWSDate
   link: AWSURL
   done: Boolean
+  owner: String
 }
 
 type YearlyGoal @model @auth(rules: [{ allow: owner }]) {
@@ -14,6 +15,7 @@ type YearlyGoal @model @auth(rules: [{ allow: owner }]) {
   details: String
   order: Int
   done: Boolean
+  owner: String
 }
 
 type DailyTask @model @auth(rules: [{ allow: owner }]) {
@@ -24,6 +26,7 @@ type DailyTask @model @auth(rules: [{ allow: owner }]) {
   duration: String
   order: Int
   done: Boolean
+  owner: String
 }
 
 type Habit @model @auth(rules: [{ allow: owner }]) {
@@ -36,6 +39,7 @@ type Habit @model @auth(rules: [{ allow: owner }]) {
   time: String
   plan: String
   log: AWSJSON
+  owner: String
 }
 
 type FutureGoal @model @auth(rules: [{ allow: owner }]) {
@@ -43,6 +47,7 @@ type FutureGoal @model @auth(rules: [{ allow: owner }]) {
   category: String!
   title: String!
   done: Boolean
+  owner: String
 }
 
 type YearlyPopupTask @model @auth(rules: [{ allow: owner }]) {
@@ -52,6 +57,7 @@ type YearlyPopupTask @model @auth(rules: [{ allow: owner }]) {
   date: AWSDate
   time: AWSTime
   done: Boolean
+  owner: String
 }
 
 type FocusTask @model @auth(rules: [{ allow: owner }]) {
@@ -59,6 +65,7 @@ type FocusTask @model @auth(rules: [{ allow: owner }]) {
   title: String!
   date: AWSDate
   done: Boolean
+  owner: String
 }
 
 type MonthlyEvent @model @auth(rules: [{ allow: owner }]) {
@@ -66,11 +73,13 @@ type MonthlyEvent @model @auth(rules: [{ allow: owner }]) {
   title: String!
   start: AWSDateTime!
   end: AWSDateTime!
+  owner: String
 }
 
 type GoogleAuth @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   token: String!
+  owner: String
 }
 
 type UserSettings @model @auth(rules: [{ allow: owner }]) {
@@ -78,4 +87,5 @@ type UserSettings @model @auth(rules: [{ allow: owner }]) {
   googleToken: String
   isSynced: Boolean
   theme: String
+  owner: String
 }
