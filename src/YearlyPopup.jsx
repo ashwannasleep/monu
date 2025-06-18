@@ -183,12 +183,16 @@ export default function YearlyPopup({ month, onClose }) {
             <h3>To Do</h3>
             <ul>
               {tasks.toDo.map((task, i) => (
-                <li key={task.id}>
-                  <span>{task.title}</span>
-                  <div className="btns">
-                    <button onClick={() => completeTask(i)}>✔</button>
-                    <button onClick={() => deleteTask(i, 'toDo')}>✕</button>
+                <li key={task.id} onClick={() => completeTask(i)} className="clickable-task">
+                  <div className="task-info">
+                    <span className="task-line">{task.title}</span>
+                    {(task.date || task.time) && (
+                      <span className="task-meta">
+                        {[task.date, task.time].filter(Boolean).join(' • ')}
+                      </span>
+                    )}
                   </div>
+                  <button onClick={(e) => { e.stopPropagation(); deleteTask(i, 'toDo'); }}>✕</button>
                 </li>
               ))}
             </ul>
@@ -199,7 +203,14 @@ export default function YearlyPopup({ month, onClose }) {
             <ul>
               {tasks.done.map((task, i) => (
                 <li key={task.id}>
-                  <span>{task.title}</span>
+                  <div className="task-info">
+                    <span className="task-line line-through">{task.title}</span>
+                    {(task.date || task.time) && (
+                      <span className="task-meta">
+                        {[task.date, task.time].filter(Boolean).join(' • ')}
+                      </span>
+                    )}
+                  </div>
                   <button onClick={() => deleteTask(i, 'done')}>✕</button>
                 </li>
               ))}

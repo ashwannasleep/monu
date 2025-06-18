@@ -165,13 +165,14 @@ html.dark .task-card.completed {
 .task-card li {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0.75rem;
+  align-items: flex-start;
+  padding: 0.6rem 0.75rem;
   background: #fff;
   margin-bottom: 0.5rem;
   border-radius: 8px;
   border: 1px solid #ddd;
   transition: background-color 0.3s ease, color 0.3s ease;
+  gap: 0.5rem;
 }
 
 html.dark .task-card li {
@@ -179,10 +180,36 @@ html.dark .task-card li {
   border-color: #444;
 }
 
-.task-card li span {
+.task-content {
+  display: flex;
+  flex-direction: column;
   flex: 1;
-  text-align: left;
-  font-size: 0.95rem;
+}
+
+.task-title {
+  font-weight: 500;
+  color: #333;
+}
+
+.task-title.line-through {
+  text-decoration: line-through;
+  color: #999;
+}
+
+html.dark .task-title {
+  color: #eee;
+}
+
+html.dark .task-title.line-through {
+  color: #777;
+}
+
+.task-meta-line {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 2px;
+  display: flex;
+  gap: 8px;
 }
 
 .task-card li .btns button,
@@ -200,7 +227,7 @@ html.dark .task-card li button {
   color: #ccc;
 }
 
-/* Mobile Scaling - Make everything smaller */
+/* Mobile Scaling */
 @media (max-width: 768px) {
   .popup-card {
     padding: 1.2rem;
@@ -314,4 +341,22 @@ html.dark .task-card li button {
   .task-card li button {
     font-size: 0.85rem;
   }
+}
+
+.line-through {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.task-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.task-meta {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 2px;
 }

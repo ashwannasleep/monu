@@ -2,21 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { generateClient } from 'aws-amplify/api';
 import { listDailyTasks } from './graphql/queries';
 
-// ✅ Set authMode for owner access
-const client = generateClient({
-  authMode: 'userPool',
-});
-
+const client = generateClient({ authMode: 'userPool' });
 const today = new Date().toISOString().split('T')[0];
 
 export default function FocusCard() {
   const [todayTasks, setTodayTasks] = useState([]);
-  const [glimpse, setGlimpse] = useState([]);
   const [stats, setStats] = useState({ done: 0, total: 0 });
 
   useEffect(() => {
     fetchTodayFocus();
-    fetchComingUp();
     fetchStats();
   }, []);
 
@@ -28,20 +22,6 @@ export default function FocusCard() {
       setTodayTasks(tasks);
     } catch (err) {
       console.error("Failed to fetch today's tasks:", err);
-    }
-  };
-
-  const fetchComingUp = async () => {
-    try {
-      const res = await client.graphql({ query: listDailyTasks });
-      const items = res.data?.listDailyTasks?.items || [];
-      const upcoming = items
-        .filter(t => t.date > today && !t.done && !t._deleted)
-        .sort((a, b) => a.date.localeCompare(b.date))
-        .slice(0, 3);
-      setGlimpse(upcoming);
-    } catch (err) {
-      console.error("Failed to fetch coming up tasks:", err);
     }
   };
 
@@ -68,10 +48,10 @@ export default function FocusCard() {
   const strokeDashoffset = circumference - (completionRate / 100) * circumference;
 
   return (
-    <div className="dashboard-card w-full max-w-6xl">
+    <div className="dashboard-card w-full max-w-4xl">
       <div className="flex gap-8">
         
-        {/* Focus - Left */}
+        {/* Today's Focus */}
         <div className="flex-1">
           <h3 className="text-lg font-semibold mb-4">Today's Focus</h3>
           {todayTasks.length === 0 ? (
@@ -80,32 +60,13 @@ export default function FocusCard() {
             <ul className="space-y-2">
               {todayTasks.map(task => (
                 <li key={task.id} className="flex items-start">
-                  <span className="text-gray-400 mr-3 mt-1 flex-shrink-0">•</span>
+                  <span className="text-gray-400 mr-3 mt-1 flex-shrink-0">-</span>
                   <span className={`text-sm leading-relaxed ${
                     task.done 
                       ? 'line-through text-gray-400' 
                       : 'text-gray-800 dark:text-gray-100'
                   }`}>
                     {task.text}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        {/* Coming Up */}
-        <div className="flex-1">
-          <h4 className="text-lg font-semibold mb-4">Coming Up</h4>
-          {glimpse.length === 0 ? (
-            <p className="text-sm italic text-gray-500">No upcoming tasks.</p>
-          ) : (
-            <ul className="space-y-2">
-              {glimpse.map(task => (
-                <li key={task.id} className="flex items-start">
-                  <span className="text-gray-400 mr-3 mt-1 flex-shrink-0">•</span>
-                  <span className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-                    <span className="font-medium">{task.date}:</span> {task.text}
                   </span>
                 </li>
               ))}
@@ -147,6 +108,7 @@ export default function FocusCard() {
             </p>
           </div>
         </div>
+
       </div>
     </div>
   );
