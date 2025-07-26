@@ -89,3 +89,5 @@ type UserSettings @model @auth(rules: [{ allow: owner }]) {
   theme: String
   owner: String
 }
+
+
